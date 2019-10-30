@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Locations = require("./locations-model");
 
+//All Locations-
+//GET /Locations
+//Returns an array of Location Objects
 router.get('/', (req, res) => {
     Locations.find()
         .then(locations => {
@@ -12,6 +15,9 @@ router.get('/', (req, res) => {
         });
 });
 
+//Location Page- for checking out the place.
+//GET /Locations/:id
+//Returns a single Location object
 router.get('/:id', (req, res) => {
     const { id } = req.params;
 
@@ -26,7 +32,16 @@ router.get('/:id', (req, res) => {
         .catch(err => { res.status(500).json({ message: 'Failed to get locations' }); });
 });
 
+//Location Dashboard- for when they first log in.
+//GET /Locations/:id
+//Returns the Location object who has logged in, and any dashboard information.
+router.get('/dashboard', (req, res) => {
+  //Figure out auth before this really.
+})
 
+//Register Location- creates a Location reference in our databse.
+//POST /Locations/
+//Takes in the new Location information, adds it to the database, and returns the object.
 router.post('/', (req, res) => {
     const locationData = req.body;
 
@@ -40,6 +55,9 @@ router.post('/', (req, res) => {
 
 });
 
+//Edit Your Info- allow a Location to edit their own information.
+//PUT /Locations/
+//Takes in the Location information, updates the database, and returns the object.
 router.put('/:id', (req, res) => {
     const { id } = req.params;
     const locationData = req.body;
@@ -54,6 +72,9 @@ router.put('/:id', (req, res) => {
 
 });
 
+//DELETE Location- delete's a Location's profile
+//PUT /Locations/
+//Deletes it for good.
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     Locations.remove(id)
