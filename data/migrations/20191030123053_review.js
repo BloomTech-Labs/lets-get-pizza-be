@@ -13,9 +13,9 @@ exports.up = function(knex) {
           
       reviews.string('Rating', 128).notNullable();
 
-      reviews.string('Review Title', 128).notNullable();
+      reviews.string('Review_Title', 128).notNullable();
 
-      reviews.string('Review Body', 128).notNullable();
+      reviews.string('Review_Body', 128).notNullable();
     });
   };
   exports.down = function(knex, Promise) {
