@@ -11,9 +11,9 @@ exports.up = function(knex) {
 
       promotions.string('Text', 128).notNullable();
 
-      promotions.date('StartDate', 128).notNullable();
+      promotions.date('StartDate').notNullable();
 
-      promotions.date('EndDate', 128).notNullable();
+      promotions.date('EndDate').notNullable();
     });
   };
   exports.down = function(knex, Promise) {
