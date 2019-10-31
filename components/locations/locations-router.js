@@ -4,6 +4,19 @@ const Locations = require("./locations-model");
 
 //All Locations-
 //GET /Locations
+//Returns an array of Location Objects 
+router.get('/map', (req, res) => {
+    Locations.find()
+        .then(locations => {
+            res.json(locations);
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Failed to get locations' });
+        });
+});
+
+//All Locations-
+//GET /Locations
 //Returns an array of Location Objects
 router.get('/', (req, res) => {
     Locations.find()
