@@ -1,66 +1,53 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios')
+//Converts the given ip address to a lat/long
+var geoip = require('geoip-lite');
 const Locations = require("./locations-model");
+
 
 //All Locations- Coordinates & ratings for the map
 //GET /Locations
 //Returns an array of Location Objects, merge our database results with foursquare results
 router.get('/map', async (req, res) => {
+    const geo = await userGeoLocation(req); //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
+    const userCity = geo.city
+    const userLatitude = geo.ll[0]
+    const userLongitude = geo.ll[1]
 
+    //Searches OUR database
+    const databaseLocations = await Locations.findClosestMapLocations(userLatitude, userLongitude)
 
-    var geoip = require('geoip-lite');
+    //Searchs foursquare for pizza places, and returns an array of name/lat/lng/address
+    const normalizedFoursquareCoordinates = await foursquareCoordinateSearch(userCity)
 
-    var ip = "207.97.227.239";
-    var geo = geoip.lookup(ip);
-    const city = geo.city
+    //Merge the results together and return.
+    const results = [...new Set([...databaseLocations, ...normalizedFoursquareCoordinates])]
 
-    const endPoint = "https://api.foursquare.com/v2/venues/explore?";
-    const parameters = {
-      client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
-      client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
-      query: "pizza",
-      near: city,
-      v: "20190425"
-    };
-
-    //Make the axios call.
-    const foursquareResponse = await axios.get(endPoint + new URLSearchParams(parameters))
-    //This is the list of items returned without all the extra search data.
-    const foursquareVenueList = foursquareResponse.data.response.groups[0].items
-
-    //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
-    const normalizedFoursquareVenues = foursquareVenueList.map(listItem => {
-      const venue = listItem.venue
-      return {
-        name: venue.name,
-        latitude: venue.location.lat,
-        longitude: venue.location.lng,
-        fullAddress: venue.location.address
-      }
-    })
-
-    //Does database call
-    const database_locations = await Locations.findClosestMapLocations(geo.ll[0], geo.ll[1])
-
-    //Merge them together.
-    const results = [...new Set([...database_locations, ...normalizedFoursquareVenues])]
-
-    res.json({trueIP: req.ip, providedIP: ip, geo, results})
+    res.json(results)
 
 });
 
 //All Locations- Information for display
 //GET /Locations
 //Returns an array of Location Objects, merge our database results with foursquare results
-router.get('/', (req, res) => {
-    Locations.find()
-        .then(locations => {
-            res.json(locations);
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Failed to get locations' });
-        });
+//Returns Name, Address, Thumbnail_url
+router.get('/list', async (req, res) => {
+    const geo = await userGeoLocation(req); //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
+    const userCity = geo.city
+    const userLatitude = geo.ll[0]
+    const userLongitude = geo.ll[1]
+
+    //Searches OUR database
+    const databaseLocations = await Locations.findSearchLocations(userLatitude, userLongitude)
+
+    //Searchs foursquare for pizza places, and returns an array of name/lat/lng/address
+    const normalizedFoursquareList = await foursquareListSearch(userCity)
+
+    //Merge the results together and return.
+    const results = [...new Set([...databaseLocations, ...normalizedFoursquareList])]
+
+    res.json(results)
 });
 
 //Location Page- for checking out the place.
@@ -135,3 +122,63 @@ router.delete('/:id', (req, res) => {
 });
 
 module.exports = router;
+
+//-----------------------------------------
+// FOURSQUARE FUNCTIONS
+//-----------------------------------------
+
+const foursquareApiSearch = async (city_name) => {
+  const endPoint = "https://api.foursquare.com/v2/venues/explore?";
+  const parameters = {
+    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
+    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    query: "pizza",
+    near: city_name,
+    v: "20190425"
+  };
+
+  return await axios.get(endPoint + new URLSearchParams(parameters))
+}
+
+//Returns an array of objects, with a locations name, latitude, longitude, and address.
+const foursquareCoordinateSearch = async(cityName) => {
+  const foursquareResponse = await foursquareApiSearch(cityName)
+
+  const foursquareVenueList = foursquareResponse.data.response.groups[0].items
+
+  //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
+  return foursquareVenueList.map(listItem => {
+    const venue = listItem.venue
+    return {
+      name: venue.name,
+      latitude: venue.location.lat,
+      longitude: venue.location.lng,
+      address: venue.location.address
+    }
+  })
+}
+
+//Returns an array of objects, with a locations name, address, and thumbnail.
+const foursquareListSearch = async(cityName) => {
+  const foursquareResponse = await foursquareApiSearch(cityName)
+
+  const foursquareVenueList = foursquareResponse.data.response.groups[0].items
+  console.log(foursquareVenueList.map((item) => item.venue.photos))
+
+  //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
+  return foursquareVenueList.map(listItem => {
+    const venue = listItem.venue
+    return {
+      name: venue.name,
+      address: venue.location.address
+    }
+  })
+}
+
+const userGeoLocation = async(req) => {
+  //During development, this will return "::1", for localhost. Set to a valid ip instead.
+  const ip = req.ip === "::1" ? "161.185.160.93" : req.ip;
+  const geo = geoip.lookup(ip);
+  //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
+  return geo
+}
