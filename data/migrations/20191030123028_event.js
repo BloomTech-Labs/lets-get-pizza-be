@@ -2,15 +2,15 @@ exports.up = function(knex) {
     return knex.schema.createTable('events', events => {
       events.increments();
   
-      events.string('Account_creator_id', 128).notNullable()
+      events.string('account_creator_id', 128).notNullable()
 
-      events.string('Business_id').notNullable()
+      events.string('business_id').notNullable()
           
-      events.string('Title', 128).notNullable();
+      events.string('title', 128).notNullable();
 
-      events.string('Description', 128).notNullable();
+      events.string('description', 128).notNullable();
 
-      events.date('DateTime', 128).notNullable();
+      events.date('dateTime', 128).notNullable();
 
     });
   };

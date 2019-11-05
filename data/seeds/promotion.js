@@ -5,28 +5,28 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('promotions').insert([
         {
-          Business_id: 1,
-          Image: '5',
-          Title: 'Cheese Sale!',
-          Text: 'Half Price extra cheese!',
-          StartDate: '1/2/19',
-          EndDate: '1/3/19'
+          business_id: 1,
+          image: '5',
+          title: 'Cheese Sale!',
+          text: 'Half Price extra cheese!',
+          startDate: '1/2/19',
+          endDate: '1/3/19'
         },
         {
-            Business_id: 2,
-            Image: '5',
-            Title: 'Double Double Time!',
-            Text: 'Buy one pizza and pay double for the second!',
-            StartDate: '1/3/19',
-            EndDate: '2/3/19'
+            business_id: 2,
+            image: '5',
+            title: 'Double Double Time!',
+            text: 'Buy one pizza and pay double for the second!',
+            startDate: '1/3/19',
+            endDate: '2/3/19'
           },
           {
-            Business_id: 3,
-            Image: '5',
-            Title: 'Jailhouse Rock!',
-            Text: 'Sing a song for 10 bucks off your order!',
-            StartDate: '2/3/19',
-            EndDate: '2/3/19'
+            business_id: 3,
+            image: '5',
+            title: 'Jailhouse Rock!',
+            text: 'Sing a song for 10 bucks off your order!',
+            startDate: '2/3/19',
+            endDate: '2/3/19'
           }
       ]);
     });

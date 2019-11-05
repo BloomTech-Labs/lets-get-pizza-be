@@ -1,26 +1,26 @@
 exports.seed = function(knex, Promise) {
     // Deletes ALL existing entries
-    return knex('Eventinvites').del()
+    return knex('eventinvites').del()
     .then(function () {
       // Inserts seed entries
-      return knex('Eventinvites').insert([
+      return knex('eventinvites').insert([
         {
-          Event_id: '1',
-          Inviter_user_id: '1',
-          Invitee_user_id: '2',
-          Response: 'Yes'
+          event_id: '1',
+          inviter_user_id: '1',
+          invitee_user_id: '2',
+          response: 'Yes'
         },
         {
-            Event_id: '2',
-            Inviter_user_id: '3',
-            Invitee_user_id: '4',
-            Response: 'No'
+            event_id: '2',
+            inviter_user_id: '3',
+            invitee_user_id: '4',
+            response: 'No'
           },
           {
-            Event_id: '3',
-            Inviter_user_id: '4',
-            Invitee_user_id: '1',
-            Response: 'Maybe'
+            event_id: '3',
+            inviter_user_id: '4',
+            invitee_user_id: '1',
+            response: 'Maybe'
           }
       ]);
     });

@@ -5,37 +5,37 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('users').insert([
         {
-          Username: 'Billy',
-          Email: 'billy@pizzaluv.com',
-          Password: 'pizza1',
-          Profile_Image: 'www.something.com/1.jpg',
-          Display_Name: 'PizzaBruh420',
-          Dietary_Preference: ['gluten'],
-          Favorite_pizza_toppings: 'Mushrooms',
-          City: 'Miami',
-          State: 'Florida'
+          username: 'Billy',
+          email: 'billy@pizzaluv.com',
+          password: 'pizza1',
+          profile_image: 'www.something.com/1.jpg',
+          display_name: 'PizzaBruh420',
+          dietary_preference: ['gluten'],
+          favorite_pizza_toppings: 'Mushrooms',
+          city: 'Miami',
+          state: 'Florida'
         },
         {
-            Username: 'Roger',
-            Email: 'roger@pizzaluv.com',
-            Password: 'pizza1',
-            Profile_Image: 'www.something.com/2.jpg',
-            Display_Name: 'PizzaDude',
-            Dietary_Preference: ['Vegetarian'],
-            Favorite_pizza_toppings: 'Fake Meat Pepperoni',
-            City: 'Santa Monica',
-            State: 'California'
+            username: 'Roger',
+            email: 'roger@pizzaluv.com',
+            password: 'pizza1',
+            profile_image: 'www.something.com/2.jpg',
+            display_name: 'PizzaDude',
+            dietary_preference: ['Vegetarian'],
+            favorite_pizza_toppings: 'Fake Meat Pepperoni',
+            city: 'Santa Monica',
+            state: 'California'
           },
           {
-            Username: 'Betty',
-            Email: 'betty@pizzaluv.com',
-            Password: 'pizza1',
-            Profile_Image: 'www.something.com/1.jpg',
-            Display_Name: 'PizzaGurl',
-            Dietary_Preference: ['gluten'],
-            Favorite_pizza_toppings: 'Pepperoni',
-            City: 'Billings',
-            State: 'Minnesota'
+            username: 'Betty',
+            email: 'betty@pizzaluv.com',
+            password: 'pizza1',
+            profile_image: 'www.something.com/1.jpg',
+            display_name: 'PizzaGurl',
+            dietary_preference: ['gluten'],
+            favorite_pizza_toppings: 'Pepperoni',
+            city: 'Billings',
+            state: 'Minnesota'
           }
       ]);
     });

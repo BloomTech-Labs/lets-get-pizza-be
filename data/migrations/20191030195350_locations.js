@@ -2,41 +2,41 @@ exports.up = function(knex) {
     return knex.schema.createTable('locations', locations => {
       locations.increments();
   
-      locations.string('Username', 128).unique().notNullable();
+      locations.string('username', 128).unique().notNullable();
 
-      locations.string('Email').notNullable().unique();
+      locations.string('email').notNullable().unique();
           
-      locations.string('Password', 128).notNullable();
+      locations.string('password', 128).notNullable();
 
-      locations.string('First_Name', 128).notNullable();
+      locations.string('first_name', 128).notNullable();
 
-      locations.string('Last_Name').unique().notNullable();
+      locations.string('last_name').unique().notNullable();
 
-      locations.string('Foursquare_id', 128).notNullable();
+      locations.string('foursquare_id', 128).notNullable();
 
-      locations.boolean('Update_foursquare');
+      locations.boolean('update_foursquare');
 
-      locations.string('Business_name', 128).notNullable();
+      locations.string('business_name', 128).notNullable();
 
-      locations.string('Latitude', 128).notNullable();
+      locations.string('latitude', 128).notNullable();
 
-      locations.string('Longitude', 128).notNullable();
+      locations.string('longitude', 128).notNullable();
 
-      locations.string('Address', 128).notNullable();
+      locations.string('address', 128).notNullable();
 
-      locations.string('Website_url', 128).notNullable();
+      locations.string('website_url', 128).notNullable();
 
-      locations.string('Official_description', 128).notNullable();
+      locations.string('official_description', 128).notNullable();
 
-      locations.string('Thumbnail_url', 128).notNullable();
+      locations.string('thumbnail_url', 128).notNullable();
 
-      locations.string('Street_view_image', 128).notNullable();
+      locations.string('street_view_image', 128).notNullable();
 
-      locations.string('Order_service', 128).notNullable();
+      locations.string('order_service', 128).notNullable();
 
-      locations.string('Store_bio', 128).notNullable();
+      locations.string('store_bio', 128).notNullable();
 
-      locations.specificType('Dietary_offerings', 'text ARRAY').notNullable();
+      locations.specificType('dietary_offerings', 'text ARRAY').notNullable();
 
     });
   };

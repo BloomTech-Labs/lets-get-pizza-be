@@ -5,25 +5,25 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('events').insert([
         {
-          Account_creator_id: '1',
-          Business_id: '1',
-          Title: 'Lets Get Pizza!',
-          Description: 'Its dat time boys, pizza!',
-          DateTime: '1/2/19'
+          account_creator_id: '1',
+          business_id: '1',
+          title: 'Lets Get Pizza!',
+          description: 'Its dat time boys, pizza!',
+          dateTime: '1/2/19'
         },
         {
-            Account_creator_id: '2',
-            Business_id: '2',
-            Title: 'Nacho Pizza Hunt!',
-            Description: 'Are Nacho pizzas a thing? Lets find out!',
-            DateTime: '1/3/19'
+            account_creator_id: '2',
+            business_id: '2',
+            title: 'Nacho Pizza Hunt!',
+            description: 'Are Nacho pizzas a thing? Lets find out!',
+            dateTime: '1/3/19'
           },
         {
-            Account_creator_id: '3',
-            Business_id: '3',
-            Title: 'The End of Days',
-            Description: 'About that time, lets have a slice to celebrate the end of the world.',
-            DateTime: '1/4/19'
+            account_creator_id: '3',
+            business_id: '3',
+            title: 'The End of Days',
+            description: 'About that time, lets have a slice to celebrate the end of the world.',
+            dateTime: '1/4/19'
           }
       ]);
     });
