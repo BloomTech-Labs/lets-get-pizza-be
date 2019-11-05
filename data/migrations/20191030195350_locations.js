@@ -1,11 +1,11 @@
 exports.up = function(knex) {
     return knex.schema.createTable('locations', locations => {
       locations.increments();
-  
+
       locations.string('username', 128).unique().notNullable();
 
       locations.string('email').notNullable().unique();
-          
+
       locations.string('password', 128).notNullable();
 
       locations.string('first_name', 128).notNullable();

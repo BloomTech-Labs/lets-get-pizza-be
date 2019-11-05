@@ -2,6 +2,7 @@ const db = require("../../data/db-config")
 
 module.exports = {
     find,
+    findClosestMapLocations,
     findById,
     add,
     update,
@@ -10,6 +11,12 @@ module.exports = {
 
 function find() {
     return db('locations')
+}
+
+
+function findClosestMapLocations() {
+    return db('locations')
+    .select('business_name AS name', 'latitude', 'longitude', 'address')
 }
 
 function findById(id) {

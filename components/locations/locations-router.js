@@ -1,23 +1,57 @@
 const express = require("express");
 const router = express.Router();
+const axios = require('axios')
 const Locations = require("./locations-model");
 
-//All Locations-
+//All Locations- Coordinates & ratings for the map
 //GET /Locations
-//Returns an array of Location Objects 
-router.get('/map', (req, res) => {
-    Locations.find()
-        .then(locations => {
-            res.json(locations);
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Failed to get locations' });
-        });
+//Returns an array of Location Objects, merge our database results with foursquare results
+router.get('/map', async (req, res) => {
+
+
+    var geoip = require('geoip-lite');
+
+    var ip = "207.97.227.239";
+    var geo = geoip.lookup(ip);
+    const city = geo.city
+
+    const endPoint = "https://api.foursquare.com/v2/venues/explore?";
+    const parameters = {
+      client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
+      client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+      query: "pizza",
+      near: city,
+      v: "20190425"
+    };
+
+    //Make the axios call.
+    const foursquareResponse = await axios.get(endPoint + new URLSearchParams(parameters))
+    //This is the list of items returned without all the extra search data.
+    const foursquareVenueList = foursquareResponse.data.response.groups[0].items
+
+    //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
+    normalizeFoursquareVenues = foursquareVenueList.map(listItem => {
+      const venue = listItem.venue
+      return {
+        name: venue.name,
+        lattitude: venue.location.lat,
+        longitude: venue.location.lng,
+        fullAddress: venue.location.address
+      }
+    })
+
+    //Does database call
+    const database_locations = await Locations.findClosestMapLocations()
+
+    //Merge them together.
+
+    res.json({trueIP: req.ip, providedIP: ip, geo, response: normalizeFoursquareVenues, database: database_locations})
+
 });
 
-//All Locations-
+//All Locations- Information for display
 //GET /Locations
-//Returns an array of Location Objects
+//Returns an array of Location Objects, merge our database results with foursquare results
 router.get('/', (req, res) => {
     Locations.find()
         .then(locations => {
