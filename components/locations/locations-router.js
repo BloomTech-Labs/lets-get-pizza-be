@@ -41,7 +41,7 @@ router.get('/map', async (req, res) => {
     })
 
     //Does database call
-    const database_locations = await Locations.findClosestMapLocations()
+    const database_locations = await Locations.findClosestMapLocations(geo.ll[0], geo.ll[1])
 
     //Merge them together.
     const results = [...new Set([...database_locations, ...normalizedFoursquareVenues])]
