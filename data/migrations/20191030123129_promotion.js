@@ -2,18 +2,18 @@ exports.up = function(knex) {
     return knex.schema.createTable('promotions', promotions => {
       promotions.increments();
   
-      promotions.string('Business_id', 128).notNullable()
+      promotions.string('business_id', 128).notNullable()
 
       //need to figure out how to do an image here...
-      promotions.string('Image').notNullable()
+      promotions.string('image').notNullable()
           
-      promotions.string('Title', 128).notNullable();
+      promotions.string('title', 128).notNullable();
 
-      promotions.string('Text', 128).notNullable();
+      promotions.string('text', 128).notNullable();
 
-      promotions.date('StartDate').notNullable();
+      promotions.date('startDate').notNullable();
 
-      promotions.date('EndDate').notNullable();
+      promotions.date('endDate').notNullable();
     });
   };
   exports.down = function(knex, Promise) {

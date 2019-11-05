@@ -3,19 +3,19 @@ exports.up = function(knex) {
       reviews.increments();
   
       reviews
-        .string('User_id', 128)
+        .string('user_id', 128)
         .notNullable()
         .unique();
 
       reviews
-        .string('Business_id', 128)
+        .string('business_id', 128)
         .notNullable()
           
-      reviews.string('Rating', 128).notNullable();
+      reviews.string('rating', 128).notNullable();
 
-      reviews.string('Review_Title', 128).notNullable();
+      reviews.string('review_title', 128).notNullable();
 
-      reviews.string('Review_Body', 128).notNullable();
+      reviews.string('review_body', 128).notNullable();
     });
   };
   exports.down = function(knex, Promise) {

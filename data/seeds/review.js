@@ -5,25 +5,25 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('reviews').insert([
         {
-          User_id: 1,
-          Business_id: 1,
-          Rating: '5',
-          Review_Title: 'cheese pizza day',
-          Review_Body: 'cheese was good, but I wanted pepperoni'
+          user_id: 1,
+          business_id: 1,
+          rating: '5',
+          review_title: 'cheese pizza day',
+          review_body: 'cheese was good, but I wanted pepperoni'
         },
         {
-            User_id: 2,
-            Business_id: 2,
-            Rating: '3',
-            Review_Title: 'memorial pizza time',
-            Review_Body: 'not bad, but too pricy'
+            user_id: 2,
+            business_id: 2,
+            rating: '3',
+            review_title: 'memorial pizza time',
+            review_body: 'not bad, but too pricy'
         },
         {
-            User_id: 3,
-            Business_id: 3,
-            Rating: '1',
-            Review_Title: 'ran out?!',
-            Review_Body: 'they ran out of cheese, smh'
+            user_id: 3,
+            business_id: 3,
+            rating: '1',
+            review_title: 'ran out?!',
+            review_body: 'they ran out of cheese, smh'
         }
       ]);
     });

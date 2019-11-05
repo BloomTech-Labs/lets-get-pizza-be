@@ -1,17 +1,17 @@
 exports.up = function(knex) {
-    return knex.schema.createTable('Eventinvites', Eventinvites => {
-      Eventinvites.increments();
+    return knex.schema.createTable('eventinvites', eventinvites => {
+      eventinvites.increments();
   
-      Eventinvites.string('Event_id', 128).notNullable()
+      eventinvites.string('event_id', 128).notNullable()
 
-      Eventinvites.string('Inviter_user_id').notNullable()
+      eventinvites.string('inviter_user_id').notNullable()
           
-      Eventinvites.string('Invitee_user_id', 128).notNullable();
+      eventinvites.string('invitee_user_id', 128).notNullable();
 
-      Eventinvites.string('Response', 128).notNullable();
+      eventinvites.string('response', 128).notNullable();
 
     });
   };
   exports.down = function(knex, Promise) {
-    return knex.schema.dropTableIfExists('Eventinvites');
+    return knex.schema.dropTableIfExists('eventinvites');
   };
