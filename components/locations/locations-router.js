@@ -30,11 +30,11 @@ router.get('/map', async (req, res) => {
     const foursquareVenueList = foursquareResponse.data.response.groups[0].items
 
     //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
-    normalizeFoursquareVenues = foursquareVenueList.map(listItem => {
+    const normalizedFoursquareVenues = foursquareVenueList.map(listItem => {
       const venue = listItem.venue
       return {
         name: venue.name,
-        lattitude: venue.location.lat,
+        latitude: venue.location.lat,
         longitude: venue.location.lng,
         fullAddress: venue.location.address
       }
@@ -44,8 +44,9 @@ router.get('/map', async (req, res) => {
     const database_locations = await Locations.findClosestMapLocations()
 
     //Merge them together.
+    const results = [...new Set([...database_locations, ...normalizedFoursquareVenues])]
 
-    res.json({trueIP: req.ip, providedIP: ip, geo, response: normalizeFoursquareVenues, database: database_locations})
+    res.json({trueIP: req.ip, providedIP: ip, geo, results})
 
 });
 
