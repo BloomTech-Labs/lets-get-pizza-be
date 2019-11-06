@@ -10,10 +10,7 @@ const Locations = require("./locations-model");
 //GET /Locations
 //Returns an array of Location Objects, merge our database results with foursquare results
 router.get('/map', async (req, res) => {
-    const geo = await userGeoLocation(req); //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
-    const userCity = geo.city
-    const userLatitude = geo.ll[0]
-    const userLongitude = geo.ll[1]
+    const {userLatitude, userLongitude, userCity} = await userGeoLocation(req);
 
     //Searches OUR database
     const databaseLocations = await Locations.findClosestMapLocations(userLatitude, userLongitude)
@@ -33,10 +30,7 @@ router.get('/map', async (req, res) => {
 //Returns an array of Location Objects, merge our database results with foursquare results
 //Returns Name, Address, Thumbnail_url
 router.get('/list', async (req, res) => {
-    const geo = await userGeoLocation(req); //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
-    const userCity = geo.city
-    const userLatitude = geo.ll[0]
-    const userLongitude = geo.ll[1]
+    const {userLatitude, userLongitude, userCity} = await userGeoLocation(req);
 
     //Searches OUR database
     const databaseLocations = await Locations.findSearchLocations(userLatitude, userLongitude)
@@ -163,7 +157,8 @@ const foursquareListSearch = async(cityName) => {
   const foursquareResponse = await foursquareApiSearch(cityName)
 
   const foursquareVenueList = foursquareResponse.data.response.groups[0].items
-  console.log(foursquareVenueList.map((item) => item.venue.photos))
+
+  //console.log(foursquareVenueList.map((item) => item.venue.photos))
 
   //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
   return foursquareVenueList.map(listItem => {
@@ -176,9 +171,26 @@ const foursquareListSearch = async(cityName) => {
 }
 
 const userGeoLocation = async(req) => {
-  //During development, this will return "::1", for localhost. Set to a valid ip instead.
-  const ip = req.ip === "::1" ? "161.185.160.93" : req.ip;
-  const geo = geoip.lookup(ip);
-  //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
-  return geo
+  const userLocation = {userCity: "", userLatitude: 0, userLongitude: 0}
+
+  if(req.query.search) {
+    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
+    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=t9UQLcQuLFV0voTMDxe0fwJhfeEQuWZH&location=${req.query.search}`)
+    const location_info = geo.data.results[0].locations[0]
+    //Map the information
+    userLocation.userCity = location_info.adminArea5
+    userLocation.userLatitude =  location_info.latLng.lat
+    userLocation.userLongitude = location_info.latLng.lng
+  } else {
+    //During development, this will return "::1", for localhost. Set to a valid ip instead.
+    const ip = req.ip === "::1" ? "161.185.160.93" : req.ip;
+    const geo = geoip.lookup(ip);
+    //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
+    userLocation.userCity = geo.city
+    userLocation.userLatitude =  geo.ll[0]
+    userLocation.userLongitude = geo.ll[1]
+  }
+
+  return userLocation
+
 }

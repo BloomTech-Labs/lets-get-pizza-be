@@ -35,30 +35,41 @@ router.get('/:id', (req, res) => {
 //GET /Users/:id
 //Returns the user object who has logged in, and any dashboard information.
 router.get('/dashboard', (req, res) => {
-  //Figure out auth before this really.
+    const { id } = req.decodedToken.user.user_id;
+    Users.findById(id)
+      .then(user => {
+        if (user) {
+          res.json(user)
+        } else {
+          res.status(404).json({ message: 'Could not find user with given id.' })
+        }
+      })
+      .catch(err => { res.status(500).json({ message: 'Failed to get users' });
+    });
+
 })
-
-//Register User- creates a user reference in our databse.
-//POST /Users/
-//Takes in the new user information, adds it to the database, and returns the object.
-router.post('/', (req, res) => {
-    const userData = req.body;
-
-    Users.add(userData)
-        .then(user => {
-            res.status(201).json(user);
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Failed to create new user' });
-        });
-
-});
+//
+// //Register User- creates a user reference in our databse.
+// //POST /Users/
+// //Takes in the new user information, adds it to the database, and returns the object.
+// router.post('/', (req, res) => {
+//     const userData = req.body;
+//
+//     Users.add(userData)
+//         .then(user => {
+//             res.status(201).json(user);
+//         })
+//         .catch(err => {
+//             res.status(500).json({ message: 'Failed to create new user' });
+//         });
+//
+// });
 
 //Edit Your Info- allow a user to edit their own information.
 //PUT /Users/
 //Takes in the user information, updates the database, and returns the object.
-router.put('/:id', (req, res) => {
-    const { id } = req.params;
+router.put('/', (req, res) => {
+    const { id } = req.decodedToken.user.user_id;
     const userData = req.body;
 
     Users.update(userData, id)
@@ -73,8 +84,8 @@ router.put('/:id', (req, res) => {
 //DELETE USER- delete's a user's profile
 //PUT /Users/
 //Deletes it for good.
-router.delete('/:id', (req, res) => {
-    const { id } = req.params;
+router.delete('/', (req, res) => {
+    const { id } = req.decodedToken.user.user_id;
     Users.remove(id)
         .then(deleted => {
             res.send("Success.")
