@@ -238,6 +238,7 @@ const userGeoLocation = async(req) => {
   } else {
     //During development, this will return "::1", for localhost. Set to a valid ip instead.
     const ip = req.ip === "::1" ? "161.185.160.93" : req.ip;
+    console.log("REQ.IP", req.ip)
     const geo = geoip.lookup(ip);
     //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
     userLocation.userCity = geo.city
