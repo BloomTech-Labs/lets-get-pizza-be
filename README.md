@@ -16,14 +16,7 @@ To get the server running locally:
 
 Node / Express.js
 
-<<<<<<< HEAD
 Postgresql
-=======
--    Point One  It's a team preference/decision
--    Point Two
--    Point Three
--    Point Four
->>>>>>> 97ff5ce5bfc31674c6bb9d9d44be84ea90695924
 
 Foursquare
 
