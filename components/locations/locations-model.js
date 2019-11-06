@@ -18,7 +18,7 @@ function find() {
 function findClosestMapLocations(latitude, longitude) {
     const searchRadius = .5
     return db('locations')
-    .select('business_name AS name', 'latitude', 'longitude', 'address')
+    .select('business_name AS name', 'latitude', 'longitude', 'address', 'id AS location_id')
     .where(function() {
       this.where(function() {
         this.where('latitude', '>', latitude - searchRadius).andWhere('latitude', '<', latitude + searchRadius)
@@ -32,7 +32,7 @@ function findClosestMapLocations(latitude, longitude) {
 function findSearchLocations(latitude, longitude) {
     const searchRadius = .5
     return db('locations')
-    .select('business_name AS name', 'address', 'thumbnail_url')
+    .select('business_name AS name', 'address', 'thumbnail_url', 'id AS location_id')
     .where(function() {
       this.where(function() {
         this.where('latitude', '>', latitude - searchRadius).andWhere('latitude', '<', latitude + searchRadius)

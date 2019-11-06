@@ -44,22 +44,14 @@ router.get('/list', async (req, res) => {
     res.json(results)
 });
 
-//Location Page- for checking out the place.
-//GET /Locations/:id
-//Returns a single Location object
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
+router.get('/live/:foursquare_id', async (req, res) => {
+  //Do the foursquare call on the id
+  const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
 
-    Locations.findById(id)
-        .then(location => {
-            if (location) {
-                res.json(location)
-            } else {
-                res.status(404).json({ message: 'Could not find location with given id.' })
-            }
-        })
-        .catch(err => { res.status(500).json({ message: 'Failed to get locations' }); });
-});
+  //Map it to an item, save, and return
+  res.json(normalizedFoursquareResult)
+
+})
 
 //Location Dashboard- for when they first log in.
 //GET /Locations/:id
@@ -67,6 +59,17 @@ router.get('/:id', (req, res) => {
 router.get('/dashboard', (req, res) => {
   //Figure out auth before this really.
 })
+
+//Location Page- for checking out the place.
+//GET /Locations/:id
+//Returns a single Location object
+router.get('/:id', (req, res) => {
+    const location = Locations.findById(id)
+    if(location.update_foursquare) {
+      //update the record based on a call
+    }
+    res.json(location)
+});
 
 //Register Location- creates a Location reference in our databse.
 //POST /Locations/
@@ -121,17 +124,63 @@ module.exports = router;
 // FOURSQUARE FUNCTIONS
 //-----------------------------------------
 
-const foursquareApiSearch = async (city_name) => {
+const foursquareApiSearch = async (cityName) => {
   const endPoint = "https://api.foursquare.com/v2/venues/explore?";
   const parameters = {
     client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
     client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
     query: "pizza",
-    near: city_name,
+    near: cityName,
     v: "20190425"
   };
 
   return await axios.get(endPoint + new URLSearchParams(parameters))
+}
+
+const foursquareIdSearch = async (foursquareId) => {
+  const endPoint = `https://api.foursquare.com/v2/venues/${foursquareId}?`;
+  const parameters = {
+    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
+    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    v: "20190425"
+  };
+
+  const result = await axios.get(endPoint + new URLSearchParams(parameters))
+
+  const v = result.data.response.venue
+  return {
+    foursquare_id: v.id,
+    business_name: v.name,
+    latitude: v.location.lat,
+    longitude: v.location.lng,
+    address: v.location.formattedAddress,
+    website_url: v.url,
+    official_description: v.official_description,
+  }
+
+
+  // locations.string('username', 128).unique().notNullable();
+  //
+  // locations.string('email').notNullable().unique();
+  //
+  // locations.string('password', 128).notNullable();
+  //
+  // locations.string('first_name', 128).notNullable();
+  //
+  // locations.string('last_name').unique().notNullable();
+  //
+  // locations.string('official_description', 128).notNullable();
+  //
+  // locations.string('thumbnail_url', 128).notNullable();
+  //
+  // locations.string('street_view_image', 128).notNullable();
+  //
+  // locations.string('order_service', 128).notNullable();
+  //
+  // locations.string('store_bio', 128).notNullable();
+  //
+  // locations.specificType('dietary_offerings', 'text ARRAY').notNullable();
+
 }
 
 //Returns an array of objects, with a locations name, latitude, longitude, and address.
@@ -147,7 +196,8 @@ const foursquareCoordinateSearch = async(cityName) => {
       name: venue.name,
       latitude: venue.location.lat,
       longitude: venue.location.lng,
-      address: venue.location.address
+      address: venue.location.address,
+      foursquare_id: venue.id
     }
   })
 }
@@ -163,9 +213,11 @@ const foursquareListSearch = async(cityName) => {
   //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
   return foursquareVenueList.map(listItem => {
     const venue = listItem.venue
+    console.log(venue)
     return {
       name: venue.name,
-      address: venue.location.address
+      address: venue.location.address,
+      foursquare_id: venue.id
     }
   })
 }
