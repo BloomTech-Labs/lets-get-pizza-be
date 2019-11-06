@@ -1,11 +1,9 @@
-const server = require('../server.js');
+const server = require('../../server.js');
 const request = require('supertest');
 var knexCleaner = require('knex-cleaner');
-// our connection to the database
-const db = require('../data/dbConfig.js');
-// the data access file we are testing
-const Locations = require('../../components/locations/location-model.js');
-//Remove the test database.
+// our connections to the database
+const db = require('../../data/db-config.js');
+const Locations = require('../../components/locations/locations-model.js');
 
 
 const incomplete_creds = {locationname: "testlocation", location_email: null, password: "test"}
@@ -20,6 +18,95 @@ describe("Location Tests",  () => {
       await knexCleaner.clean(db)
       expect(1).toBe(1);
     })
+
+      describe("/maps", () => {
+        it("The default route call with no search parameters", async () => {
+            const expectedStatusCode = 200;
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
+        })
+        it("The route call with a search equal to a city name", async () => {
+            const expectedStatusCode = 200;
+            //https://plza.herokuapp.com/api/locations/map?search=Cleveland
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
+        })
+        it("The default route call with a search equal to a zip code", async () => {
+            const expectedStatusCode = 200;
+            //https://plza.herokuapp.com/api/locations/map?search=44039
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
+        })
+        it("The default route call with a search equal to an address", async () => {
+            const expectedStatusCode = 200;
+            //https://plza.herokuapp.com/api/locations/map?search=6000+Jaycox+Rd,North+Ridgveille,Oh,44039
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
+        })
+      })
+
+
+
+      describe("/list", () => {
+        it("The default route call with no search parameters", async () => {
+            const expectedStatusCode = 200;
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify that an array of objects is returned with an address field and either a foursquare_id or location_id
+        })
+        it("The route call with a search equal to a city name", async () => {
+            const expectedStatusCode = 200;
+            //https://plza.herokuapp.com/api/locations/list?search=Cleveland
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify that an array of objects is returned with an address field and either a foursquare_id or location_id
+        })
+        it("The default route call with a search equal to a zip code", async () => {
+            const expectedStatusCode = 200;
+            //https://plza.herokuapp.com/api/locations/list?search=44039
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify (on some level) that an array of objects is returned
+        })
+        it("The default route call with a search equal to an address", async () => {
+            const expectedStatusCode = 200;
+            //https://plza.herokuapp.com/api/locations/list?search=6000+Jaycox+Rd,North+Ridgveille,Oh,44039
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify (on some level) that an array of objects is returned
+        })
+      })
+
+      describe("/live/:foursquare_id", () => {
+        it("Test the route with a basic call", async () => {
+            const expectedStatusCode = 200;
+            //
+            expect(response.status).toBe(expectedStatusCode);
+            //Verify that the locations are returned
+            //Verify that an array of objects is returned with an address field and either a foursquare_id or location_id
+
+            //Save the first list item & it's foursquare_id in the list into variables
+            const foursquareResultItem = null;
+            const foursquareId = null;
+
+            //Make our api call to /live/id, and save that in a variable
+            const liveRouteResult = null; // await request(server).......
+
+            //Check that the two are equal
+        })
+      })
 
     // describe("Register endpoint", () => {
     //     it("Register with incomplete credentials", async () => {

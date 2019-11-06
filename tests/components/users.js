@@ -1,11 +1,9 @@
-const server = require('../server.js');
+const server = require('../../server.js');
 const request = require('supertest');
 var knexCleaner = require('knex-cleaner');
-// our connection to the database
-const db = require('../data/dbConfig.js');
-// the data access file we are testing
-const Users = require('../../components/users/user-model.js');
-//Remove the test database.
+// our connections to the database
+const db = require('../../data/db-config.js');
+const Users = require('../../components/users/users-model.js');
 
 
 //Veryify these are correct (they aren't) and delete this comment, but these should be the only things you really need for these tests
