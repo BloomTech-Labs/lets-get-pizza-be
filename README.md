@@ -23,7 +23,7 @@ To get the server running locally:
 
 🚫 Why did you choose this framework?
 
--    Point One
+-    Point One  It's a team preference/decision
 -    Point Two
 -    Point Three
 -    Point Four
