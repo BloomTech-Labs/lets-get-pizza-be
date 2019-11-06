@@ -15,6 +15,27 @@ router.get('/', (req, res) => {
         });
 });
 
+
+//User Dashboard- for when you first log in.
+//GET /Users/:id
+//Returns the user object who has logged in, and any dashboard information.
+router.get('/dashboard', (req, res) => {
+    const id  = req.decodedToken.user_id;
+    console.log(id)
+
+    Users.findById(id)
+      .then(user => {
+        if (user) {
+          res.json(user)
+        } else {
+          res.status(404).json({ message: 'Could not find user with given id.' })
+        }
+      })
+      .catch(err => { res.status(500).json({ message: 'Failed to get users' });
+    });
+
+})
+
 //User Profile- for looking at your friends' profile
 //GET /Users/:id
 //Returns a single user object
@@ -31,23 +52,6 @@ router.get('/:id', (req, res) => {
         .catch(err => { res.status(500).json({ message: 'Failed to get users' }); });
 });
 
-//User Dashboard- for when you first log in.
-//GET /Users/:id
-//Returns the user object who has logged in, and any dashboard information.
-router.get('/dashboard', (req, res) => {
-    const { id } = req.decodedToken.user.user_id;
-    Users.findById(id)
-      .then(user => {
-        if (user) {
-          res.json(user)
-        } else {
-          res.status(404).json({ message: 'Could not find user with given id.' })
-        }
-      })
-      .catch(err => { res.status(500).json({ message: 'Failed to get users' });
-    });
-
-})
 //
 // //Register User- creates a user reference in our databse.
 // //POST /Users/
