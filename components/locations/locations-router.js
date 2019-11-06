@@ -19,7 +19,8 @@ router.get('/map', async (req, res) => {
     const normalizedFoursquareCoordinates = await foursquareCoordinateSearch(userCity)
 
     //Merge the results together and return.
-    const results = [...new Set([...databaseLocations, ...normalizedFoursquareCoordinates])]
+    const results = mergeArrays(normalizedFoursquareCoordinates, databaseLocations)
+
 
     res.json(results)
 
@@ -39,7 +40,7 @@ router.get('/list', async (req, res) => {
     const normalizedFoursquareList = await foursquareListSearch(userCity)
 
     //Merge the results together and return.
-    const results = [...new Set([...databaseLocations, ...normalizedFoursquareList])]
+    const results = mergeArrays(normalizedFoursquareList, databaseLocations)
 
     res.json(results)
 });
@@ -49,7 +50,9 @@ router.get('/live/:foursquare_id', async (req, res) => {
   const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
 
   //Map it to an item, save, and return
-  res.json(normalizedFoursquareResult)
+  const location = await Locations.add(normalizedFoursquareResult)
+
+  res.json(location)
 
 })
 
@@ -155,33 +158,21 @@ const foursquareIdSearch = async (foursquareId) => {
     business_name: v.name,
     latitude: v.location.lat,
     longitude: v.location.lng,
-    address: v.location.formattedAddress,
+    address: v.location.formattedAddress.join(", "),
     website_url: v.url,
     official_description: v.official_description,
+    username: new Date().getMilliseconds(),
+    email: new Date().getMilliseconds(),
+    password: new Date().getMilliseconds(),
+    first_name: new Date().getMilliseconds(),
+    last_name: new Date().getMilliseconds(),
+    official_description: new Date().getMilliseconds(),
+    thumbnail_url: new Date().getMilliseconds(),
+    street_view_image: new Date().getMilliseconds(),
+    order_service: new Date().getMilliseconds(),
+    store_bio: new Date().getMilliseconds(),
+    dietary_offerings: []
   }
-
-
-  // locations.string('username', 128).unique().notNullable();
-  //
-  // locations.string('email').notNullable().unique();
-  //
-  // locations.string('password', 128).notNullable();
-  //
-  // locations.string('first_name', 128).notNullable();
-  //
-  // locations.string('last_name').unique().notNullable();
-  //
-  // locations.string('official_description', 128).notNullable();
-  //
-  // locations.string('thumbnail_url', 128).notNullable();
-  //
-  // locations.string('street_view_image', 128).notNullable();
-  //
-  // locations.string('order_service', 128).notNullable();
-  //
-  // locations.string('store_bio', 128).notNullable();
-  //
-  // locations.specificType('dietary_offerings', 'text ARRAY').notNullable();
 
 }
 
@@ -259,3 +250,13 @@ const getUserIP = (req) => {
   //During development, this will return "::1", for localhost. Set to a valid ip instead.
   return ipAddr === "::1" ? "161.185.160.93" : ipAddr;
 }
+
+const mergeArrays = (original, newdata, selector = 'name') => {
+	newdata.forEach(dat => {
+		const foundIndex = original.findIndex(ori => ori[selector] == dat[selector]);
+		if (foundIndex >= 0) original.splice(foundIndex, 1, dat);
+        else original.push(dat);
+	});
+
+	return original;
+};
