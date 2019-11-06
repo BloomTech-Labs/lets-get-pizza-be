@@ -63,10 +63,12 @@ router.get('/dashboard', (req, res) => {
 //Location Page- for checking out the place.
 //GET /Locations/:id
 //Returns a single Location object
-router.get('/:id', (req, res) => {
-    const location = Locations.findById(id)
+router.get('/:id', async (req, res) => {
+    const id = req.params.id
+    const location = await Locations.findById(id)
     if(location.update_foursquare) {
       //update the record based on a call
+      //const location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
     }
     res.json(location)
 });
