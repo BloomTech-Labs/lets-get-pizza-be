@@ -2,6 +2,8 @@ const db = require("../../data/db-config")
 
 module.exports = {
     find,
+    findClosestMapLocations,
+    findSearchLocations,
     findById,
     add,
     update,
@@ -11,6 +13,35 @@ module.exports = {
 function find() {
     return db('locations')
 }
+
+
+function findClosestMapLocations(latitude, longitude) {
+    const searchRadius = .5
+    return db('locations')
+    .select('business_name AS name', 'latitude', 'longitude', 'address')
+    .where(function() {
+      this.where(function() {
+        this.where('latitude', '>', latitude - searchRadius).andWhere('latitude', '<', latitude + searchRadius)
+      }).andWhere(function() {
+        this.where('longitude', '>', longitude - searchRadius).andWhere('longitude', '<', longitude + searchRadius)
+      })
+    })
+}
+
+
+function findSearchLocations(latitude, longitude) {
+    const searchRadius = .5
+    return db('locations')
+    .select('business_name AS name', 'address', 'thumbnail_url')
+    .where(function() {
+      this.where(function() {
+        this.where('latitude', '>', latitude - searchRadius).andWhere('latitude', '<', latitude + searchRadius)
+      }).andWhere(function() {
+        this.where('longitude', '>', longitude - searchRadius).andWhere('longitude', '<', longitude + searchRadius)
+      })
+    })
+}
+
 
 function findById(id) {
     return db('locations')

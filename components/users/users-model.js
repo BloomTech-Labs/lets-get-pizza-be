@@ -14,14 +14,14 @@ function find() {
 
 function findById(id) {
     return db('users')
-        .where('user_id', id)
+        .where('id', id)
         .first();
 }
 
 function add(user) {
     return db('users')
         .insert(user)
-        .returning('user_id')
+        .returning('id')
         .then(res => {
             return findById(res[0])
         })
@@ -33,12 +33,12 @@ function add(user) {
 
 function update(changes, id) {
     return db('users')
-        .where('user_id', id)
+        .where('id', id)
         .update(changes);
 }
 
 function remove(id) {
     return db('users')
-        .where('user_id', id)
+        .where('_id', id)
         .del();
 }

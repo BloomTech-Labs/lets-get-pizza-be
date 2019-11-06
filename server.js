@@ -14,7 +14,6 @@ server.use(helmet());
 server.use(express.json());
 server.use(cors());
 
-//Routes
 
 //Authorization
 server.use("/api/auth", authRouter);
