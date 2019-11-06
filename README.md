@@ -6,7 +6,7 @@
 
 # API Documentation
 
-#### 1️⃣ Backend delpoyed at [🚫name service here](🚫add URL here) <br>
+#### 1️⃣ Backend delpoyed at [lets-get-pizza-be](https://plza.herokuapp.com/) <br>
 
 ## 1️⃣ Getting started
 
