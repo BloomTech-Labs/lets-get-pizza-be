@@ -4,6 +4,7 @@ const axios = require('axios')
 //Converts the given ip address to a lat/long
 var geoip = require('geoip-lite');
 const Locations = require("./locations-model");
+const authenticate = require('../../auth/restricted-middleware')
 
 
 //All Locations- Coordinates & ratings for the map
@@ -49,18 +50,19 @@ router.get('/live/:foursquare_id', async (req, res) => {
   //Do the foursquare call on the id
   const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
 
-  //Map it to an item, save, and return
+
   const location = await Locations.add(normalizedFoursquareResult)
+  if(location.business_name) {
+    res.json(location)
+  } else {
+    if(location.constraint === 'locations_foursquare_id_unique') {
+      const location = await Locations.findByFoursquareId(req.params.foursquare_id)
+      res.json(location)
+    } else {
+      res.status(500).json({err: "Unknwon error."})
+    }
+  }
 
-  res.json(location)
-
-})
-
-//Location Dashboard- for when they first log in.
-//GET /Locations/:id
-//Returns the Location object who has logged in, and any dashboard information.
-router.get('/dashboard', (req, res) => {
-  //Figure out auth before this really.
 })
 
 //Location Page- for checking out the place.
@@ -68,10 +70,10 @@ router.get('/dashboard', (req, res) => {
 //Returns a single Location object
 router.get('/:id', async (req, res) => {
     const id = req.params.id
-    const location = await Locations.findById(id)
+    let location = await Locations.findById(id)
     if(location.update_foursquare) {
       //update the record based on a call
-      //const location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
+      location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
     }
     res.json(location)
 });
@@ -95,9 +97,10 @@ router.post('/', (req, res) => {
 //Edit Your Info- allow a Location to edit their own information.
 //PUT /Locations/
 //Takes in the Location information, updates the database, and returns the object.
-router.put('/:id', (req, res) => {
-    const { id } = req.params;
+router.put('/', authenticate, (req, res) => {
+    const id  = req.decodedToken.location_id;
     const locationData = req.body;
+    console.log(req.decodedToken, id, locationData)
 
     Locations.update(locationData, id)
         .then(updatedLocation => {
@@ -112,8 +115,8 @@ router.put('/:id', (req, res) => {
 //DELETE Location- delete's a Location's profile
 //PUT /Locations/
 //Deletes it for good.
-router.delete('/:id', (req, res) => {
-    const { id } = req.params;
+router.delete('/', authenticate, (req, res) => {
+    const id = req.decodedToken.location_id;
     Locations.remove(id)
         .then(deleted => {
             res.send("Success.")
@@ -123,7 +126,73 @@ router.delete('/:id', (req, res) => {
         });
 });
 
+//Location Dashboard- for when they first log in.
+//GET /Locations/:id
+//Returns the Location object who has logged in, and any dashboard information.
+router.get('/dashboard', authenticate, async (req, res) => {
+    const id = req.decodedToken.location_id;
+    let location = await Locations.findById(id)
+    if(location.update_foursquare) {
+      //update the record based on a call
+      location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
+    }
+    res.json(location)
+})
+
 module.exports = router;
+
+
+//-----------------------------------------
+// GEO FUNCTIONS
+//-----------------------------------------
+
+const getUserIP = (req) => {
+  var ipAddr = req.headers["x-forwarded-for"];
+  if (ipAddr){
+    var list = ipAddr.split(",");
+    ipAddr = list[list.length-1];
+  } else {
+    ipAddr = req.connection.remoteAddress;
+  }
+  //During development, this will return "::1", for localhost. Set to a valid ip instead.
+  return ipAddr === "::1" ? "161.185.160.93" : ipAddr;
+}
+
+const mergeArrays = (original, newdata, selector = 'name') => {
+	newdata.forEach(dat => {
+		const foundIndex = original.findIndex(ori => ori[selector] == dat[selector]);
+		if (foundIndex >= 0) original.splice(foundIndex, 1, dat);
+        else original.push(dat);
+	});
+
+	return original;
+};
+
+
+const userGeoLocation = async(req) => {
+  const userLocation = {userCity: "", userLatitude: 0, userLongitude: 0}
+
+  if(req.query.search) {
+    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
+    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=t9UQLcQuLFV0voTMDxe0fwJhfeEQuWZH&location=${req.query.search}`)
+    const location_info = geo.data.results[0].locations[0]
+    //Map the information
+    userLocation.userCity = location_info.adminArea5
+    userLocation.userLatitude =  location_info.latLng.lat
+    userLocation.userLongitude = location_info.latLng.lng
+  } else {
+    const ip = getUserIP(req)
+    const geo = geoip.lookup(ip);
+    //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
+    userLocation.userCity = geo.city
+    userLocation.userLatitude =  geo.ll[0]
+    userLocation.userLongitude = geo.ll[1]
+  }
+
+  return userLocation
+
+}
+
 
 //-----------------------------------------
 // FOURSQUARE FUNCTIONS
@@ -160,18 +229,7 @@ const foursquareIdSearch = async (foursquareId) => {
     longitude: v.location.lng,
     address: v.location.formattedAddress.join(", "),
     website_url: v.url,
-    official_description: v.official_description,
-    username: new Date().getMilliseconds(),
-    email: new Date().getMilliseconds(),
-    password: new Date().getMilliseconds(),
-    first_name: new Date().getMilliseconds(),
-    last_name: new Date().getMilliseconds(),
-    official_description: new Date().getMilliseconds(),
-    thumbnail_url: new Date().getMilliseconds(),
-    street_view_image: new Date().getMilliseconds(),
-    order_service: new Date().getMilliseconds(),
-    store_bio: new Date().getMilliseconds(),
-    dietary_offerings: []
+    official_description: v.official_description
   }
 
 }
@@ -206,7 +264,6 @@ const foursquareListSearch = async(userLatitude, userLongitude) => {
   //Map over the return and normalize values. Name, Lattitude, and Longitude will all be displayed. fullAddress will be used for comparison purposes.
   return foursquareVenueList.map(listItem => {
     const venue = listItem.venue
-    console.log(venue)
     return {
       name: venue.name,
       address: venue.location.address,
@@ -214,49 +271,3 @@ const foursquareListSearch = async(userLatitude, userLongitude) => {
     }
   })
 }
-
-const userGeoLocation = async(req) => {
-  const userLocation = {userCity: "", userLatitude: 0, userLongitude: 0}
-
-  if(req.query.search) {
-    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
-    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=t9UQLcQuLFV0voTMDxe0fwJhfeEQuWZH&location=${req.query.search}`)
-    const location_info = geo.data.results[0].locations[0]
-    //Map the information
-    userLocation.userCity = location_info.adminArea5
-    userLocation.userLatitude =  location_info.latLng.lat
-    userLocation.userLongitude = location_info.latLng.lng
-  } else {
-    const ip = getUserIP(req)
-    const geo = geoip.lookup(ip);
-    //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
-    userLocation.userCity = geo.city
-    userLocation.userLatitude =  geo.ll[0]
-    userLocation.userLongitude = geo.ll[1]
-  }
-
-  return userLocation
-
-}
-
-const getUserIP = (req) => {
-  var ipAddr = req.headers["x-forwarded-for"];
-  if (ipAddr){
-    var list = ipAddr.split(",");
-    ipAddr = list[list.length-1];
-  } else {
-    ipAddr = req.connection.remoteAddress;
-  }
-  //During development, this will return "::1", for localhost. Set to a valid ip instead.
-  return ipAddr === "::1" ? "161.185.160.93" : ipAddr;
-}
-
-const mergeArrays = (original, newdata, selector = 'name') => {
-	newdata.forEach(dat => {
-		const foundIndex = original.findIndex(ori => ori[selector] == dat[selector]);
-		if (foundIndex >= 0) original.splice(foundIndex, 1, dat);
-        else original.push(dat);
-	});
-
-	return original;
-};
