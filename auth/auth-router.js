@@ -4,18 +4,17 @@ const jwt = require("jsonwebtoken");
 const db = require("../data/db-config");
 
 router.post('/register', (req, res) => {
-    //Register user and hash password
-    let location = req.body;
-    const hash = bcrypt.hashSync(location.password, 10);
-    location.password = hash;
+    // implement registration
+    let user = req.body;
+    const hash = bcrypt.hashSync(user.password, 10);
+    user.password = hash;
 
-    db("locations").insert(location)
+    db("users").insert(user)
         .then(saved => {
             const token = generateToken(saved);
-            const username = location.username;
             res.status(201).json({
-                token,
-                username
+                user: saved,
+                token
             });
         })
         .catch(({ message }) => {
@@ -23,37 +22,13 @@ router.post('/register', (req, res) => {
                 message
             }));
         })
-
-});
-
-router.post('/claim', (req, res) => {
-    //Register user and hash password
-    let location = req.body;
-    const hash = bcrypt.hashSync(location.password, 10);
-    location.password = hash;
-
-    db("locations").update(location, location.id)
-        .then(saved => {
-            const token = generateToken(saved);
-            const username = location.username;
-            res.status(201).json({
-                token,
-                username
-            });
-        })
-        .catch(({ message }) => {
-            res.status(500).json(({
-                message
-            }));
-        })
-
 });
 
 router.post('/login', (req, res) => {
-    //Login user
+    // implement login
     let { username, password } = req.body;
 
-    db("locations").where({ username }).first()
+    db("users").where({ username }).first()
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
                 const token = generateToken(user);
@@ -76,13 +51,11 @@ router.post('/login', (req, res) => {
 });
 
 function generateToken(user) {
-    //Header payload and verify signature
     const payload = {
         user_id: user.id,
         username: user.username,
     };
 
-    //Token expiration
     const options = {
         expiresIn: "1d"
     }

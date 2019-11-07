@@ -22,7 +22,7 @@ server.use("/api/auth/location", locationauthRouter);
 
 //Once authorized need to be authenticated and then allowed to use application
 server.use("/api/users", authenticate, UserRouter);
-server.use('/api/locations', authenticate, LocationRouter);
+server.use('/api/locations', LocationRouter);
 
 //Test Server
 server.get('/', (req, res) => {

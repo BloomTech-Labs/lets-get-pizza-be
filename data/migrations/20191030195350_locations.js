@@ -1,43 +1,23 @@
 exports.up = function(knex) {
     return knex.schema.createTable('locations', locations => {
       locations.increments();
-
-      locations.string('username', 128).unique().notNullable();
-
-      locations.string('email').notNullable().unique();
-
-      locations.string('password', 128).notNullable();
-
-      locations.string('first_name', 128).notNullable();
-
-      locations.string('last_name').unique().notNullable();
-
-      locations.string('foursquare_id', 128).notNullable();
-
-      locations.boolean('update_foursquare');
-
-      locations.string('business_name', 128).notNullable();
-
-      locations.string('latitude', 128).notNullable();
-
-      locations.string('longitude', 128).notNullable();
-
-      locations.string('address', 128).notNullable();
-
-      locations.string('website_url', 128).notNullable();
-
-      locations.string('official_description', 128).notNullable();
-
-      locations.string('thumbnail_url', 128).notNullable();
-
-      locations.string('street_view_image', 128).notNullable();
-
-      locations.string('order_service', 128).notNullable();
-
-      locations.string('store_bio', 128).notNullable();
-
-      locations.specificType('dietary_offerings', 'text ARRAY').notNullable();
-
+      locations.string('last_name');
+      locations.string('username').unique();
+      locations.string('email').unique();
+      locations.string('password');
+      locations.string('first_name');
+      locations.string('foursquare_id').unique();
+      locations.string('business_name').notNullable();
+      locations.specificType('latitude', 'double precision').notNullable();
+      locations.specificType('longitude', 'double precision').notNullable();
+      locations.string('address').notNullable();
+      locations.string('website_url');
+      locations.string('official_description');
+      locations.string('thumbnail_url');
+      locations.string('street_view_image');
+      locations.string('order_service');
+      locations.string('store_bio');
+      locations.specificType('dietary_offerings', 'text ARRAY');
     });
   };
   exports.down = function(knex, Promise) {
