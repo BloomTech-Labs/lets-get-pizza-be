@@ -28,17 +28,23 @@ router.post('/register', (req, res) => {
 
 router.put('/claim/:id', async (req, res) => {
     //Register user and hash password
-    let location = req.body;
+    let locationCredentials = req.body;
     const location_id = req.params.id
+    let location = await Locations.findById(location_id)
 
-    const hash = bcrypt.hashSync(location.password, 10);
-    location.password = hash;
+    if(!location.password) {
+      const hash = bcrypt.hashSync(locationCredentials.password, 10);
+      locationCredentials.password = hash;
 
-    location = await Locations.update(location, location_id)
+      location = await Locations.update(locationCredentials, location_id)
 
-    const token = generateToken(location);
-    const username = location.username;
-    res.status(201).json({token, location});
+      const token = generateToken(location);
+      const username = location.username;
+      res.status(201).json({token, location});
+
+    } else {
+      res.status(400).json({err: "This is already claimed."})
+    }
 
 });
 

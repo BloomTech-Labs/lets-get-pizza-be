@@ -141,6 +141,59 @@ router.get('/dashboard', authenticate, async (req, res) => {
 
 module.exports = router;
 
+
+//-----------------------------------------
+// GEO FUNCTIONS
+//-----------------------------------------
+
+const getUserIP = (req) => {
+  var ipAddr = req.headers["x-forwarded-for"];
+  if (ipAddr){
+    var list = ipAddr.split(",");
+    ipAddr = list[list.length-1];
+  } else {
+    ipAddr = req.connection.remoteAddress;
+  }
+  //During development, this will return "::1", for localhost. Set to a valid ip instead.
+  return ipAddr === "::1" ? "161.185.160.93" : ipAddr;
+}
+
+const mergeArrays = (original, newdata, selector = 'name') => {
+	newdata.forEach(dat => {
+		const foundIndex = original.findIndex(ori => ori[selector] == dat[selector]);
+		if (foundIndex >= 0) original.splice(foundIndex, 1, dat);
+        else original.push(dat);
+	});
+
+	return original;
+};
+
+
+const userGeoLocation = async(req) => {
+  const userLocation = {userCity: "", userLatitude: 0, userLongitude: 0}
+
+  if(req.query.search) {
+    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
+    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=t9UQLcQuLFV0voTMDxe0fwJhfeEQuWZH&location=${req.query.search}`)
+    const location_info = geo.data.results[0].locations[0]
+    //Map the information
+    userLocation.userCity = location_info.adminArea5
+    userLocation.userLatitude =  location_info.latLng.lat
+    userLocation.userLongitude = location_info.latLng.lng
+  } else {
+    const ip = getUserIP(req)
+    const geo = geoip.lookup(ip);
+    //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
+    userLocation.userCity = geo.city
+    userLocation.userLatitude =  geo.ll[0]
+    userLocation.userLongitude = geo.ll[1]
+  }
+
+  return userLocation
+
+}
+
+
 //-----------------------------------------
 // FOURSQUARE FUNCTIONS
 //-----------------------------------------
@@ -218,49 +271,3 @@ const foursquareListSearch = async(userLatitude, userLongitude) => {
     }
   })
 }
-
-const userGeoLocation = async(req) => {
-  const userLocation = {userCity: "", userLatitude: 0, userLongitude: 0}
-
-  if(req.query.search) {
-    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
-    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=t9UQLcQuLFV0voTMDxe0fwJhfeEQuWZH&location=${req.query.search}`)
-    const location_info = geo.data.results[0].locations[0]
-    //Map the information
-    userLocation.userCity = location_info.adminArea5
-    userLocation.userLatitude =  location_info.latLng.lat
-    userLocation.userLongitude = location_info.latLng.lng
-  } else {
-    const ip = getUserIP(req)
-    const geo = geoip.lookup(ip);
-    //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
-    userLocation.userCity = geo.city
-    userLocation.userLatitude =  geo.ll[0]
-    userLocation.userLongitude = geo.ll[1]
-  }
-
-  return userLocation
-
-}
-
-const getUserIP = (req) => {
-  var ipAddr = req.headers["x-forwarded-for"];
-  if (ipAddr){
-    var list = ipAddr.split(",");
-    ipAddr = list[list.length-1];
-  } else {
-    ipAddr = req.connection.remoteAddress;
-  }
-  //During development, this will return "::1", for localhost. Set to a valid ip instead.
-  return ipAddr === "::1" ? "161.185.160.93" : ipAddr;
-}
-
-const mergeArrays = (original, newdata, selector = 'name') => {
-	newdata.forEach(dat => {
-		const foundIndex = original.findIndex(ori => ori[selector] == dat[selector]);
-		if (foundIndex >= 0) original.splice(foundIndex, 1, dat);
-        else original.push(dat);
-	});
-
-	return original;
-};
