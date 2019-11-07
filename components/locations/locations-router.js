@@ -16,7 +16,7 @@ router.get('/map', async (req, res) => {
     const databaseLocations = await Locations.findClosestMapLocations(userLatitude, userLongitude)
 
     //Searchs foursquare for pizza places, and returns an array of name/lat/lng/address
-    const normalizedFoursquareCoordinates = await foursquareCoordinateSearch(userCity)
+    const normalizedFoursquareCoordinates = await foursquareCoordinateSearch(userLatitude, userLongitude)
 
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareCoordinates, databaseLocations)
@@ -37,7 +37,7 @@ router.get('/list', async (req, res) => {
     const databaseLocations = await Locations.findSearchLocations(userLatitude, userLongitude)
 
     //Searchs foursquare for pizza places, and returns an array of name/lat/lng/address
-    const normalizedFoursquareList = await foursquareListSearch(userCity)
+    const normalizedFoursquareList = await foursquareListSearch(userLatitude, userLongitude)
 
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareList, databaseLocations)
@@ -129,13 +129,13 @@ module.exports = router;
 // FOURSQUARE FUNCTIONS
 //-----------------------------------------
 
-const foursquareApiSearch = async (cityName) => {
+const foursquareApiSearch = async (latitude, longitude) => {
   const endPoint = "https://api.foursquare.com/v2/venues/explore?";
   const parameters = {
     client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
     client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
     query: "pizza",
-    near: cityName,
+    ll: `${latitude},${longitude}`,
     v: "20190425"
   };
 
@@ -177,8 +177,8 @@ const foursquareIdSearch = async (foursquareId) => {
 }
 
 //Returns an array of objects, with a locations name, latitude, longitude, and address.
-const foursquareCoordinateSearch = async(cityName) => {
-  const foursquareResponse = await foursquareApiSearch(cityName)
+const foursquareCoordinateSearch = async(userLatitude, userLongitude) => {
+  const foursquareResponse = await foursquareApiSearch(userLatitude, userLongitude)
 
   const foursquareVenueList = foursquareResponse.data.response.groups[0].items
 
@@ -196,8 +196,8 @@ const foursquareCoordinateSearch = async(cityName) => {
 }
 
 //Returns an array of objects, with a locations name, address, and thumbnail.
-const foursquareListSearch = async(cityName) => {
-  const foursquareResponse = await foursquareApiSearch(cityName)
+const foursquareListSearch = async(userLatitude, userLongitude) => {
+  const foursquareResponse = await foursquareApiSearch(userLatitude, userLongitude)
 
   const foursquareVenueList = foursquareResponse.data.response.groups[0].items
 
