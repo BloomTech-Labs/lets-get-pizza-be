@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const db = require("../data/db-config");
 
 router.post('/register', (req, res) => {
-    // implement registration
+    //Register user and hash password
     let user = req.body;
     const hash = bcrypt.hashSync(user.password, 10);
     user.password = hash;
@@ -12,9 +12,10 @@ router.post('/register', (req, res) => {
     db("users").insert(user)
         .then(saved => {
             const token = generateToken(saved);
+            const username = user.username;
             res.status(201).json({
-                user: saved,
-                token
+                token,
+                username
             });
         })
         .catch(({ message }) => {
@@ -22,10 +23,11 @@ router.post('/register', (req, res) => {
                 message
             }));
         })
+    
 });
 
 router.post('/login', (req, res) => {
-    // implement login
+    //Login user
     let { username, password } = req.body;
 
     db("users").where({ username }).first()
@@ -51,11 +53,13 @@ router.post('/login', (req, res) => {
 });
 
 function generateToken(user) {
+    //Header payload and verify signature
     const payload = {
         user_id: user.id,
         username: user.username,
     };
 
+    //Token expiration
     const options = {
         expiresIn: "1d"
     }
