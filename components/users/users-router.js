@@ -5,15 +5,15 @@ const Users = require("./users-model");
 //All Users- for admin/moderation purposes only, no public view
 //GET /Users
 //Returns an array of User Objects that has only publically identifying information, for banning/etc.
-router.get('/', (req, res) => {
-    Users.find()
-        .then(users => {
-            res.json(users);
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Failed to get users' });
-        });
-});
+// router.get('/', (req, res) => {
+//     Users.find()
+//         .then(users => {
+//             res.json(users);
+//         })
+//         .catch(err => {
+//             res.status(500).json({ message: 'Failed to get users' });
+//         });
+// });
 
 
 //User Dashboard- for when you first log in.
