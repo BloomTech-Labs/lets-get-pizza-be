@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../data/db-config");
+const Locations = require("../components/locations/locations-model");
 
 router.post('/register', (req, res) => {
     //Register user and hash password
@@ -23,29 +24,21 @@ router.post('/register', (req, res) => {
                 message
             }));
         })
-
 });
 
-router.post('/claim', (req, res) => {
+router.put('/claim/:id', async (req, res) => {
     //Register user and hash password
     let location = req.body;
+    const location_id = req.params.id
+
     const hash = bcrypt.hashSync(location.password, 10);
     location.password = hash;
 
-    db("locations").update(location, location.id)
-        .then(saved => {
-            const token = generateToken(saved);
-            const username = location.username;
-            res.status(201).json({
-                token,
-                username
-            });
-        })
-        .catch(({ message }) => {
-            res.status(500).json(({
-                message
-            }));
-        })
+    location = await Locations.update(location, location_id)
+
+    const token = generateToken(location);
+    const username = location.username;
+    res.status(201).json({token, location});
 
 });
 
@@ -60,6 +53,7 @@ router.post('/login', (req, res) => {
 
                 res.status(200).json({
                     message: `Welome ${user.username}`,
+                    user,
                     token,
                 });
             } else {
@@ -78,7 +72,7 @@ router.post('/login', (req, res) => {
 function generateToken(user) {
     //Header payload and verify signature
     const payload = {
-        user_id: user.id,
+        location_id: user.id,
         username: user.username,
     };
 

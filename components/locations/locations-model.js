@@ -5,6 +5,7 @@ module.exports = {
     findClosestMapLocations,
     findSearchLocations,
     findById,
+    findByFoursquareId,
     add,
     update,
     remove
@@ -49,6 +50,14 @@ function findById(id) {
         .first();
 }
 
+
+function findByFoursquareId(id) {
+    return db('locations')
+        .where('foursquare_id', id)
+        .first();
+}
+
+
 function add(location) {
     return db('locations')
         .insert(location)
@@ -65,7 +74,15 @@ function add(location) {
 function update(changes, id) {
     return db('locations')
         .where('id', id)
-        .update(changes);
+        .update(changes)
+        .returning('id')
+        .then(res => {
+            return findById(res[0])
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        })
 }
 
 function remove(id) {

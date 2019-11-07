@@ -6,6 +6,7 @@ exports.up = function(knex) {
       locations.string('email').unique();
       locations.string('password');
       locations.string('first_name');
+      locations.boolean('update_foursquare').defaultTo(true)
       locations.string('foursquare_id').unique();
       locations.string('business_name').notNullable();
       locations.specificType('latitude', 'double precision').notNullable();
