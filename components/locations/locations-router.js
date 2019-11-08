@@ -227,7 +227,7 @@ const foursquareIdSearch = async (foursquareId) => {
     business_name: v.name,
     latitude: v.location.lat,
     longitude: v.location.lng,
-    address: v.location.formattedAddress.join(", "),
+    address: v.location.formattedAddress.join(", "), 
     website_url: v.url,
     official_description: v.official_description
   }
@@ -247,7 +247,7 @@ const foursquareCoordinateSearch = async(userLatitude, userLongitude) => {
       name: venue.name,
       latitude: venue.location.lat,
       longitude: venue.location.lng,
-      address: venue.location.address,
+      address: venue.location.formattedAddress,
       foursquare_id: venue.id
     }
   })
@@ -266,7 +266,7 @@ const foursquareListSearch = async(userLatitude, userLongitude) => {
     const venue = listItem.venue
     return {
       name: venue.name,
-      address: venue.location.address,
+      address: venue.location.formattedAddress,
       foursquare_id: venue.id
     }
   })
