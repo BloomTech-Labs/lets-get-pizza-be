@@ -11,7 +11,7 @@ const authenticate = require('../../auth/restricted-middleware')
 //GET /Locations
 //Returns an array of Location Objects, merge our database results with foursquare results
 router.get('/map', async (req, res) => {
-    const {userLatitude, userLongitude, userCity} = await userGeoLocation(req);
+    const {userLatitude, userLongitude, userCity, userState, userCountry} = await userGeoLocation(req);
 
     //Searches OUR database
     const databaseLocations = await Locations.findClosestMapLocations(userLatitude, userLongitude)
@@ -22,17 +22,15 @@ router.get('/map', async (req, res) => {
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareCoordinates, databaseLocations)
 
-
-    res.json(results)
-
-});
+    res.json({userLocation:`${userCity}, ${userState}, ${userCountry}`,results})
+  });
 
 //All Locations- Information for display
 //GET /Locations
 //Returns an array of Location Objects, merge our database results with foursquare results
 //Returns Name, Address, Thumbnail_url
 router.get('/list', async (req, res) => {
-    const {userLatitude, userLongitude, userCity} = await userGeoLocation(req);
+    const {userLatitude, userLongitude, userCity, userState, userCountry} = await userGeoLocation(req);
 
     //Searches OUR database
     const databaseLocations = await Locations.findSearchLocations(userLatitude, userLongitude)
@@ -43,13 +41,12 @@ router.get('/list', async (req, res) => {
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareList, databaseLocations)
 
-    res.json(results)
+    res.json({userLocation:`${userCity}, ${userState}, ${userCountry}`,results})
 });
 
 router.get('/live/:foursquare_id', async (req, res) => {
   //Do the foursquare call on the id
   const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
-
 
   const location = await Locations.add(normalizedFoursquareResult)
   if(location.business_name) {
@@ -178,13 +175,17 @@ const userGeoLocation = async(req) => {
     const location_info = geo.data.results[0].locations[0]
     //Map the information
     userLocation.userCity = location_info.adminArea5
+    userLocation.userState = location_info.adminArea3
+    userLocation.userCountry = location_info.adminArea1
     userLocation.userLatitude =  location_info.latLng.lat
     userLocation.userLongitude = location_info.latLng.lng
   } else {
     const ip = getUserIP(req)
-    const geo = geoip.lookup(ip);
+    const geo = geoip.lookup(ip);    
     //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
     userLocation.userCity = geo.city
+    userLocation.userState = geo.region
+    userLocation.userCountry = geo.country
     userLocation.userLatitude =  geo.ll[0]
     userLocation.userLongitude = geo.ll[1]
   }
@@ -227,7 +228,7 @@ const foursquareIdSearch = async (foursquareId) => {
     business_name: v.name,
     latitude: v.location.lat,
     longitude: v.location.lng,
-    address: v.location.formattedAddress.join(", "),
+    address: v.location.formattedAddress.join(", "), 
     website_url: v.url,
     official_description: v.official_description
   }
@@ -247,7 +248,7 @@ const foursquareCoordinateSearch = async(userLatitude, userLongitude) => {
       name: venue.name,
       latitude: venue.location.lat,
       longitude: venue.location.lng,
-      address: venue.location.address,
+      address: venue.location.formattedAddress.join(", "),
       foursquare_id: venue.id
     }
   })
@@ -266,7 +267,7 @@ const foursquareListSearch = async(userLatitude, userLongitude) => {
     const venue = listItem.venue
     return {
       name: venue.name,
-      address: venue.location.address,
+      address: venue.location.formattedAddress.join(", "),
       foursquare_id: venue.id
     }
   })
