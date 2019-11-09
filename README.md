@@ -135,7 +135,7 @@ Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
     "id": 25,
     "username": "dominoes",
     "email": "betty@dominoes.com",
-    "password": "pizza1",
+    "password": "pizza1", **password is removed before returning location object
     "first_name": "Noes",
     "foursquare_id": "13",
     "update_foursquare": null,
