@@ -50,8 +50,11 @@ router.get('/live/:foursquare_id', async (req, res) => {
 
   const location = await Locations.add(normalizedFoursquareResult)
   if(location.business_name) {
+    // if (location.password) {
+    //   delete location.password;
+    // }    
     res.json(location)
-  } else {
+    } else {
     if(location.constraint === 'locations_foursquare_id_unique') {
       const location = await Locations.findByFoursquareId(req.params.foursquare_id)
       res.json(location)
@@ -67,7 +70,11 @@ router.get('/live/:foursquare_id', async (req, res) => {
 //Returns a single Location object
 router.get('/:id', async (req, res) => {
     const id = req.params.id
-    let location = await Locations.findById(id)
+    let location = await Locations.findById(id);
+    if (location.password){
+      delete location.password;
+    }
+    
     if(location.update_foursquare) {
       //update the record based on a call
       location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
@@ -97,7 +104,6 @@ router.post('/', (req, res) => {
 router.put('/', authenticate, (req, res) => {
     const id  = req.decodedToken.location_id;
     const locationData = req.body;
-    console.log(req.decodedToken, id, locationData)
 
     Locations.update(locationData, id)
         .then(updatedLocation => {
@@ -128,10 +134,14 @@ router.delete('/', authenticate, (req, res) => {
 //Returns the Location object who has logged in, and any dashboard information.
 router.get('/dashboard', authenticate, async (req, res) => {
     const id = req.decodedToken.location_id;
-    let location = await Locations.findById(id)
+    let location = await Locations.findById(id);
+
     if(location.update_foursquare) {
       //update the record based on a call
       location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
+    }
+    if (location.password) {
+      delete location.password;
     }
     res.json(location)
 })
