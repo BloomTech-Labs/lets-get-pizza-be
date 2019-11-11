@@ -22,7 +22,14 @@ router.get('/map', async (req, res) => {
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareCoordinates, databaseLocations)
 
-    res.json({userLocation:`${userCity}, ${userState}, ${userCountry}`,results})
+    res.json({
+      userLocation: {
+        friendlyTitle: `${userCity}, ${userState}, ${userCountry}`,
+        userLatitude,
+        userLongitude
+      },
+      results
+    })
   });
 
 //All Locations- Information for display
@@ -41,7 +48,14 @@ router.get('/list', async (req, res) => {
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareList, databaseLocations)
 
-    res.json({userLocation:`${userCity}, ${userState}, ${userCountry}`,results})
+    res.json({
+        userLocation: {
+          friendlyTitle: `${userCity}, ${userState}, ${userCountry}`,
+          userLatitude,
+          userLongitude
+        },
+        results
+      })
 });
 
 router.get('/live/:foursquare_id', async (req, res) => {
@@ -181,7 +195,7 @@ const userGeoLocation = async(req) => {
     userLocation.userLongitude = location_info.latLng.lng
   } else {
     const ip = getUserIP(req)
-    const geo = geoip.lookup(ip);    
+    const geo = geoip.lookup(ip);
     //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
     userLocation.userCity = geo.city
     userLocation.userState = geo.region
@@ -228,7 +242,7 @@ const foursquareIdSearch = async (foursquareId) => {
     business_name: v.name,
     latitude: v.location.lat,
     longitude: v.location.lng,
-    address: v.location.formattedAddress.join(", "), 
+    address: v.location.formattedAddress.join(", "),
     website_url: v.url,
     official_description: v.official_description
   }
