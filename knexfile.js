@@ -16,13 +16,12 @@ module.exports = {
     seeds: { directory: './data/seeds' }
   },
 
-
   testing: {
       client: 'pg',
       connection: {
         host: '127.0.0.1',
         user: 'postgres',
-        password: 'postgres',
+        password: process.env.PGPASSWORD,
         database: 'plzatest',
         charset: 'utf8'
       },
