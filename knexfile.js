@@ -8,7 +8,7 @@ module.exports = {
     connection: {
       host: '127.0.0.1',
       user: 'postgres',
-      password: process.env.PGPASSWORD,
+      password: 'Masamune0',
       database: 'plzalocal',
       charset: 'utf8'
     },
@@ -22,7 +22,7 @@ module.exports = {
       connection: {
         host: '127.0.0.1',
         user: 'postgres',
-        password: 'postgres',
+        password: 'Masamune0',
         database: 'plzatest',
         charset: 'utf8'
       },
