@@ -226,8 +226,8 @@ const userGeoLocation = async(req) => {
 const foursquareApiSearch = async (latitude, longitude) => {
   const endPoint = "https://api.foursquare.com/v2/venues/explore?";
   const parameters = {
-    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
-    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    client_id: process.env.FSCLIENTID,
+    client_secret: process.env.FSCLIENTSECRET,
     query: "pizza",
     ll: `${latitude},${longitude}`,
     v: "20190425"
@@ -239,8 +239,8 @@ const foursquareApiSearch = async (latitude, longitude) => {
 const foursquareIdSearch = async (foursquareId) => {
   const endPoint = `https://api.foursquare.com/v2/venues/${foursquareId}?`;
   const parameters = {
-    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
-    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    client_id: process.env.FSCLIENTID,
+    client_secret: process.env.FSCLIENTSECRET,
     v: "20190425"
   };
 

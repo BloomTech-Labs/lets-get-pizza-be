@@ -212,7 +212,8 @@ create a .env file that includes the following:
     * JWT_SECRET  Needed for auth router and password generation
     * PORT Not needed but you can set your own local port for testing on the local machine in case port 4000 is already in use
     * PGPASSWORD Set this as your PostgreSQL local and test databse passwords
-
+    * FSCLIENTID FourSquare API Client ID
+    * FSCLIENTSECRET FourSquare API Client Secret
 
 ## Contributing
 
