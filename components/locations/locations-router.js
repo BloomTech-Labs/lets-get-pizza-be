@@ -64,19 +64,16 @@ router.get('/live/:foursquare_id', async (req, res) => {
 
   const location = await Locations.add(normalizedFoursquareResult)
   if(location.business_name) {
-    // if (location.password) {
-    //   delete location.password;
-    // }    
+    
     res.json(location)
-    } else {
+  } else {
     if(location.constraint === 'locations_foursquare_id_unique') {
       const location = await Locations.findByFoursquareId(req.params.foursquare_id)
       res.json(location)
     } else {
-      res.status(500).json({err: "Unknwon error."})
+      res.status(500).json({err: "Unknown error."})
     }
   }
-
 })
 
 //Location Page- for checking out the place.
