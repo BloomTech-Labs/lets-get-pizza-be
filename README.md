@@ -217,6 +217,10 @@ create a .env file that includes the following:
     *  SENDGRID_API_KEY - this is generated in your Sendgrid account
     *  stripe_secret - this is generated in the Stripe dashboard
 
+    *  User Survey link: https://s.surveyplanet.com/_BYyEjkf
+       Username: teampizzaplza@gmail.com
+       Password: 1234P!za
+    
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
