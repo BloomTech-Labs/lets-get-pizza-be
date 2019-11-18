@@ -64,19 +64,16 @@ router.get('/live/:foursquare_id', async (req, res) => {
 
   const location = await Locations.add(normalizedFoursquareResult)
   if(location.business_name) {
-    // if (location.password) {
-    //   delete location.password;
-    // }    
+    
     res.json(location)
-    } else {
+  } else {
     if(location.constraint === 'locations_foursquare_id_unique') {
       const location = await Locations.findByFoursquareId(req.params.foursquare_id)
       res.json(location)
     } else {
-      res.status(500).json({err: "Unknwon error."})
+      res.status(500).json({err: "Unknown error."})
     }
   }
-
 })
 
 //Location Page- for checking out the place.
@@ -226,8 +223,8 @@ const userGeoLocation = async(req) => {
 const foursquareApiSearch = async (latitude, longitude) => {
   const endPoint = "https://api.foursquare.com/v2/venues/explore?";
   const parameters = {
-    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
-    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    client_id: process.env.FSCLIENTID,
+    client_secret: process.env.FSCLIENTSECRET,
     query: "pizza",
     ll: `${latitude},${longitude}`,
     v: "20190425"
@@ -239,8 +236,8 @@ const foursquareApiSearch = async (latitude, longitude) => {
 const foursquareIdSearch = async (foursquareId) => {
   const endPoint = `https://api.foursquare.com/v2/venues/${foursquareId}?`;
   const parameters = {
-    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
-    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    client_id: process.env.FSCLIENTID,
+    client_secret: process.env.FSCLIENTSECRET,
     v: "20190425"
   };
 

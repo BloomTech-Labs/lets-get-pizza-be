@@ -24,7 +24,7 @@ server.use("/api/auth/location", locationauthRouter);
 server.use("/api/users", authenticate, UserRouter);
 server.use('/api/locations', LocationRouter);
 
-//Test Server
+//Test message to show that the API server is up and running
 server.get('/', (req, res) => {
     res.send("API Connected");
 });
