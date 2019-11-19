@@ -78,22 +78,6 @@ router.get('/:id', async (req, res) => {
     res.json(location)
 });
 
-//Register Location- creates a Location reference in our databse.
-//POST /Locations/
-//Takes in the new Location information, adds it to the database, and returns the object.
-router.post('/', (req, res) => {
-    const locationData = req.body;
-
-    Locations.add(locationData)
-        .then(location => {
-            res.status(201).json(location);
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Failed to create new location' });
-        });
-
-});
-
 //Edit Your Info- allow a Location to edit their own information.
 //PUT /Locations/
 //Takes in the Location information, updates the database, and returns the object.
