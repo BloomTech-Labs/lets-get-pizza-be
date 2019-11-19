@@ -17,7 +17,7 @@ exports.up = function(knex, Promise) {
         table.dropColumn('last_name');
       })
       .table('locations', function (table) {
-        table.string('last_name', 128).unique().notNullable();
+        table.string('last_name', 128);
       })
   
   };
