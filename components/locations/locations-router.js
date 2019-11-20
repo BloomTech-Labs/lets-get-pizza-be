@@ -65,6 +65,7 @@ router.get('/live/:foursquare_id', async (req, res) => {
   }
   catch {
     res.status(500).json({err: "Error reading from foursquare."})
+    return
   }
 
   try {
@@ -72,6 +73,7 @@ router.get('/live/:foursquare_id', async (req, res) => {
   }
   catch {
     res.status(500).json({err: "Error adding location into database."})
+    return
   }
   
   if(location.business_name) {
