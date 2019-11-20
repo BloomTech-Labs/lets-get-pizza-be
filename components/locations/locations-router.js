@@ -64,7 +64,7 @@ router.get('/live/:foursquare_id', async (req, res) => {
     const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
   }
   catch {
-    res.status(500).json({err: "Error reading from foursquare.", res})
+    res.status(500).json({err: "Error reading from foursquare.", normalizedFoursquareResult})
     return
   }
 
