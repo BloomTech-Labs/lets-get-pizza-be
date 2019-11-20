@@ -11,10 +11,6 @@ const UserRouter = require('./components/users/users-router');
 const LocationRouter = require('./components/locations/locations-router');
 
 const server = express();
-
-server.use(helmet());
-server.use(express.json());
-server.use(cors());
 // Add headers
 server.use(function (req, res, next) {
 
@@ -32,6 +28,10 @@ server.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
+server.use(helmet());
+server.use(express.json());
+server.use(cors());
 
 //Authorization
 server.use("/api/auth/user", userauthRouter);
