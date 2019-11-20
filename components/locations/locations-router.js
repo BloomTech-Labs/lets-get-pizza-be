@@ -61,7 +61,7 @@ router.get('/list', async (req, res) => {
 router.get('/live/:foursquare_id', async (req, res) => {
   //Do the foursquare call on the id
   const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
-
+  console.log(normalizedFoursquareResult)
   const location = await Locations.add(normalizedFoursquareResult)
   
   if(location.business_name) {
