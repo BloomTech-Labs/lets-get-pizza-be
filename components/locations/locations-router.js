@@ -64,7 +64,7 @@ router.get('/live/:foursquare_id', async (req, res) => {
     const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
   }
   catch {
-    res.status(500).json({err: "Error reading from foursquare."})
+    res.status(500).json({err: "Error reading from foursquare.", res})
     return
   }
 
@@ -77,7 +77,6 @@ router.get('/live/:foursquare_id', async (req, res) => {
   }
   
   if(location.business_name) {
-    
     res.json(location)
   } else {
     if(location.constraint === 'locations_foursquare_id_unique') {
