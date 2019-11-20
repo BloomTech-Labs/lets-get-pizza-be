@@ -11,7 +11,7 @@ const authenticate = require('../../auth/restricted-middleware')
 //GET /Locations
 //Returns an array of Location Objects, merge our database results with foursquare results
 router.get('/map', async (req, res) => {
-    const {userLatitude, userLongitude, userCity} = await userGeoLocation(req);
+    const {userLatitude, userLongitude, userCity, userState, userCountry} = await userGeoLocation(req);
 
     //Searches OUR database
     const databaseLocations = await Locations.findClosestMapLocations(userLatitude, userLongitude)
@@ -22,17 +22,22 @@ router.get('/map', async (req, res) => {
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareCoordinates, databaseLocations)
 
-
-    res.json(results)
-
-});
+    res.json({
+      userLocation: {
+        friendlyTitle: `${userCity}, ${userState}, ${userCountry}`,
+        userLatitude,
+        userLongitude
+      },
+      results
+    })
+  });
 
 //All Locations- Information for display
 //GET /Locations
 //Returns an array of Location Objects, merge our database results with foursquare results
 //Returns Name, Address, Thumbnail_url
 router.get('/list', async (req, res) => {
-    const {userLatitude, userLongitude, userCity} = await userGeoLocation(req);
+    const {userLatitude, userLongitude, userCity, userState, userCountry} = await userGeoLocation(req);
 
     //Searches OUR database
     const databaseLocations = await Locations.findSearchLocations(userLatitude, userLongitude)
@@ -43,10 +48,18 @@ router.get('/list', async (req, res) => {
     //Merge the results together and return.
     const results = mergeArrays(normalizedFoursquareList, databaseLocations)
 
-    res.json(results)
+    res.json({
+        userLocation: {
+          friendlyTitle: `${userCity}, ${userState}, ${userCountry}`,
+          userLatitude,
+          userLongitude
+        },
+        results
+      })
 });
 
 router.get('/live/:foursquare_id', async (req, res) => {
+<<<<<<< HEAD
   try {
     //Do the foursquare call on the id
     const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
@@ -62,17 +75,23 @@ router.get('/live/:foursquare_id', async (req, res) => {
     res.status(500).json({err: "Error adding location into database."})
   }
   
+=======
+  //Do the foursquare call on the id
+  const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
+
+  const location = await Locations.add(normalizedFoursquareResult)
+>>>>>>> e8700f86481a72938b8a6ccbd0c116bffc449159
   if(location.business_name) {
+    
     res.json(location)
   } else {
     if(location.constraint === 'locations_foursquare_id_unique') {
       const location = await Locations.findByFoursquareId(req.params.foursquare_id)
       res.json(location)
     } else {
-      res.status(500).json({err: "Unknwon error."})
+      res.status(500).json({err: "Unknown error."})
     }
   }
-
 })
 
 //Location Page- for checking out the place.
@@ -80,7 +99,11 @@ router.get('/live/:foursquare_id', async (req, res) => {
 //Returns a single Location object
 router.get('/:id', async (req, res) => {
     const id = req.params.id
-    let location = await Locations.findById(id)
+    let location = await Locations.findById(id);
+    if (location.password){
+      delete location.password;
+    }
+    
     if(location.update_foursquare) {
       //update the record based on a call
       //THIS LINE WAS GIVING ERRORS, I DON'T THINK FOURSQUARE LIKED THE CALLS
@@ -95,7 +118,6 @@ router.get('/:id', async (req, res) => {
 router.put('/', authenticate, (req, res) => {
     const id  = req.decodedToken.location_id;
     const locationData = req.body;
-    console.log(req.decodedToken, id, locationData)
 
     Locations.update(locationData, id)
         .then(updatedLocation => {
@@ -126,10 +148,14 @@ router.delete('/', authenticate, (req, res) => {
 //Returns the Location object who has logged in, and any dashboard information.
 router.get('/dashboard', authenticate, async (req, res) => {
     const id = req.decodedToken.location_id;
-    let location = await Locations.findById(id)
+    let location = await Locations.findById(id);
+
     if(location.update_foursquare) {
       //update the record based on a call
       location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
+    }
+    if (location.password) {
+      delete location.password;
     }
     res.json(location)
 })
@@ -173,6 +199,8 @@ const userGeoLocation = async(req) => {
     const location_info = geo.data.results[0].locations[0]
     //Map the information
     userLocation.userCity = location_info.adminArea5
+    userLocation.userState = location_info.adminArea3
+    userLocation.userCountry = location_info.adminArea1
     userLocation.userLatitude =  location_info.latLng.lat
     userLocation.userLongitude = location_info.latLng.lng
   } else {
@@ -180,6 +208,8 @@ const userGeoLocation = async(req) => {
     const geo = geoip.lookup(ip);
     //Code that returns a 'geo' object- https://github.com/bluesmoon/node-geoip
     userLocation.userCity = geo.city
+    userLocation.userState = geo.region
+    userLocation.userCountry = geo.country
     userLocation.userLatitude =  geo.ll[0]
     userLocation.userLongitude = geo.ll[1]
   }
@@ -196,8 +226,8 @@ const userGeoLocation = async(req) => {
 const foursquareApiSearch = async (latitude, longitude) => {
   const endPoint = "https://api.foursquare.com/v2/venues/explore?";
   const parameters = {
-    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
-    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    client_id: process.env.FSCLIENTID,
+    client_secret: process.env.FSCLIENTSECRET,
     query: "pizza",
     ll: `${latitude},${longitude}`,
     v: "20190425"
@@ -209,8 +239,8 @@ const foursquareApiSearch = async (latitude, longitude) => {
 const foursquareIdSearch = async (foursquareId) => {
   const endPoint = `https://api.foursquare.com/v2/venues/${foursquareId}?`;
   const parameters = {
-    client_id: "AAK5YW24JUNRUTVSMMRAVVDAJQB2YN3K1IG1XTWP5NYDA1LB",
-    client_secret: "WS4TNCUOCJVEIXCZ0ALYXMZ5XJB0SQ11CPICSP2VPCJ1IXIY",
+    client_id: process.env.FSCLIENTID,
+    client_secret: process.env.FSCLIENTSECRET,
     v: "20190425"
   };
 
@@ -242,7 +272,7 @@ const foursquareCoordinateSearch = async(userLatitude, userLongitude) => {
       name: venue.name,
       latitude: venue.location.lat,
       longitude: venue.location.lng,
-      address: venue.location.address,
+      address: venue.location.formattedAddress.join(", "),
       foursquare_id: venue.id
     }
   })
@@ -261,7 +291,7 @@ const foursquareListSearch = async(userLatitude, userLongitude) => {
     const venue = listItem.venue
     return {
       name: venue.name,
-      address: venue.location.address,
+      address: venue.location.formattedAddress.join(", "),
       foursquare_id: venue.id
     }
   })

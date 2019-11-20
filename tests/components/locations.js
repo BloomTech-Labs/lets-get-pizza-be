@@ -21,32 +21,32 @@ describe("Location Tests",  () => {
 
       describe("/maps", () => {
         it("The default route call with no search parameters", async () => {
-            const expectedStatusCode = 200;
-            //
+            const expectedStatusCode = 201;
+            const response = await request(server).post('/api/locations').send(good_location_creds);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
         })
         it("The route call with a search equal to a city name", async () => {
-            const expectedStatusCode = 200;
-            //https://plza.herokuapp.com/api/locations/map?search=Cleveland
-            //
+            const expectedStatusCode = 201;
+            const location_token = 'https://plza.herokuapp.com/api/locations/map?search=Cleveland'
+            const response = await request(server).post('/api/locations/').send(good_location_creds).set("Authorization", location_token);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
         })
         it("The default route call with a search equal to a zip code", async () => {
-            const expectedStatusCode = 200;
-            //https://plza.herokuapp.com/api/locations/map?search=44039
-            //
+            const expectedStatusCode = 201;
+            const location_token = 'https://plza.herokuapp.com/api/locations/map?search=44039'
+            const response = await request(server).post('/api/locations/').send(good_location_creds).set("Authorization", location_token);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
         })
         it("The default route call with a search equal to an address", async () => {
-            const expectedStatusCode = 200;
-            //https://plza.herokuapp.com/api/locations/map?search=6000+Jaycox+Rd,North+Ridgveille,Oh,44039
-            //
+            const expectedStatusCode = 201;
+            const location_token = 'https://plza.herokuapp.com/api/locations/map?search=6000+Jaycox+Rd,North+Ridgveille,Oh,44039'
+            const response = await request(server).post('/api/locations/').send(good_location_creds).set("Authorization", location_token);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify that an array of objects is returned with a latitude & longitude field, and either a foursquare_id or location_id
@@ -57,32 +57,33 @@ describe("Location Tests",  () => {
 
       describe("/list", () => {
         it("The default route call with no search parameters", async () => {
-            const expectedStatusCode = 200;
-            //
+            const expectedStatusCode = 201;
+            const location_token = ''
+            const response = await request(server).post('/api/locations/').send(good_location_creds).set("Authorization", location_token);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify that an array of objects is returned with an address field and either a foursquare_id or location_id
         })
         it("The route call with a search equal to a city name", async () => {
-            const expectedStatusCode = 200;
-            //https://plza.herokuapp.com/api/locations/list?search=Cleveland
-            //
+            const expectedStatusCode = 201;
+            const location_token = 'https://plza.herokuapp.com/api/locations/list?search=Cleveland'
+            const response = await request(server).post('/api/locations/').send(good_location_creds).set("Authorization", location_token);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify that an array of objects is returned with an address field and either a foursquare_id or location_id
         })
         it("The default route call with a search equal to a zip code", async () => {
-            const expectedStatusCode = 200;
-            //https://plza.herokuapp.com/api/locations/list?search=44039
-            //
+            const expectedStatusCode = 201;
+            const location_token = 'https://plza.herokuapp.com/api/locations/list?search=44039'
+            const response = await request(server).post('/api/locations/').send(good_location_creds).set("Authorization", location_token);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify (on some level) that an array of objects is returned
         })
         it("The default route call with a search equal to an address", async () => {
-            const expectedStatusCode = 200;
-            //https://plza.herokuapp.com/api/locations/list?search=6000+Jaycox+Rd,North+Ridgveille,Oh,44039
-            //
+            const expectedStatusCode = 201;
+            const location_token = 'https://plza.herokuapp.com/api/locations/list?search=6000+Jaycox+Rd,North+Ridgveille,Oh,44039'
+            const response = await request(server).post('/api/locations/').send(good_location_creds).set("Authorization", location_token);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify (on some level) that an array of objects is returned
@@ -91,8 +92,8 @@ describe("Location Tests",  () => {
 
       describe("/live/:foursquare_id", () => {
         it("Test the route with a basic call", async () => {
-            const expectedStatusCode = 200;
-            //
+            const expectedStatusCode = 201;
+            const response = await request(server).post('/api/locations/').send(good_location_creds);
             expect(response.status).toBe(expectedStatusCode);
             //Verify that the locations are returned
             //Verify that an array of objects is returned with an address field and either a foursquare_id or location_id

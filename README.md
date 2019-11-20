@@ -135,7 +135,7 @@ Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
     "id": 25,
     "username": "dominoes",
     "email": "betty@dominoes.com",
-    "password": "pizza1",
+    "password": "pizza1", **password is removed before returning location object
     "first_name": "Noes",
     "foursquare_id": "13",
     "update_foursquare": null,
@@ -209,14 +209,16 @@ In order for the app to function correctly, the user must set up their own envir
 
 create a .env file that includes the following:
 
-🚫 These are just examples, replace them with the specifics for your app
+    * JWT_SECRET  Needed for auth router and password generation
+    * PORT Not needed but you can set your own local port for testing on the local machine in case port 4000 is already in use
+    * PGPASSWORD Set this as your PostgreSQL local and test databse passwords
+    * FSCLIENTID FourSquare API Client ID
+    * FSCLIENTSECRET FourSquare API Client Secret
 
-    *  STAGING_DB - optional development db for using functionality not available in SQLite
-    *  NODE_ENV - set to "development" until ready for "production"
-    *  JWT_SECRET - you can generate this by using a python shell and running import random''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&amp;*(-*=+)') for i in range(50)])
-    *  SENDGRID_API_KEY - this is generated in your Sendgrid account
-    *  stripe_secret - this is generated in the Stripe dashboard
-
+    *  User Survey link: https://s.surveyplanet.com/_BYyEjkf
+       Username: teampizzaplza@gmail.com
+       Password: 1234P!za
+    
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
@@ -255,4 +257,4 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 ## Documentation
 
-See [Frontend Documentation](🚫link to your frontend readme here) for details on the fronend of our project.
+See [Frontend Documentation] (https://github.com/Lambda-School-Labs/lets-get-pizza-fe/blob/master/README.md) for details on the fronend of our project.

@@ -1,6 +1,6 @@
 // Update with your config settings.
 
-
+require('dotenv').config();
 module.exports = {
 
   development: {
@@ -8,7 +8,7 @@ module.exports = {
     connection: {
       host: '127.0.0.1',
       user: 'postgres',
-      password: 'postgres',
+      password: process.env.PGPASSWORD,
       database: 'plzalocal',
       charset: 'utf8'
     },
@@ -16,13 +16,12 @@ module.exports = {
     seeds: { directory: './data/seeds' }
   },
 
-
   testing: {
       client: 'pg',
       connection: {
         host: '127.0.0.1',
         user: 'postgres',
-        password: 'postgres',
+        password: process.env.PGPASSWORD,
         database: 'plzatest',
         charset: 'utf8'
       },
