@@ -83,6 +83,7 @@ router.get('/:id', async (req, res) => {
     let location = await Locations.findById(id)
     if(location.update_foursquare) {
       //update the record based on a call
+      //THIS LINE WAS GIVING ERRORS, I DON'T THINK FOURSQUARE LIKED THE CALLS
       //location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
     }
     res.json(location)
