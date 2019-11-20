@@ -59,22 +59,10 @@ router.get('/list', async (req, res) => {
 });
 
 router.get('/live/:foursquare_id', async (req, res) => {
-  try {
-    //Do the foursquare call on the id
-    const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
-  }
-  catch {
-    res.status(500).json({err: "Error reading from foursquare.", normalizedFoursquareResult})
-    return
-  }
+  //Do the foursquare call on the id
+  const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
 
-  try {
-    const location = await Locations.add(normalizedFoursquareResult)
-  }
-  catch {
-    res.status(500).json({err: "Error adding location into database."})
-    return
-  }
+  const location = await Locations.add(normalizedFoursquareResult)
   
   if(location.business_name) {
     res.json(location)
