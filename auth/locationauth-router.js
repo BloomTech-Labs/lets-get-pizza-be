@@ -31,7 +31,7 @@ router.post('/register', async (req, res) => {
         })
 });
 
-router.put('/claim/:id', async (req, res) => {
+router.post('/claim/:id', async (req, res) => {
     //Register user and hash password
     let locationCredentials = req.body;
     const location_id = req.params.id
