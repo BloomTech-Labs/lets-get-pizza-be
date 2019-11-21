@@ -64,7 +64,7 @@ router.post('/login', (req, res) => {
                 delete user.password
                 res.status(200).json({
                     message: `Welome ${user.username}`,
-                    user,
+                    location: user,
                     token,
                 });
             } else {
