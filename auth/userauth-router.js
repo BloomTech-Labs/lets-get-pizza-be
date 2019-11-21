@@ -9,13 +9,14 @@ router.post('/register', (req, res) => {
     const hash = bcrypt.hashSync(user.password, 10);
     user.password = hash;
 
-    db("users").insert(user)
-        .then(saved => {
+    db("users").insert(user).returning('id')
+        .then(async(saved) => {
+            const user = await db("users").where('id', saved[0]).first()
+            delete user.password
             const token = generateToken(saved);
-            const username = user.username;
             res.status(201).json({
                 token,
-                username
+                user
             });
         })
         .catch(({ message }) => {
@@ -34,10 +35,11 @@ router.post('/login', (req, res) => {
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
                 const token = generateToken(user);
-
+                delete user.password
                 res.status(200).json({
                     message: `Welome ${user.username}`,
                     token,
+                    user
                 });
             } else {
                 res.status(401).json({

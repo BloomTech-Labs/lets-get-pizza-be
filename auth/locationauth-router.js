@@ -1,22 +1,31 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
+const axios = require('axios');
 const jwt = require("jsonwebtoken");
 const db = require("../data/db-config");
 const Locations = require("../components/locations/locations-model");
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     //Register user and hash password
     let location = req.body;
     const hash = bcrypt.hashSync(location.password, 10);
     location.password = hash;
 
-    db("locations").insert(location)
-        .then(saved => {
+    //Geocode the input address to Lat/Long
+    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
+    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=${process.env.MAPQUEST_API_KEY}&location=${location.address}`)
+    const location_info = geo.data.results[0].locations[0]
+    location.latitude =  location_info.latLng.lat
+    location.longitude = location_info.latLng.lng
+
+    db("locations").insert(location).returning('id')
+        .then(async(saved) => {
+            const location = await db("locations").where('id', saved[0]).first()
+            delete location.password
             const token = generateToken(saved);
-            const username = location.username;
             res.status(201).json({
                 token,
-                username
+                location
             });
         })
         .catch(({ message }) => {
@@ -56,7 +65,7 @@ router.post('/login', (req, res) => {
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
                 const token = generateToken(user);
-
+                delete user.password
                 res.status(200).json({
                     message: `Welome ${user.username}`,
                     user,
