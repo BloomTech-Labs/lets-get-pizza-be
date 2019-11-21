@@ -60,11 +60,17 @@ router.get('/list', async (req, res) => {
 
 router.get('/live/:foursquare_id', async (req, res) => {
   //Do the foursquare call on the id
-  const normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
-
+  let normalizedFoursquareResult = {};
+  try {
+    normalizedFoursquareResult = await foursquareIdSearch(req.params.foursquare_id)
+  }
+  catch {
+    res.status(500).json({message: "Error reading from foursquare", normalizedFoursquareResult})
+    return
+  }
   const location = await Locations.add(normalizedFoursquareResult)
+  
   if(location.business_name) {
-    
     res.json(location)
   } else {
     if(location.constraint === 'locations_foursquare_id_unique') {
@@ -88,7 +94,8 @@ router.get('/:id', async (req, res) => {
     
     if(location.update_foursquare) {
       //update the record based on a call
-      location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
+      //THIS LINE WAS GIVING ERRORS, I DON'T THINK FOURSQUARE LIKED THE CALLS
+      //location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
     }
     res.json(location)
 });
