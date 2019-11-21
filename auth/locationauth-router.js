@@ -44,7 +44,7 @@ router.put('/claim/:id', async (req, res) => {
       location = await Locations.update(locationCredentials, location_id)
 
       const token = generateToken(location);
-      const username = location.username;
+      delete location.password
       res.status(201).json({token, location});
 
     } else {
