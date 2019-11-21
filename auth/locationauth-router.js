@@ -11,12 +11,8 @@ router.post('/register', async (req, res) => {
     const hash = bcrypt.hashSync(location.password, 10);
     location.password = hash;
 
-    //Geocode the input address to Lat/Long
-    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
-    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=${process.env.MAPQUEST_API_KEY}&location=${location.address}`)
-    const location_info = geo.data.results[0].locations[0]
-    location.latitude =  location_info.latLng.lat
-    location.longitude = location_info.latLng.lng
+    //The function takes in & returns a location object
+    location = await getCoordinatesFromInput(location)
 
     db("locations").insert(location).returning('id')
         .then(async(saved) => {
@@ -99,3 +95,13 @@ function generateToken(user) {
 }
 
 module.exports = router;
+
+const getCoordinatesFromInput = async (location) => {
+    //Geocode the input address to Lat/Long
+    //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
+    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=${process.env.MAPQUEST_API_KEY}&location=${location.address}`)
+    const location_info = geo.data.results[0].locations[0]
+    location.latitude =  location_info.latLng.lat
+    location.longitude = location_info.latLng.lng
+    return location
+}
