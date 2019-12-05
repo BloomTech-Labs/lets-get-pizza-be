@@ -138,24 +138,26 @@ router.put('/', authenticate, (req, res) => {
 //This route requires a form with the image in an image_raw field, and an image_kind, which is either:
 //"thumbnail_image", "street_view_image", "menu_image", or "inside_image"
 router.put('/images', authenticate, multerUploads, cloudinaryConfig, (req, res) => {
+  //Get the id from the token
   const id  = req.decodedToken.location_id;
   const locationData = req.body;
-  console.log(req.decodedToken)
 
+  //The middleware attacked a "file" feild to the req objecct
   if(req.file) {
-    const imageFile = req.file;
 
-    //store the process image as a 'data-uri'
+    //store the process image as a 'data-uri'- this is a process that takes an image and essentially "converts" it to a string
     const file = dataUri(req).content;
 
     //Uploading the image to cloudinary
     uploader.upload(file)
     .then((result) => {
+
+      //Set the resulting url appropriate to the feild that was passed in, then delete the extra feilds originally needed.
       locationData[locationData.image_kind] = result.url;
       delete locationData.image_raw
       delete locationData.image_kind
-      console.log(req.decodedToken, locationData, id)
-      //Add the image to the database.
+
+      //Add the new data to the database.
       Locations.update(locationData, id)
           .then(updated => {
             res.json(updated);
