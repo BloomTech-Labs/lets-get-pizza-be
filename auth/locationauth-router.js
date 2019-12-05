@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
         .then(async(saved) => {
             const location = await db("locations").where('id', saved[0]).first()
             delete location.password
-            const token = generateToken(saved);
+            const token = generateToken(location);
             res.status(201).json({
                 token,
                 location

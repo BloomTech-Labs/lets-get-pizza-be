@@ -14,8 +14,10 @@ exports.up = function(knex) {
       locations.string('address').notNullable();
       locations.string('website_url');
       locations.string('official_description');
-      locations.string('thumbnail_url');
+      locations.string('thumbnail_image');
+      locations.string('inside_image');
       locations.string('street_view_image');
+      locations.string('menu_image');
       locations.string('order_service');
       locations.string('store_bio');
       locations.specificType('dietary_offerings', 'text ARRAY');

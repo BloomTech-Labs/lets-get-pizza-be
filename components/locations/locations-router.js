@@ -1,10 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios')
+
+//Default model for locations
+const Locations = require("./locations-model");
+
+
+const authenticate = require('../../auth/restricted-middleware');
+
 //Converts the given ip address to a lat/long
 var geoip = require('geoip-lite');
-const Locations = require("./locations-model");
-const authenticate = require('../../auth/restricted-middleware')
+
+
+const multer = require('../../config/multer')
+const multerUploads = multer.multerUploads
+const dataUri = multer.dataUri
+
+const cloudinary = require('../../config/cloudinaryConfig')
+const uploader = cloudinary.uploader
+const cloudinaryConfig = cloudinary.cloudinaryConfig
 
 
 //All Locations- Coordinates & ratings for the map
@@ -114,6 +128,47 @@ router.put('/', authenticate, (req, res) => {
         .catch(err => {
             res.status(500).json({ message: 'Failed to update location' });
         });
+
+});
+
+//Edit a locations images
+//PUT /Locations/Images
+//A separate route is needed because this only takes FORM data, not JSON data.
+//This route requires a token, which determines which location is edited
+//This route requires a form with the image in an image_raw field, and an image_kind, which is either:
+//"thumbnail_image", "street_view_image", "menu_image", or "inside_image"
+router.put('/images', authenticate, multerUploads, cloudinaryConfig, (req, res) => {
+  const id  = req.decodedToken.location_id;
+  const locationData = req.body;
+  console.log(req.decodedToken)
+
+  if(req.file) {
+    const imageFile = req.file;
+
+    //store the process image as a 'data-uri'
+    const file = dataUri(req).content;
+
+    //Uploading the image to cloudinary
+    uploader.upload(file)
+    .then((result) => {
+      locationData[locationData.image_kind] = result.url;
+      delete locationData.image_raw
+      delete locationData.image_kind
+      console.log(req.decodedToken, locationData, id)
+      //Add the image to the database.
+      Locations.update(locationData, id)
+          .then(updated => {
+            res.json(updated);
+          })
+          .catch (err => {
+            res.status(500).json({ message: 'Failed to update location' , err});
+          });
+    })
+    .catch((err) => res.status(400).json({
+      messge: 'someting went wrong while processing your request',
+      data: { err }
+    }))
+  } 
 
 });
 
