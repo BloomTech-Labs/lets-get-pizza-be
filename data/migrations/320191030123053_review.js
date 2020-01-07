@@ -5,7 +5,8 @@ exports.up = function(knex, Promise) {
           //user_id
           reviews.integer('user_id').notNullable().references('id').inTable('users').onDelete('cascade');
           //location_id
-          reviews.integer('location_id').notNullable().references('id').inTable('locations').onDelete('cascade');
+          reviews.integer('location_id').notNullable().references('id').inTable('locations').onDelete('cascade')
+          .onUpdate('CASCADE');
           //rating
           reviews.integer('rating').notNullable();
           //review_title

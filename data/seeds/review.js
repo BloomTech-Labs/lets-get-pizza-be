@@ -1,14 +1,5 @@
 exports.seed = function(knex, Promise) {
-    // Deletes ALL existing entries
-    return knex('reviews').del()
-    .then(function () {
-      // Inserts seed entries
       return knex('reviews').insert([
-        // user_id (int, required, foreign key to user table)
-        // location_id (int, required, foreign key to business table)
-        // rating (int, required)
-        // review_title (string, length 128)
-        // review_text (string, no set length)
         {
           user_id: 1,
           location_id: 1,
@@ -38,5 +29,4 @@ exports.seed = function(knex, Promise) {
             review_text: 'they ran out of cheese, smh'
         }
       ]);
-    });
   };

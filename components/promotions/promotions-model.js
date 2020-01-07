@@ -16,14 +16,14 @@ function find() {
 
 function findById(id) {
   return db('promotions')
-    .where( 'promotion_id', id )
+    .where( 'id', id )
     .first();
 }
 
 function add(promotion) {
   return db('promotions')
     .insert(promotion)
-    .returning('promotion_id')
+    .returning('id')
     .then(res => {
       return findById(res[0])
     })
@@ -35,9 +35,9 @@ function add(promotion) {
 
 function update(changes, id) {
   return db('promotions')
-    .where('promotion_id', id)
+    .where('id', id)
     .update(changes)
-    .returning('promotion_id')
+    .returning('id')
     .then(res => {
       return findById(res[0])
     })
@@ -49,6 +49,6 @@ function update(changes, id) {
 
 function remove(id) {
   return db('promotions')
-    .where( 'promotion_id', id )
+    .where( 'id', id )
     .del();
 }

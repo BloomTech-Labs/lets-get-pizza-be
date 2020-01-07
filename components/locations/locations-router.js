@@ -105,12 +105,20 @@ router.get('/:id', async (req, res) => {
     if (location.password){
       delete location.password;
     }
-    
-    if(location.update_foursquare) {
-      //update the record based on a call
-      //THIS LINE WAS GIVING ERRORS, I DON'T THINK FOURSQUARE LIKED THE CALLS
-      //location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
-    }
+
+    /* BACKEND TASK- LOCATION INFORMATION */
+    /* Requirement: Return related reviews & promotions along with the location. res.json({location, reviews, promotions}) */
+    /* Recommended Steps: 
+        import reviews-model.js and promotions-model.js at the top of the page
+        write a function in reviews/reviews-model that takes a location id and returns the array of results.
+        write a function in promotions/promotion-model that takes a location id and returns the array of results.
+        return an object something like res.json({location, reviews, promotions})
+    */
+    /* CHALLENGE: Before returning, calculate the average rating (total/size) and return that along in the object for easy access on front end.
+       HINT: Joins will not easily work, joins are best for 1-to-1 relations, not 1-to-many.
+       Probably easiest to use nested .then().catch() or multiple await calls.
+    */
+
     res.json(location)
 });
 

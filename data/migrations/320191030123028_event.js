@@ -4,7 +4,9 @@ exports.up = function (knex, Promise) {
       //user_id (change string requirement into integer due to error stated)
       events.integer('user_id').references('id').inTable('users').onUpdate();
       //location_id
-      events.integer('location_id').notNullable().references('id').inTable('locations').onUpdate();
+      events.integer('location_id').notNullable().references('id').inTable('locations')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE');
       //title
       events.string('title', 128).notNullable();
       //description

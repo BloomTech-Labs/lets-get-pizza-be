@@ -2,7 +2,9 @@ exports.up = function(knex) {
   return knex.schema.createTable('promotions', promotions => {
       promotions.increments();
       //location_id
-      promotions.integer('location_id').notNullable().references('id').inTable('locations').onUpdate();
+      promotions.integer('location_id').notNullable().references('id').inTable('locations')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE');
       //title
       promotions.string('title', 128).notNullable();
       //text
