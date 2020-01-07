@@ -1,69 +1,69 @@
 const express = require('express');
 
-const Items = require('./item-model.js');
+const Events = require('./events-model.js');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  Items.find()
-  .then(items => {
-    res.json(items);
+  Events.find()
+  .then(events => {
+    res.json(events);
   })
   .catch(err => {
-    res.status(500).json({ message: 'Failed to get items' });
+    res.status(500).json({ message: 'Failed to get events' });
   });
 });
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
 
-  Items.findById(id)
-  .then(item => {
-    if (item) {
-      res.json(item)
+  Events.findById(id)
+  .then(event => {
+    if (event) {
+      res.json(event)
     } else {
-      res.status(404).json({ message: 'Could not find item with given id.' })
+      res.status(404).json({ message: 'Could not find event with given id.' })
     }
   })
-  .catch(err => {res.status(500).json({ message: 'Failed to get items' });});
+  .catch(err => {res.status(500).json({ message: 'Failed to get events' });});
 });
 
 
 router.post('/', (req, res) => {
-  const itemData = req.body;
+  const eventData = req.body;
 
-  Items.add(itemData)
-  .then(item => {
-    res.status(201).json(item);
+  Events.add(eventData)
+  .then(event => {
+    res.status(201).json(event);
   })
   .catch (err => {
-    res.status(500).json({ message: 'Failed to create new item' });
+    res.status(500).json({ message: 'Failed to create new event' });
   });
 
 });
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const itemData = req.body;
+  const eventData = req.body;
 
-  Items.update(itemData, id)
-  .then(updatedItem => {
-    res.json(updatedItem);
+  Events.update(eventData, id)
+  .then(updatedEvent => {
+    res.json(updatedEvent);
   })
   .catch (err => {
-    res.status(500).json({ message: 'Failed to update item' });
+    res.status(500).json({ message: 'Failed to update event' });
   });
 
 });
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  Items.remove(id)
+  Events.remove(id)
   .then(deleted => {
     res.send("Success.")
   })
   .catch(err => {
-    res.status(500).json({ message: 'Failed to delete item' })
+    res.status(500).json({ message: 'Failed to delete event' })
   });
 });
 

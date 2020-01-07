@@ -1,4 +1,4 @@
-const db = require('../../data/dbConfig.js');
+const db = require('../../data/db-config.js');
 
 module.exports = {
   find,
@@ -11,19 +11,19 @@ module.exports = {
 
 
 function find() {
-  return db('items')
+  return db('promotions')
 }
 
 function findById(id) {
-  return db('items')
-    .where( 'item_id', id )
+  return db('promotions')
+    .where( 'promotion_id', id )
     .first();
 }
 
-function add(item) {
-  return db('items')
-    .insert(item)
-    .returning('item_id')
+function add(promotion) {
+  return db('promotions')
+    .insert(promotion)
+    .returning('promotion_id')
     .then(res => {
       return findById(res[0])
     })
@@ -34,10 +34,10 @@ function add(item) {
 }
 
 function update(changes, id) {
-  return db('items')
-    .where('item_id', id)
+  return db('promotions')
+    .where('promotion_id', id)
     .update(changes)
-    .returning('item_id')
+    .returning('promotion_id')
     .then(res => {
       return findById(res[0])
     })
@@ -48,7 +48,7 @@ function update(changes, id) {
 }
 
 function remove(id) {
-  return db('items')
-    .where( 'item_id', id )
+  return db('promotions')
+    .where( 'promotion_id', id )
     .del();
 }

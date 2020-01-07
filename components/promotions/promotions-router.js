@@ -1,69 +1,69 @@
 const express = require('express');
 
-const Items = require('./item-model.js');
+const Promotions = require('./promotions-model.js');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  Items.find()
-  .then(items => {
-    res.json(items);
+  Promotions.find()
+  .then(promotions => {
+    res.json(promotions);
   })
   .catch(err => {
-    res.status(500).json({ message: 'Failed to get items' });
+    res.status(500).json({ message: 'Failed to get promotions' });
   });
 });
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
 
-  Items.findById(id)
-  .then(item => {
-    if (item) {
-      res.json(item)
+  Promotions.findById(id)
+  .then(promotion => {
+    if (promotion) {
+      res.json(promotion)
     } else {
-      res.status(404).json({ message: 'Could not find item with given id.' })
+      res.status(404).json({ message: 'Could not find promotion with given id.' })
     }
   })
-  .catch(err => {res.status(500).json({ message: 'Failed to get items' });});
+  .catch(err => {res.status(500).json({ message: 'Failed to get promotions' });});
 });
 
 
 router.post('/', (req, res) => {
-  const itemData = req.body;
+  const promotionData = req.body;
 
-  Items.add(itemData)
-  .then(item => {
-    res.status(201).json(item);
+  Promotions.add(promotionData)
+  .then(promotion => {
+    res.status(201).json(promotion);
   })
   .catch (err => {
-    res.status(500).json({ message: 'Failed to create new item' });
+    res.status(500).json({ message: 'Failed to create new promotion' });
   });
 
 });
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const itemData = req.body;
+  const promotionData = req.body;
 
-  Items.update(itemData, id)
-  .then(updatedItem => {
-    res.json(updatedItem);
+  Promotions.update(promotionData, id)
+  .then(updatedPromotion => {
+    res.json(updatedPromotion);
   })
   .catch (err => {
-    res.status(500).json({ message: 'Failed to update item' });
+    res.status(500).json({ message: 'Failed to update promotion' });
   });
 
 });
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  Items.remove(id)
+  Promotions.remove(id)
   .then(deleted => {
     res.send("Success.")
   })
   .catch(err => {
-    res.status(500).json({ message: 'Failed to delete item' })
+    res.status(500).json({ message: 'Failed to delete promotion' })
   });
 });
 
