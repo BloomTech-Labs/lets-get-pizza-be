@@ -1,10 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios')
+
+//Default model for locations
+const Locations = require("./locations-model");
+
+
+const authenticate = require('../../auth/restricted-middleware');
+
 //Converts the given ip address to a lat/long
 var geoip = require('geoip-lite');
-const Locations = require("./locations-model");
-const authenticate = require('../../auth/restricted-middleware')
+
+
+const multer = require('../../config/multer')
+const multerUploads = multer.multerUploads
+const dataUri = multer.dataUri
+
+const cloudinary = require('../../config/cloudinaryConfig')
+const uploader = cloudinary.uploader
+const cloudinaryConfig = cloudinary.cloudinaryConfig
 
 
 //All Locations- Coordinates & ratings for the map
@@ -91,12 +105,20 @@ router.get('/:id', async (req, res) => {
     if (location.password){
       delete location.password;
     }
-    
-    if(location.update_foursquare) {
-      //update the record based on a call
-      //THIS LINE WAS GIVING ERRORS, I DON'T THINK FOURSQUARE LIKED THE CALLS
-      //location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
-    }
+
+    /* BACKEND TASK- LOCATION INFORMATION */
+    /* Requirement: Return related reviews & promotions along with the location. res.json({location, reviews, promotions}) */
+    /* Recommended Steps: 
+        import reviews-model.js and promotions-model.js at the top of the page
+        write a function in reviews/reviews-model that takes a location id and returns the array of results.
+        write a function in promotions/promotion-model that takes a location id and returns the array of results.
+        return an object something like res.json({location, reviews, promotions})
+    */
+    /* CHALLENGE: Before returning, calculate the average rating (total/size) and return that along in the object for easy access on front end.
+       HINT: Joins will not easily work, joins are best for 1-to-1 relations, not 1-to-many.
+       Probably easiest to use nested .then().catch() or multiple await calls.
+    */
+
     res.json(location)
 });
 
@@ -114,6 +136,49 @@ router.put('/', authenticate, (req, res) => {
         .catch(err => {
             res.status(500).json({ message: 'Failed to update location' });
         });
+
+});
+
+//Edit a locations images
+//PUT /Locations/Images
+//A separate route is needed because this only takes FORM data, not JSON data.
+//This route requires a token, which determines which location is edited
+//This route requires a form with the image in an image_raw field, and an image_kind, which is either:
+//"thumbnail_image", "street_view_image", "menu_image", or "inside_image"
+router.put('/images', authenticate, multerUploads, cloudinaryConfig, (req, res) => {
+  //Get the id from the token
+  const id  = req.decodedToken.location_id;
+  const locationData = req.body;
+
+  //The middleware attacked a "file" feild to the req objecct
+  if(req.file) {
+
+    //store the process image as a 'data-uri'- this is a process that takes an image and essentially "converts" it to a string
+    const file = dataUri(req).content;
+
+    //Uploading the image to cloudinary
+    uploader.upload(file)
+    .then((result) => {
+
+      //Set the resulting url appropriate to the feild that was passed in, then delete the extra feilds originally needed.
+      locationData[locationData.image_kind] = result.url;
+      delete locationData.image_raw
+      delete locationData.image_kind
+
+      //Add the new data to the database.
+      Locations.update(locationData, id)
+          .then(updated => {
+            res.json(updated);
+          })
+          .catch (err => {
+            res.status(500).json({ message: 'Failed to update location' , err});
+          });
+    })
+    .catch((err) => res.status(400).json({
+      messge: 'someting went wrong while processing your request',
+      data: { err }
+    }))
+  } 
 
 });
 
@@ -183,7 +248,7 @@ const userGeoLocation = async(req) => {
 
   if(req.query.search) {
     //Geocoding- https://developer.mapquest.com/documentation/geocoding-api/address/get/
-    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=t9UQLcQuLFV0voTMDxe0fwJhfeEQuWZH&location=${req.query.search}`)
+    const geo = await axios.get(`http://www.mapquestapi.com/geocoding/v1/address?key=${process.env.MAPQUEST_API_KEY}&location=${req.query.search}`)
     const location_info = geo.data.results[0].locations[0]
     //Map the information
     userLocation.userCity = location_info.adminArea5

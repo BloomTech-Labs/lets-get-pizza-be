@@ -12,6 +12,7 @@ module.exports = (req, res, next) => {
                 });
             } else {
                 req.decodedToken = decodedToken;
+                console.log(decodedToken)
                 next();
             }
         });

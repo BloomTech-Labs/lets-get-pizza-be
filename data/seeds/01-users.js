@@ -1,9 +1,6 @@
 exports.seed = function(knex, Promise) {
     // Deletes ALL existing entries
-    return knex('users').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('users').insert([
+    return knex('users').insert([
         {
           username: 'Billy',
           email: 'billy@pizzaluv.com',
@@ -12,8 +9,7 @@ exports.seed = function(knex, Promise) {
           display_name: 'PizzaBruh420',
           dietary_preference: ['gluten'],
           favorite_pizza_toppings: 'Mushrooms',
-          city: 'Miami',
-          state: 'Florida'
+          display_location: 'Miami, Florida'
         },
         {
             username: 'Roger',
@@ -23,8 +19,7 @@ exports.seed = function(knex, Promise) {
             display_name: 'PizzaDude',
             dietary_preference: ['Vegetarian'],
             favorite_pizza_toppings: 'Fake Meat Pepperoni',
-            city: 'Santa Monica',
-            state: 'California'
+            display_location: 'Santa Monica',
           },
           {
             username: 'Betty',
@@ -34,9 +29,7 @@ exports.seed = function(knex, Promise) {
             display_name: 'PizzaGurl',
             dietary_preference: ['gluten'],
             favorite_pizza_toppings: 'Pepperoni',
-            city: 'Billings',
-            state: 'Minnesota'
+            display_location: 'Billings',
           }
       ]);
-    });
   };
