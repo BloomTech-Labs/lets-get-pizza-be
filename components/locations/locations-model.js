@@ -80,7 +80,7 @@ function getPromotions(id) {
 }
 
 function getEvents(id) {
-    return db('events as e').where('location_id', id)
+    return db('events as e').where('e.location_id', id)
         .join('users as u', 'u.id', 'e.user_id')
         .select(
             'e.id',
