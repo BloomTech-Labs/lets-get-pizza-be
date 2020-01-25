@@ -116,16 +116,23 @@ router.get('/:id', async (req, res) => {
        Probably easiest to use nested .then().catch() or multiple await calls.
     */
 
-   const reviews = await Locations.getReviews(id);
-   const promotions = await Locations.getPromotions(id);
-   const events = await Locations.getEvents(id);
-
     if (location) {
-      delete location.password;
+        // Remove the password field before returning anything
+        delete location.password;
 
-      res.json({ location, reviews, promotions, events })
+        // Retrieve all associated content with this location
+        const reviews = await Locations.getReviews(id);
+        const promotions = await Locations.getPromotions(id);
+        const events = await Locations.getEvents(id);
+
+
+        // Add the average rating to the location object
+        const averageRating = await Locations.getAverageRating(id)
+        location["average_rating"] = Math.round(averageRating[0].avg * 10) / 10
+
+        res.json({ location, reviews, promotions, events })
     } else {
-      res.status(404).json({ message: "Location does not exist" })
+        res.status(404).json({ message: "Location does not exist" })
     }
 });
 

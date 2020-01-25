@@ -7,6 +7,7 @@ module.exports = {
     findById,
     findByFoursquareId,
     getReviews,
+    getAverageRating,
     getPromotions,
     getEvents,
     add,
@@ -73,6 +74,10 @@ function getReviews(id) {
             'r.review_title',
             'r.review_text'
         )
+}
+
+function getAverageRating(id) {
+    return db('reviews').where('location_id', id).avg('rating')
 }
 
 function getPromotions(id) {
