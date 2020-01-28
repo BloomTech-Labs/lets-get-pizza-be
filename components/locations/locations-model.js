@@ -6,6 +6,10 @@ module.exports = {
     findSearchLocations,
     findById,
     findByFoursquareId,
+    getReviews,
+    getAverageRating,
+    getPromotions,
+    getEvents,
     add,
     update,
     remove
@@ -57,6 +61,44 @@ function findByFoursquareId(id) {
         .first();
 }
 
+function getReviews(id) {
+    return db('reviews as r').where('r.location_id', id)
+        .join('users as u', 'u.id', 'r.user_id')
+        .select(
+            'r.id',
+            'u.id',
+            'u.username',
+            'u.display_name',
+            'u.profile_image',
+            'r.rating',
+            'r.review_title',
+            'r.review_text'
+        )
+}
+
+function getAverageRating(id) {
+    return db('reviews').where('location_id', id).avg('rating')
+}
+
+function getPromotions(id) {
+    return db('promotions').where('location_id', id);
+}
+
+function getEvents(id) {
+    return db('events as e').where('e.location_id', id)
+        .join('users as u', 'u.id', 'e.user_id')
+        .select(
+            'e.id',
+            'u.id',
+            'u.username',
+            'u.display_name',
+            'u.profile_image',
+            'e.title',
+            'e.description',
+            'e.start_time',
+            'e.end_time'
+        );
+}
 
 function add(location) {
     return db('locations')

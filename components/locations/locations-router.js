@@ -102,9 +102,6 @@ router.get('/live/:foursquare_id', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const id = req.params.id
     let location = await Locations.findById(id);
-    if (location.password){
-      delete location.password;
-    }
 
     /* BACKEND TASK- LOCATION INFORMATION */
     /* Requirement: Return related reviews & promotions along with the location. res.json({location, reviews, promotions}) */
@@ -119,7 +116,24 @@ router.get('/:id', async (req, res) => {
        Probably easiest to use nested .then().catch() or multiple await calls.
     */
 
-    res.json(location)
+    if (location) {
+        // Remove the password field before returning anything
+        delete location.password;
+
+        // Retrieve all associated content with this location
+        const reviews = await Locations.getReviews(id);
+        const promotions = await Locations.getPromotions(id);
+        const events = await Locations.getEvents(id);
+
+
+        // Add the average rating to the location object
+        const averageRating = await Locations.getAverageRating(id)
+        location["average_rating"] = Math.round(averageRating[0].avg * 10) / 10
+
+        res.json({ location, reviews, promotions, events })
+    } else {
+        res.status(404).json({ message: "Location does not exist" })
+    }
 });
 
 //Edit Your Info- allow a Location to edit their own information.
