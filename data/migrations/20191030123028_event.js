@@ -14,7 +14,7 @@ exports.up = function (knex, Promise) {
       //start_time
       events.datetime('start_time').notNullable();
       //end_time
-      events.datetime('end_time').notNullable();
+      events.datetime('end_time ').notNullable();
   });
 };
 exports.down = function (knex, Promise) {
