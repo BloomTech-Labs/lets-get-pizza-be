@@ -29,3 +29,4 @@ exports.down = function (knex, Promise) {
   // it is simply used to undo the change when needed
   return knex.schema.dropTableIfExists("reviews");
 };
+
