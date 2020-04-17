@@ -1,0 +1,22 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "plzalocal",
+            "dialect": "PostgreSQL",
+            "name": "pg",
+            "password": "Fallencross7",
+            "port": 5432,
+            "server": "localhost",
+            "username": "postgres"
+        },
+        {
+            "database": "plzalocal",
+            "dialect": "PostgreSQL",
+            "name": "plzalocal",
+            "password": "Fallencross7",
+            "port": 5432,
+            "server": "localhost",
+            "username": "postgres"
+        }
+    ]
+}
