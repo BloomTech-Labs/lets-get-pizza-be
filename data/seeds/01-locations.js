@@ -1,6 +1,7 @@
 exports.seed = function(knex, Promise) {
       return knex('locations').insert([
         {
+          id: 1,
           username: 'pizzahut',
           email: 'billy@pizzahut.com',
           password: 'pizza1',
@@ -19,6 +20,7 @@ exports.seed = function(knex, Promise) {
           dietary_offerings: ['vegan']
         },
         {
+            id: 2,
             username: 'dominoes',
             email: 'betty@dominoes.com',
             password: 'pizza1',
@@ -37,6 +39,7 @@ exports.seed = function(knex, Promise) {
             dietary_offerings: ['Even the cheese is meat']
           },
           {
+            id: 3,
             username: 'bigpapa',
             email: 'jacob@papajohns.com',
             password: 'pizza1',
@@ -55,6 +58,7 @@ exports.seed = function(knex, Promise) {
             dietary_offerings: ['vegetarian']
           },
           {
+            id: 4,
             username: 'pizzahut2',
             email: 'bill2@pizzahut.com',
             password: 'pizza1',
@@ -73,6 +77,7 @@ exports.seed = function(knex, Promise) {
             dietary_offerings: ['vegan']
           },
           {
+              id: 5,
               username: 'dominoes2',
               email: 'bett2y@dominoes.com',
               password: 'pizza1',
@@ -91,6 +96,7 @@ exports.seed = function(knex, Promise) {
               dietary_offerings: ['Even the cheese is meat']
             },
             {
+              id: 6,
               username: 'bigpapa2',
               email: 'jacob2@papajohns.com',
               password: 'pizza1',
