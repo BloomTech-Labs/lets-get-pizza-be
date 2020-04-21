@@ -14,6 +14,8 @@ const ReviewRouter = require("./components/reviews/reviews-router");
 const PromotionRouter = require("./components/promotions/promotions-router");
 const EventRouter = require("./components/events/events-router");
 
+const FriendsRouter = require("./components/friends/friends-router");
+
 const server = express();
 
 server.use(helmet());
@@ -32,6 +34,9 @@ server.use("/api/locations", LocationRouter);
 server.use("/api/reviews", ReviewRouter);
 server.use("/api/promotions", PromotionRouter);
 server.use("/api/events", EventRouter);
+
+//friends table
+server.use("/api/friends", FriendsRouter);
 
 //Test message to show that the API server is up and running
 server.get("/", (req, res) => {
