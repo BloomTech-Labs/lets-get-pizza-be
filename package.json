@@ -28,6 +28,7 @@
     "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.17.0",
+    "codeclimate-test-reporter": "^0.5.1",
     "cors": "^2.8.5",
     "cross-env": "^6.0.3",
     "datauri": "^2.0.0",
@@ -50,7 +51,5 @@
     "sqlite3": "^4.1.0",
     "supertest": "^4.0.2"
   },
-  "devDependencies": {
-    "codeclimate-test-reporter": "^0.5.1"
-  }
+  "devDependencies": {}
 }
