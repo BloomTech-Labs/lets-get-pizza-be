@@ -11,7 +11,7 @@ module.exports = {
 function getFriends() {
   return db("friends");
 }
-
+///insert to friend table
 function insertFriends(users_id, friends_id) {
   return db("friends").insert({ users_id, friends_id });
 }
