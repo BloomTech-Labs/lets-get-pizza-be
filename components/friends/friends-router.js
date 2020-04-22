@@ -26,4 +26,39 @@ router.post("/", (req, res) => {
     });
 });
 
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  Friends.getById(id)
+    .then((friend) => {
+      if (friend) {
+        Friends.updateFriend(changes, id).then((updated) => {
+          res.json(updated);
+        });
+      } else {
+        res.status(404).json({ message: "Could not find Friend with that id" });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Failed to update frined" });
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  Friends.removeFriend(id)
+    .then((deleted) => {
+      if (deleted) {
+        res.json({ removed: deleted });
+      } else {
+        res.status(404).json({ message: "Could not find friend with id" });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "cound not delete friend" });
+    });
+});
+
 module.exports = router;
