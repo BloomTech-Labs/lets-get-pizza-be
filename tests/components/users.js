@@ -16,12 +16,10 @@ const user_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NzM2MDM0OTg
 // const response = await request(server).get('/api/users/dashboard').set("Authorization", user_token)
 
 describe("User Tests",  () => {
-    beforeEach(async () => {
-        await knexCleaner.clean(db)
-    })
 
     it("Finding user tests", async () => {
-      expect(1).toBe(1);
+        await knexCleaner.clean(db)
+        expect(1).toBe(1);
     })
 
     describe("Register endpoint", () => {
@@ -47,7 +45,6 @@ describe("User Tests",  () => {
         it("Try logging in", async () => {
             const expectedStatusCode = 200;
             const response = await request(server).post('/api/auth/user/login').send(good_user_creds).set("Authorization", user_token);
-            console.log(response.error)
             expect(response.status).toBe(expectedStatusCode);
             //make sure the credentials provided match the returned credentials
         })
@@ -61,6 +58,10 @@ describe("User Tests",  () => {
       // UNIT TESTING 
       
       describe("Find Users Model", () => {
+          beforeEach(async () => {
+              await knexCleaner.clean(db)
+          })
+
           it("should return an empty array", async () => {
               const users = await Users.find()
 
@@ -78,6 +79,7 @@ describe("User Tests",  () => {
 
       describe("Find By Id Model", () => {
           beforeEach(async () => {
+              await knexCleaner.clean(db)
               await Users.add(good_user_creds)
           })
 
@@ -98,6 +100,9 @@ describe("User Tests",  () => {
       })
 
       describe("Add Model", () => {
+          beforeEach(async () => {
+              await knexCleaner.clean(db)
+          })
           it("should return an error with incomplete credentials", async () => {
               const failedAdd = await Users.add(incomplete_creds)
 
