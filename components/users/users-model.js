@@ -26,7 +26,6 @@ function add(user) {
             return findById(res[0])
         })
         .catch(err => {
-            console.log(err)
             return err
         })
 }

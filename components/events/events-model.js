@@ -28,7 +28,6 @@ function add(event) {
       return findById(res[0])
     })
     .catch(err => {
-      console.log(err)
       return err
     })
 }
@@ -42,7 +41,6 @@ function update(changes, id) {
       return findById(res[0])
     })
     .catch(err => {
-      console.log(err)
       return err
     })
 }
