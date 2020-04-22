@@ -69,13 +69,24 @@ router.delete("/:id", (req, res) => {
 });
 
 router.get("/users/:id", (req, res) => {
-  Events.findByUserId(req.params.id)
+  let user_id = req.params.id;
+  Events.findBy({ user_id })
     .then((event) => {
       res.json(event);
     })
     .catch((err) => {
       res.status(500).json(err);
     });
+  // Events.find().then((ev) => {
+  //   let { user_id } = ev;
+  //   Events.findBy({ user_id })
+  //     .then((event) => {
+  //       res.json(event);
+  //     })
+  //     .catch((err) => {
+  //       res.send(err);
+  //     });
+  // });
 });
 
 module.exports = router;
