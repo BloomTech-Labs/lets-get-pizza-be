@@ -40,6 +40,24 @@ describe("Promotions Tests", () => {
             const successfulPromotion = await Promotions.add(good_promotion_details)
             
             expect(successfulPromotion).toMatchObject(match_promotion_details)
+            expect(successfulPromotion).not.toBeUndefined()
+        })
+    })
+
+    describe("Find Model", () => {
+        it("should return an array of length 0", async () => {
+            const returnedPromotions = await Promotions.find()
+
+            expect(returnedPromotions).toHaveLength(0)
+            expect(returnedPromotions).toEqual([])
+        })
+
+        it("should return array of promotions", async () => {
+            await Promotions.add(good_promotion_details)
+            const returnedPromotions = await Promotions.find()
+
+            expect(returnedPromotions).toHaveLength(1)
+            expect(returnedPromotions[0]).toMatchObject(match_promotion_details)
         })
     })
 })
