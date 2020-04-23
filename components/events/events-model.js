@@ -10,7 +10,19 @@ module.exports = {
 };
 
 function find() {
-  return db("events");
+  return db("events")
+    .join("locations", "locations.id", "events.location_id")
+    .select(
+      "events.location_id",
+      "events.user_id",
+      "events.id",
+      "events.title",
+      "events.description",
+      "events.start_time",
+      "events.end_time",
+      "locations.business_name",
+      "locations.address"
+    );
 }
 
 function findById(id) {
