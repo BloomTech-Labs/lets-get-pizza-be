@@ -113,3 +113,6 @@ dist
 # SQL and SQL databses
 *.db3
 *.sql
+
+# VSCode directories
+.vscode/
