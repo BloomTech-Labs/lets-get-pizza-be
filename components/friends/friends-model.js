@@ -12,12 +12,12 @@ function getFriends() {
   return db("friends");
 }
 ///insert to friend table
-function insertFriends(users_id, friends_id) {
-  return db("friends").insert({ users_id, friends_id });
+function insertFriends(friendsData) {
+  return db("friends").insert(friendsData)
 }
 
 function updateFriend(id, updates) {
-  return db("friends").where({ id }).update(updates);
+  return db("friends").where('id', id).update(updates);
 }
 
 function removeFriend(id) {
