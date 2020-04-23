@@ -36,11 +36,11 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', validateFriendId, (req,res) => {
-  Friends.updateFriend(req.friend.id, req.body)
+  Friends.updateFriend(req.params.id, req.body)
   .then (() => {
     res.status(200).json ({
       success: true, 
-      message: `friend with id ${req.friend.id} was updated.`
+      message: `friend with id ${req.params.id} was updated.`
     });
   })
   .catch (error => {

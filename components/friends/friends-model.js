@@ -17,7 +17,7 @@ function insertFriends(friendsData) {
 }
 
 function updateFriend(id, updates) {
-  return db("friends").where({ id }).update(updates);
+  return db("friends").where('id', id).update(updates);
 }
 
 function removeFriend(id) {
