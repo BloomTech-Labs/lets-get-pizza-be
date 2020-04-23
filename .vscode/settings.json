@@ -17,6 +17,15 @@
             "port": 5432,
             "server": "localhost",
             "username": "postgres"
+        },
+        {
+            "database": "plzalocal",
+            "dialect": "PostgreSQL",
+            "name": "plza local",
+            "password": "Channing04!!!!!",
+            "port": 5432,
+            "server": "localhost",
+            "username": "postgres"
         }
     ]
 }
