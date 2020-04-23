@@ -12,21 +12,12 @@ function getFriends() {
   return db("friends");
 }
 ///insert to friend table
-<<<<<<< HEAD
 function insertFriends(friendsData) {
-  return db("friends").insert(friendsData)
+  return db("friends").insert(friendsData);
 }
 
 function updateFriend(id, updates) {
-  return db("friends").where('id', id).update(updates);
-=======
-function insertFriends(users_id, friends_id) {
-  return db("friends").insert({ users_id, friends_id });
-}
-
-function updateFriend(id, updates) {
-  return db("friends").where({ id }).update(updates);
->>>>>>> master
+  return db("friends").where("id", id).update(updates);
 }
 
 function removeFriend(id) {
@@ -34,7 +25,6 @@ function removeFriend(id) {
 }
 
 function getById(id) {
-<<<<<<< HEAD
   return db("friends")
     .join("users as u", "u.id", "friends.user_id")
     .join("users as friend", "friend.id", "friends.friends_id")
@@ -46,7 +36,4 @@ function getById(id) {
       "friend.username as friend_username"
     )
     .where({ user_id: id });
-=======
-  return db("friends").where({ id }).first();
->>>>>>> master
 }
