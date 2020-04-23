@@ -51,14 +51,7 @@
     "sqlite3": "^4.1.0",
     "supertest": "^4.0.2"
   },
-<<<<<<< HEAD
-  "devDependencies": {}
-=======
-  "devDependencies": {
-    "codeclimate-test-reporter": "^0.5.1"
-  },
   "directories": {
     "test": "tests"
   }
->>>>>>> 47ea7a336ad661cddd947f46b248b67c0fa89f40
 }
