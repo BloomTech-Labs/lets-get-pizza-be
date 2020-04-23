@@ -25,5 +25,15 @@ function removeFriend(id) {
 }
 
 function getById(id) {
-  return db("friends").where({ id }).first();
+  return db("friends")
+    .join("users as u", "u.id", "friends.user_id")
+    .join("users as friend", "friend.id", "friends.friends_id")
+    .select(
+      "u.username",
+      "u.id",
+      "u.display_name",
+      "friends.friends_id",
+      "friend.username as friend_username"
+    )
+    .where({ user_id: id });
 }

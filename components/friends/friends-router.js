@@ -13,6 +13,15 @@ router.get('/', (req, res) => {
       res.status(500).json({ message: "Failed to get friends" });
     });
 });
+router.get("/:id", (req, res) => {
+  Friends.getById(req.params.id)
+    .then((friends) => {
+      res.json(friends);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Failed to get friends" });
+    });
+});
 
 router.post('/', (req, res) => {
   const friendsData = req.body;
