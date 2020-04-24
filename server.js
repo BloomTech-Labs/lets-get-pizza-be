@@ -36,7 +36,7 @@ server.use("/api/promotions", PromotionRouter);
 server.use("/api/events", EventRouter);
 
 //friends table
-server.use("/api/friends", FriendsRouter);
+server.use("/api/friends", authenticate, FriendsRouter);
 
 //Test message to show that the API server is up and running
 server.get("/", (req, res) => {
