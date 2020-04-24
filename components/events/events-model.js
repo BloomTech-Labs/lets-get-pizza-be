@@ -26,7 +26,21 @@ function find() {
 }
 
 function findById(id) {
-  return db("events").where("id", id).first();
+  return db("events")
+    .join("locations", "locations.id", "events.location_id")
+    .select(
+      "events.location_id",
+      "events.user_id",
+      "events.id",
+      "events.title",
+      "events.description",
+      "events.start_time",
+      "events.end_time",
+      "locations.business_name",
+      "locations.address"
+    )
+    .where("events.id", id)
+    .first();
 }
 
 function add(event) {
@@ -61,5 +75,18 @@ function remove(id) {
 }
 
 function findBy(filter) {
-  return db("events").where(filter);
+  return db("events")
+    .join("locations", "locations.id", "events.location_id")
+    .select(
+      "events.location_id",
+      "events.user_id",
+      "events.id",
+      "events.title",
+      "events.description",
+      "events.start_time",
+      "events.end_time",
+      "locations.business_name",
+      "locations.address"
+    )
+    .where(filter);
 }
