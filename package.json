@@ -1,7 +1,7 @@
 {
   "name": "let-s-get-pizza-be",
   "version": "1.0.0",
-  "description": "",
+  "description": "To get the server running locally:",
   "main": "index.js",
   "scripts": {
     "server": "nodemon index.js",
@@ -51,5 +51,7 @@
     "sqlite3": "^4.1.0",
     "supertest": "^4.0.2"
   },
-  "devDependencies": {}
+  "directories": {
+    "test": "tests"
+  }
 }
