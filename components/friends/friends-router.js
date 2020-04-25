@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Friends.getFriends()
     .then((friends) => {
-      res.json(friends);
+      res.status(200).json(friends);
     })
     .catch((error) => {
       res.status(500).json({ message: "Failed to get friends" });
