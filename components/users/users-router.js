@@ -1,6 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("./users-model");
+const cloudinary = require('../../config/cloudinaryConfig.js')
+const multer = require('../../config/multer.js')
+const cloudinaryConfig = cloudinary.cloudinaryConfig
+const uploader = cloudinary.uploader
+const multerUploads = multer.multerUploads
+const dataUri = multer.dataUri
 
 //All Users- for admin/moderation purposes only, no public view
 //GET /Users
@@ -26,6 +32,7 @@ router.get('/dashboard', (req, res) => {
     Users.findById(id)
       .then(user => {
         if (user) {
+          delete user.password
           res.json(user)
         } else {
           res.status(404).json({ message: 'Could not find user with given id.' })
@@ -73,17 +80,37 @@ router.get('/:id', (req, res) => {
 //PUT /Users/
 //Takes in the user information, updates the database, and returns the object.
 router.put('/', (req, res) => {
-    const { id } = req.decodedToken.user.user_id;
+    const { id } = req.decodedToken.user_id;
     const userData = req.body;
 
     Users.update(userData, id)
         .then(updatedUser => {
-            res.json(updatedUser);
+            delete updatedUser.password
+            res.status(200).json(updatedUser);
         })
         .catch(err => {
             res.status(500).json({ message: 'Failed to update user' });
         });
 });
+
+router.put('/images', multerUploads.single("image-raw"), cloudinaryConfig,  (req,res) => {
+    const id = req.decodedToken.user_id.toString()
+    const file =  dataUri(req)
+
+     uploader.upload(file.content, 
+        { dpr: "auto", responsive: true, width: "auto", crop: "scale"},
+        (error, result) => {
+            res.locals.image = result.secure_url
+            Users.update({profile_image: res.locals.image}, id)
+            .then(updatedUser => {
+                delete updatedUser.password
+                res.status(200).json(updatedUser)
+            })
+            .catch(err => {
+                res.status(500).json({ message: 'Failed to update user' });
+            })
+        })
+})
 
 //DELETE USER- delete's a user's profile
 //PUT /Users/
