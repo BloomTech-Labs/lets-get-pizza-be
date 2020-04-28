@@ -59,22 +59,7 @@ router.get('/:id', (req, res) => {
         .catch(err => { res.status(500).json({ message: 'Failed to get users' }); });
 });
 
-//
-// //Register User- creates a user reference in our databse.
-// //POST /Users/
-// //Takes in the new user information, adds it to the database, and returns the object.
-// router.post('/', (req, res) => {
-//     const userData = req.body;
-//
-//     Users.add(userData)
-//         .then(user => {
-//             res.status(201).json(user);
-//         })
-//         .catch(err => {
-//             res.status(500).json({ message: 'Failed to create new user' });
-//         });
-//
-// });
+
 
 //Edit Your Info- allow a user to edit their own information.
 //PUT /Users/
@@ -95,11 +80,16 @@ router.put('/', (req, res) => {
 
 router.put('/images', multerUploads.single("image-raw"), cloudinaryConfig,  (req,res) => {
     const id = req.decodedToken.user_id.toString()
+
+    //store the process image as a 'data-uri'- this is a process that takes an image and essentially "converts" it to a string
     const file =  dataUri(req)
 
-     uploader.upload(file.content, 
+    //Uploading the image to cloudinary
+     uploader.upload(file.content,
+        // transforming image to make it responsive 
         { dpr: "auto", responsive: true, width: "auto", crop: "scale"},
         (error, result) => {
+            // set variable equal to the image url
             res.locals.image = result.secure_url
             Users.update({profile_image: res.locals.image}, id)
             .then(updatedUser => {
