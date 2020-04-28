@@ -33,8 +33,11 @@ function add(user) {
 
 function update(changes, id) {
     return db('users')
-        .where('id', id)
-        .update(changes);
+        .where({id})
+        .update(changes)
+        .then(() => {
+            return findById(id)
+        })
 }
 
 function remove(id) {

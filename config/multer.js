@@ -3,7 +3,7 @@ const Datauri = require('datauri');
 const path = require('path')
 
 const storage = multer.memoryStorage();
-const multerUploads = multer({ storage }).single('image_raw');
+const multerUploads = multer({ storage });
 
 const dUri = new Datauri()
 

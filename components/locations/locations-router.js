@@ -159,7 +159,7 @@ router.put('/', authenticate, (req, res) => {
 //This route requires a token, which determines which location is edited
 //This route requires a form with the image in an image_raw field, and an image_kind, which is either:
 //"thumbnail_image", "street_view_image", "menu_image", or "inside_image"
-router.put('/images', authenticate, multerUploads, cloudinaryConfig, (req, res) => {
+router.put('/images', authenticate, multerUploads.single("image-raw"), cloudinaryConfig, (req, res) => {
   //Get the id from the token
   const id  = req.decodedToken.location_id;
   const locationData = req.body;

@@ -1,6 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("./users-model");
+const cloudinary = require('../../config/cloudinaryConfig.js')
+const multer = require('../../config/multer.js')
+const cloudinaryConfig = cloudinary.cloudinaryConfig
+const uploader = cloudinary.uploader
+const multerUploads = multer.multerUploads
+const dataUri = multer.dataUri
 
 //All Users- for admin/moderation purposes only, no public view
 //GET /Users
@@ -26,6 +32,7 @@ router.get('/dashboard', (req, res) => {
     Users.findById(id)
       .then(user => {
         if (user) {
+          delete user.password
           res.json(user)
         } else {
           res.status(404).json({ message: 'Could not find user with given id.' })
@@ -52,38 +59,48 @@ router.get('/:id', (req, res) => {
         .catch(err => { res.status(500).json({ message: 'Failed to get users' }); });
 });
 
-//
-// //Register User- creates a user reference in our databse.
-// //POST /Users/
-// //Takes in the new user information, adds it to the database, and returns the object.
-// router.post('/', (req, res) => {
-//     const userData = req.body;
-//
-//     Users.add(userData)
-//         .then(user => {
-//             res.status(201).json(user);
-//         })
-//         .catch(err => {
-//             res.status(500).json({ message: 'Failed to create new user' });
-//         });
-//
-// });
+
 
 //Edit Your Info- allow a user to edit their own information.
 //PUT /Users/
 //Takes in the user information, updates the database, and returns the object.
 router.put('/', (req, res) => {
-    const { id } = req.decodedToken.user.user_id;
+    const { id } = req.decodedToken.user_id;
     const userData = req.body;
 
     Users.update(userData, id)
         .then(updatedUser => {
-            res.json(updatedUser);
+            delete updatedUser.password
+            res.status(200).json(updatedUser);
         })
         .catch(err => {
             res.status(500).json({ message: 'Failed to update user' });
         });
 });
+
+router.put('/images', multerUploads.single("image-raw"), cloudinaryConfig,  (req,res) => {
+    const id = req.decodedToken.user_id.toString()
+
+    //store the process image as a 'data-uri'- this is a process that takes an image and essentially "converts" it to a string
+    const file =  dataUri(req)
+
+    //Uploading the image to cloudinary
+     uploader.upload(file.content,
+        // transforming image to make it responsive 
+        { dpr: "auto", responsive: true, width: "auto", crop: "scale"},
+        (error, result) => {
+            // set variable equal to the image url
+            res.locals.image = result.secure_url
+            Users.update({profile_image: res.locals.image}, id)
+            .then(updatedUser => {
+                delete updatedUser.password
+                res.status(200).json(updatedUser)
+            })
+            .catch(err => {
+                res.status(500).json({ message: 'Failed to update user' });
+            })
+        })
+})
 
 //DELETE USER- delete's a user's profile
 //PUT /Users/
