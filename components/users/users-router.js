@@ -65,7 +65,7 @@ router.get('/:id', (req, res) => {
 //PUT /Users/
 //Takes in the user information, updates the database, and returns the object.
 router.put('/', (req, res) => {
-    const { id } = req.decodedToken.user_id;
+    const id = req.decodedToken.user_id.toString();
     const userData = req.body;
 
     Users.update(userData, id)
