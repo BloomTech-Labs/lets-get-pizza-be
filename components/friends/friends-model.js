@@ -19,7 +19,8 @@ function getFriends() {
       "friends.friends_id",
       "friend.username as friend_username",
       "u.profile_image as user_image",
-      "friend.profile_image as friend_image"
+      "friend.profile_image as friend_image",
+      "friend.bio"
     );
 }
 ///insert to friend table
@@ -46,7 +47,8 @@ function getById(id) {
       "friends.friends_id",
       "friend.username as friend_username",
       "u.profile_image",
-      "friend.profile_image as friend_image"
+      "friend.profile_image as friend_image",
+      "friend.bio"
     )
     .where({ user_id: id });
 }
