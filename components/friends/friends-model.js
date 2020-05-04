@@ -1,4 +1,5 @@
 const db = require("../../data/db-config.js");
+const query = require('../model.js')
 
 module.exports = {
   getFriends,
@@ -8,32 +9,32 @@ module.exports = {
   getById,
 };
 
+const select = [
+  "u.username",
+  "u.id",
+  "u.display_name",
+  "friends.friends_id",
+  "friend.username as friend_username"
+]
+
 function getFriends() {
-  return db("friends");
+  return query.find('friends')
 }
 ///insert to friend table
 function insertFriends(friendsData) {
-  return db("friends").insert(friendsData);
+  return query.add('friends', friendsData)
 }
 
 function updateFriend(id, updates) {
-  return db("friends").where("id", id).update(updates);
+  return query.update('friends', updates, id)
 }
 
 function removeFriend(id) {
-  return db("friends").where("id", id).del();
+  return query.remove('friends', id)
 }
 
 function getById(id) {
-  return db("friends")
+  return query.findBy('friends', { user_id: id }, select)
     .join("users as u", "u.id", "friends.user_id")
     .join("users as friend", "friend.id", "friends.friends_id")
-    .select(
-      "u.username",
-      "u.id",
-      "u.display_name",
-      "friends.friends_id",
-      "friend.username as friend_username"
-    )
-    .where({ user_id: id });
 }
