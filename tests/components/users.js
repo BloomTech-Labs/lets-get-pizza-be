@@ -125,20 +125,16 @@ describe("User Tests",  () => {
           it("should return 0 with invalid id", async () => {
               const id = 4
               const updatedUser = await Users.update(updated_values, id)
-
-              expect(updatedUser).toBe(0)
-              expect(updatedUser).toBeFalsy()
+              const errorMatching = {message: 'Undefined binding(s) detected when compiling FIRST. Undefined column(s): [id] query: select * from "users" where "id" = ? limit ?'}
+              expect(updatedUser).toMatchObject(errorMatching)
           })
 
           it("should update user and return 1", async () => {
               const id = 1
               const matchingObject = {...good_user_creds, ...updated_values}
               const updatedUser = await Users.update(updated_values, id)
-              const returnedUser = await Users.findById(id)
 
-              expect(updatedUser).toBe(1)
-              expect(returnedUser).toBeTruthy()
-              expect(returnedUser).toMatchObject(matchingObject)
+              expect(updatedUser).toMatchObject(matchingObject)
           })
       })
 
