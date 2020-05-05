@@ -1,4 +1,4 @@
-const db =  require("../../data/db-config")
+const query = require('../model.js')
 
 module.exports = {
     find,
@@ -9,39 +9,21 @@ module.exports = {
 };
 
 function find() {
-    return db('users')
+    return query.find('users')
 }
 
 function findById(id) {
-    return db('users')
-        .where('id', id)
-        .first();
+    return query.findById('users', id)
 }
 
 function add(user) {
-    return db('users')
-        .insert(user)
-        .returning('id')
-        .then(res => {
-            return findById(res[0])
-        })
-        .catch(err => {
-            console.log(err)
-            return err
-        })
+    return query.add('users', user)
 }
 
 function update(changes, id) {
-    return db('users')
-        .where({id})
-        .update(changes)
-        .then(() => {
-            return findById(id)
-        })
+    return query.update('users', changes, id)
 }
 
 function remove(id) {
-    return db('users')
-        .where('_id', id)
-        .del();
+    return query.remove('users', id)
 }

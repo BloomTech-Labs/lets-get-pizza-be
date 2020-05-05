@@ -1,5 +1,4 @@
-const db = require("../../data/db-config.js");
-
+const query = require('../model')
 module.exports = {
   find,
   findById,
@@ -9,84 +8,44 @@ module.exports = {
   findBy,
 };
 
+const select = [
+  "events.location_id",
+  "events.user_id",
+  "events.id",
+  "events.title",
+  "events.description",
+  "events.start_time",
+  "events.end_time",
+  "locations.business_name",
+  "locations.address"
+]
+
+const join = ["locations", "locations.id", "events.location_id"]
+
 function find() {
-  return db("events")
-    .join("locations", "locations.id", "events.location_id")
-    .select(
-      "events.location_id",
-      "events.user_id",
-      "events.id",
-      "events.title",
-      "events.description",
-      "events.start_time",
-      "events.end_time",
-      "locations.business_name",
-      "locations.address"
-    );
+  return query.find('events', select)
+              .join(...join)
 }
 
+
 function findById(id) {
-  return db("events")
-    .join("locations", "locations.id", "events.location_id")
-    .select(
-      "events.location_id",
-      "events.user_id",
-      "events.id",
-      "events.title",
-      "events.description",
-      "events.start_time",
-      "events.end_time",
-      "locations.business_name",
-      "locations.address"
-    )
-    .where("events.id", id)
-    .first();
+  return query.findById('events', id, select, 'events.id')
+    .join(...join)
 }
 
 function add(event) {
-  return db("events")
-    .insert(event)
-    .returning("id")
-    .then((res) => {
-      return findById(res[0]);
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
+  return query.add('events', event)
 }
 
 function update(changes, id) {
-  return db("events")
-    .where("id", id)
-    .update(changes)
-    .returning("id")
-    .then((res) => {
-      return findById(res[0]);
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
+  return query.update('events', changes, id)
 }
 
 function remove(id) {
-  return db("events").where("id", id).del();
+  return query.remove('events', id)
 }
 
 function findBy(filter) {
-  return db("events")
-    .join("locations", "locations.id", "events.location_id")
-    .select(
-      "events.location_id",
-      "events.user_id",
-      "events.id",
-      "events.title",
-      "events.description",
-      "events.start_time",
-      "events.end_time",
-      "locations.business_name",
-      "locations.address"
-    )
-    .where(filter);
+  return query.findBy('events', filter, select)
+    .join(...join)
 }
