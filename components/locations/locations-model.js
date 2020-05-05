@@ -19,7 +19,7 @@ module.exports = {
 const mapSelect = ['business_name AS name', 'latitude', 'longitude', 'address', 'id AS location_id']
 
 function find() {
-    return db('locations')
+    return query.find('locations')
 }
 
 
