@@ -39,7 +39,7 @@ function removeFriend(id) {
 }
 
 function getById(id) {
-  return query.findById('friends', id , select, "friends.user_id")
+  return query.findBy('friends', {user_id: id}, select,)
     .join("users as u", "u.id", "friends.user_id")
     .join("users as friend", "friend.id", "friends.friends_id")
 }
