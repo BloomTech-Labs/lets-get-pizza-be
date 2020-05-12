@@ -6,10 +6,11 @@ module.exports = {
   removeFriend,
   updateFriend,
   getById,
+  getByUserId
 };
 
 const select = [
-  "u.id",
+  "friends.id",
   "u.username",
   "u.display_name",
   "friends.friends_id",
@@ -38,8 +39,12 @@ function removeFriend(id) {
   return query.remove('friends', id)
 }
 
-function getById(id) {
+function getByUserId(id) {
   return query.findBy('friends', {user_id: id}, select,)
     .join("users as u", "u.id", "friends.user_id")
     .join("users as friend", "friend.id", "friends.friends_id")
+}
+
+function getById(id){
+  return query.findById('friends', id)
 }
