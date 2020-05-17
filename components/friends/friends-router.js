@@ -14,9 +14,13 @@ router.get("/", (req, res) => {
     });
 });
 router.get("/:id", (req, res) => {
-  Friends.getById(req.params.id)
+  Friends.getByUserId(req.params.id)
     .then((friends) => {
-      res.json(friends);
+      if(friends.length > 0){
+        res.json(friends);
+      }else{
+        res.status(404).json({message: 'User currently has no friends'})
+      }
     })
     .catch((error) => {
       res.status(500).json({ message: "Failed to get friends" });
@@ -53,7 +57,7 @@ router.put("/:id", validateFriendId, (req, res) => {
 
 router.delete("/:id", validateFriendId, (req, res) => {
   Friends.removeFriend(req.params.id)
-    .then(() => {
+    .then((deleted) => {
       res.status(200).json({
         success: true,
         message: `friend with id ${req.params.id} was deleted`,
@@ -77,7 +81,7 @@ function validateFriendId(req, res, next) {
         next();
       } else {
         res.status(500).json({
-          message: "No friend with this ID exists",
+          message: "Incorrect ID provided",
         });
       }
     })

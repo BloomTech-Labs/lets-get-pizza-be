@@ -1,4 +1,5 @@
 const db = require("../../data/db-config")
+const query = require('../model.js')
 
 module.exports = {
     find,
@@ -15,15 +16,16 @@ module.exports = {
     remove
 };
 
+const mapSelect = ['business_name AS name', 'latitude', 'longitude', 'address', 'id AS location_id']
+
 function find() {
-    return db('locations')
+    return query.find('locations')
 }
 
 
 function findClosestMapLocations(latitude, longitude) {
     const searchRadius = .5
-    return db('locations')
-    .select('business_name AS name', 'latitude', 'longitude', 'address', 'id AS location_id')
+    return query.find('locations', mapSelect)
     .where(function() {
       this.where(function() {
         this.where('latitude', '>', latitude - searchRadius).andWhere('latitude', '<', latitude + searchRadius)
@@ -36,8 +38,7 @@ function findClosestMapLocations(latitude, longitude) {
 
 function findSearchLocations(latitude, longitude) {
     const searchRadius = .5
-    return db('locations')
-    .select('business_name AS name', 'address', 'id AS location_id')
+    return query.find('locations', mapSelect)
     .where(function() {
       this.where(function() {
         this.where('latitude', '>', latitude - searchRadius).andWhere('latitude', '<', latitude + searchRadius)
@@ -49,31 +50,19 @@ function findSearchLocations(latitude, longitude) {
 
 
 function findById(id) {
-    return db('locations')
-        .where('id', id)
-        .first();
+    return query.findById('locations', id)
 }
 
 
 function findByFoursquareId(id) {
-    return db('locations')
-        .where('foursquare_id', id)
-        .first();
+    return query.findBy('locations', {'foursquare_id': id})
 }
 
 function getReviews(id) {
-    return db('reviews as r').where('r.location_id', id)
+    const select = [ 'r.id','u.id','u.username','u.display_name','u.profile_image','r.rating','r.review_title','r.review_text']
+    
+    return query.findBy('reviews as r', {'r.location_id': id}, select)
         .join('users as u', 'u.id', 'r.user_id')
-        .select(
-            'r.id',
-            'u.id',
-            'u.username',
-            'u.display_name',
-            'u.profile_image',
-            'r.rating',
-            'r.review_title',
-            'r.review_text'
-        )
 }
 
 function getAverageRating(id) {
@@ -81,54 +70,25 @@ function getAverageRating(id) {
 }
 
 function getPromotions(id) {
-    return db('promotions').where('location_id', id);
+    return query.findBy('promotions', {location_id: id})
 }
 
 function getEvents(id) {
-    return db('events as e').where('e.location_id', id)
+    const select = ['e.id as id', 'u.id as user_id', 'u.username', 'u.display_name', 'u.profile_image', 'e.title', 'e.description', 'e.start_time', 'e.end_time']
+
+    return query.findBy('events as e', {'e.location_id': id}, select)
         .join('users as u', 'u.id', 'e.user_id')
-        .select(
-            'e.id',
-            'u.id',
-            'u.username',
-            'u.display_name',
-            'u.profile_image',
-            'e.title',
-            'e.description',
-            'e.start_time',
-            'e.end_time'
-        );
+
 }
 
 function add(location) {
-    return db('locations')
-        .insert(location)
-        .returning('id')
-        .then(res => {
-            return findById(res[0])
-        })
-        .catch(err => {
-            console.log(err)
-            return err
-        })
+    return query.add('locations', location)
 }
 
 function update(changes, id) {
-    return db('locations')
-        .where('id', id)
-        .update(changes)
-        .returning('id')
-        .then(res => {
-            return findById(res[0])
-        })
-        .catch(err => {
-            console.log(err)
-            return err
-        })
+    return query.update('locations', changes, id)
 }
 
 function remove(id) {
-    return db('locations')
-        .where('id', id)
-        .del();
+    return query.remove('locations', id)
 }
