@@ -51,8 +51,7 @@ exports.seed = function (knex, Promise) {
       address: "30 pizza st",
       website_url: "www.papajohns.com",
       official_description: "The Papa of Pizza",
-      thumbnail_image:
-        "https://res.cloudinary.com/plza/image/upload/v1589334585/pizzaIcon_vt9vq9.png",
+      thumbnail_image: "https://res.cloudinary.com/plza/image/upload/v1589334585/pizzaIcon_vt9vq9.png",
       street_view_image: "google.com/3.jpg",
       order_service: "Waitr",
       store_bio: "We said some racist stuff but we still got some pizza here",
