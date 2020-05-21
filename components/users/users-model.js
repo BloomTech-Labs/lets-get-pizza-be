@@ -5,7 +5,8 @@ module.exports = {
     findById,
     add,
     update,
-    remove
+    remove,
+    findBy
 };
 
 function find() {
@@ -14,6 +15,10 @@ function find() {
 
 function findById(id) {
     return query.findById('users', id)
+}
+
+function findBy(filter) {
+    return query.findBy('users', filter)
 }
 
 function add(user) {
