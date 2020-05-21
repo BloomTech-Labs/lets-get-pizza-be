@@ -99,6 +99,25 @@ describe("User Tests",  () => {
           })
       })
 
+      describe('Find By Model', () => {
+          beforeEach(async () => {
+              await knexCleaner.clean(db)
+              await Users.add(good_user_creds)
+          })
+
+          it('should return with array of users', async () => {
+              const users = await Users.findBy({username: 'testuser'})
+
+              expect(users).toHaveLength(1)
+          })
+
+          it('should return an empty array with unmatched username', async () => {
+              const users = await Users.findBy({username: 'JDawg'})
+
+              expect(users).toHaveLength(0)
+          })
+      })
+
       describe("Add Model", () => {
           beforeEach(async () => {
               await knexCleaner.clean(db)
