@@ -59,6 +59,26 @@ router.get('/:id', (req, res) => {
         .catch(err => { res.status(500).json({ message: 'Failed to get users' }); });
 });
 
+// User Search By Username
+// GET /users?username=buddy
+// Returns an arry of user objects whose
+// username includes query string passed in 
+// will return 500 error if no query param present
+
+router.get('/', (req, res) => {
+    const { username } = req.query
+    Users.find()
+        .then(users => {
+            const filtered = users.filter(user => user.username.toLowerCase().includes(username.toLowerCase()))
+            res.status(200).json({users: filtered})
+        })
+        .catch(err => {
+            res.status(500).json({message: 'There was an error', error: err})
+        })
+})
+
+
+
 
 
 //Edit Your Info- allow a user to edit their own information.
