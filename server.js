@@ -16,6 +16,8 @@ const EventRouter = require("./components/events/events-router");
 
 const FriendsRouter = require("./components/friends/friends-router");
 
+const SavedPromosRouter = require("./components/savedPromos/promos-router");
+
 const server = express();
 
 server.use(helmet());
@@ -29,6 +31,7 @@ server.use("/api/auth/location", locationauthRouter);
 //Once authorized need to be authenticated and then allowed to use application
 server.use("/api/users", authenticate, UserRouter);
 server.use("/api/locations", LocationRouter);
+server.use("/api/savedPromos", SavedPromosRouter);
 
 //Main components between users/locations
 server.use("/api/reviews", ReviewRouter);
