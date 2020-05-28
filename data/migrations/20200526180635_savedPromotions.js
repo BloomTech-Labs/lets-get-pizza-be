@@ -1,6 +1,5 @@
 exports.up = function (knex) {
   return knex.schema.createTable("savedPromos", (promos) => {
-    promos.increments("user_promo_id");
     promos
       .integer("user_id")
       .references("id")
