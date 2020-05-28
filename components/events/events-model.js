@@ -1,3 +1,4 @@
+const db = require('../../data/db-config.js')
 const query = require('../model')
 module.exports = {
   find,
@@ -6,6 +7,7 @@ module.exports = {
   update,
   remove,
   findBy,
+  findByLocId
 };
 
 const select = [
@@ -48,4 +50,9 @@ function remove(id) {
 function findBy(filter) {
   return query.findBy('events', filter, select)
     .join(...join)
+}
+
+function findByLocId(id) {
+  return db('events')
+    .where('location_id', id)
 }
