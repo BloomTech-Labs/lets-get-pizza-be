@@ -1,4 +1,3 @@
-const db = require('../../data/db-config.js')
 const query = require('../model')
 module.exports = {
   find,
@@ -53,6 +52,6 @@ function findBy(filter) {
 }
 
 function findByLocId(id) {
-  return db('events')
-    .where('location_id', id)
+  return query.find('events')
+    .where('location_id', id);
 }
