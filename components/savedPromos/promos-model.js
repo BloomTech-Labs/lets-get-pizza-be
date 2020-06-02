@@ -36,12 +36,15 @@ function findBy(filter) {
   return query
     .findBy("savedPromos", filter)
     .join("promotions as p", "p.id", "savedPromos.promo_id")
+    .join("locations as l", "l.id", "p.location_id")
     .select(
       "p.location_id",
       "p.title",
       "p.text",
       "savedPromos.promo_id",
       "savedPromos.user_id",
-      "savedPromos.id"
+      "savedPromos.id",
+      "l.business_name",
+      "l.address"
     );
 }
