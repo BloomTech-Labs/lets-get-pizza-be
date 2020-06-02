@@ -54,6 +54,27 @@ router.post('/login', (req, res) => {
         })
 });
 
+router.post('/refresh', (req, res) => {
+    const { username } = req.body
+
+    db("users").where({ username }).first()
+       .then(user => {
+           if(user){
+               const token = generateToken(user)
+               res.status(200).json({ token })
+           }else {
+               res.status(401).json({
+                   message: 'Invalid username'
+               })
+           }
+       })
+       .catch(({ message }) => {
+           res.status(500).json({
+               message
+           })
+       })
+})
+
 function generateToken(user) {
     //Header payload and verify signature
     const payload = {
