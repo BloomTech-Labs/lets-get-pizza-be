@@ -6,6 +6,7 @@ module.exports = {
   update,
   remove,
   findBy,
+  findByLocId
 };
 
 const select = [
@@ -48,4 +49,9 @@ function remove(id) {
 function findBy(filter) {
   return query.findBy('events', filter, select)
     .join(...join)
+}
+
+function findByLocId(id) {
+  return query.find('events')
+    .where('location_id', id);
 }

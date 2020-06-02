@@ -79,4 +79,16 @@ router.get("/users/:id", (req, res) => {
     });
 });
 
+router.get("/locations/:id", (req, res) => {
+  let loc_id = req.params.id;
+  Events.findByLocId(loc_id)
+    .then((event) => {
+      res.json(event);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+      console.log(err);
+    })
+})
+
 module.exports = router;
