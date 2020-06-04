@@ -80,7 +80,6 @@ router.get('/live/:foursquare_id', async (req, res) => {
   }
   catch {
     res.status(500).json({message: "Error reading from foursquare", normalizedFoursquareResult})
-    return
   }
   const location = await Locations.add(normalizedFoursquareResult)
   
