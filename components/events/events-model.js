@@ -9,7 +9,9 @@ module.exports = {
   findByLocId,
   inviteFriend,
   updateInvite,
-  findInvitedEvents
+  findInvitedEvents,
+  getInvitesByEvent,
+  getInviteById
 };
 
 const select = [
@@ -70,4 +72,12 @@ function updateInvite(info, id) {
 function findInvitedEvents(filter) {
   return query.findBy('eventinvites as EI', filter, ['e.*', "EI.response"])
     .join('events as e', "EI.event_id", "e.id")
+}
+
+function getInvitesByEvent(filter) {
+  return query.findBy('eventinvites', filter)
+}
+
+function getInviteById(id) {
+  return query.findById('eventinvites', id)
 }
