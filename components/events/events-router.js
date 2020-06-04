@@ -14,22 +14,10 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
+router.get("/:id", validateById, (req, res) => {
+  res.status(200).json({event: req.event})
 
-  Events.findById(id)
-    .then((event) => {
-      if (event) {
-        res.json(event);
-      } else {
-        res
-          .status(404)
-          .json({ message: "Could not find event with given id." });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ message: "Failed to get events" });
-    });
+  
 });
 
 router.post("/", (req, res) => {
@@ -44,7 +32,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", validateById, (req, res) => {
   const { id } = req.params;
   const eventData = req.body;
 
@@ -57,7 +45,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateById, (req, res) => {
   const { id } = req.params;
   Events.remove(id)
     .then((deleted) => {
@@ -80,9 +68,9 @@ router.get("/users/:id", (req, res) => {
     Events.findBy({ user_id }),
     Events.findInvitedEvents({invitee_user_id: user_id})
   ])
-  .then(([created, invited]) => {
-    res.status(200).json({createdEvents: created, invitedEvents: invited})
-  })
+    .then(([created, invited]) => {
+      res.status(200).json({createdEvents: created, invitedEvents: invited})
+    })
     .catch((err) => {
       res.status(500).json(err);
     });
@@ -96,18 +84,17 @@ router.get("/locations/:id", (req, res) => {
     })
     .catch((err) => {
       res.status(500).json(err);
-      console.log(err);
     })
 })
 
 // Invite a user to an event
 // Body must include the following
 // inviter_user_id, invitee_user_id
-router.post("/:id/invite", (req, res) => {
+router.post("/:id/invite", validateById, validateInviteInfo, validateEventCreator, validateNotInvited, (req, res) => {
   let { id } = req.params
   let invite = {
     event_id: parseInt(id),
-    ...req.body
+    ...req.invite
   }
 
   Events.inviteFriend(invite)
@@ -122,7 +109,7 @@ router.post("/:id/invite", (req, res) => {
 // Update response for event invite
 // Body should only include
 // response
-router.put("/:id/invite/:invite_id", (req, res) => {
+router.put("/:id/invite/:invite_id", validateById, validateInviteById, validateResponse, (req, res) => {
   let id = parseInt(req.params.invite_id)
   let updates = {
     response: req.body.response.toLowerCase() 
@@ -135,5 +122,99 @@ router.put("/:id/invite/:invite_id", (req, res) => {
       res.status(500).json(err)
     })
 })
+
+// Custom Middleware
+
+function validateById(req, res, next) {
+  let { id } = req.params
+  Events.findById(id)
+    .then(event => {
+      if(event){
+        req.event = event
+        next()
+      } else {
+        res.status(404).json({message: "No event with the given ID"})
+      }
+    })
+    .catch(() => {
+      res.status(500).json({message: "There was an error getting the event"})
+    })
+}
+
+function validateInviteInfo(req, res, next) {
+  let validation = ["invitee_user_id", "inviter_user_id"]
+  
+  // Make array of object's keys
+  let request = Object.keys(req.body)
+
+  validation.forEach(key => {
+    if(!request.includes(key)){
+      res.status(400).json({message: `Missing required field ${key}`})
+    }
+  })
+  
+  req.invite = {
+    invitee_user_id: req.body.invitee_user_id,
+    inviter_user_id: req.body.inviter_user_id
+  }
+
+  next()
+}
+
+function validateNotInvited(req, res, next) {
+  let { id } = req.params
+  let { invitee_user_id } = req.invite
+  let filter = {event_id: id}
+
+  Events.getInvitesByEvent(filter)
+    .then(events => {
+      let filtered = events.filter(event => event.invitee_user_id === invitee_user_id)
+      return filtered
+    })
+    .then(invites => {
+      if(invites.length !== 0) {
+        res.status(404).json({message: `User with ID: ${invitee_user_id} has already been invited`})
+      } else {
+        next()
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: "There was an error with your invite"})
+    })
+}
+
+function validateEventCreator(req, res, next) {
+  let { inviter_user_id } = req.invite
+
+  if(req.event.user_id === inviter_user_id) {
+    next()
+  } else{
+    res.status(401).json({message: `User with ID: ${inviter_user_id} does not have proper access`})
+  }
+}
+
+function validateInviteById(req, res, next) {
+  let id = req.params.invite_id
+
+  Events.getInviteById(id)
+    .then(event => {
+      if(event){
+        next()
+      }else {
+        res.status(404).json({message: "No invite with given id"})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: "There was an error with your invite"})
+    })
+}
+
+function validateResponse(req, res, next) {
+  if(!req.body.response) {
+    res.status(400).json({message: "Missing required response field"})
+  }else {
+    next()
+  }
+}
 
 module.exports = router;
