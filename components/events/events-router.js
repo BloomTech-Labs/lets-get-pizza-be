@@ -109,6 +109,8 @@ router.post("/:id/invite", validateById, validateInviteInfo, validateEventCreato
 // Update response for event invite
 // Body should only include
 // response
+// @id -> event id
+// @invite_id -> invite id
 router.put("/:id/invite/:invite_id", validateById, validateInviteById, validateResponse, (req, res) => {
   let id = parseInt(req.params.invite_id)
   let updates = {
@@ -120,6 +122,19 @@ router.put("/:id/invite/:invite_id", validateById, validateInviteById, validateR
     })
     .catch(err => {
       res.status(500).json(err)
+    })
+})
+
+// Get all invites for single event
+router.get("/:id/invites", validateById, (req, res) => {
+  let id = parseInt(req.params.id)
+
+  Events.getInvitesByEvent({event_id: id})
+    .then(invites => {
+      res.status(200).json(invites)
+    })
+    .catch(err => {
+      res.status(500).json({message: "Error retrieving invites"})
     })
 })
 
