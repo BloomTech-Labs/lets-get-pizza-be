@@ -19,7 +19,8 @@ exports.up = function (knex) {
       .notNullable()
       .onUpdate("CASCADE")
       .onDelete("CASCADE")
-  
+    
+      // response options should be `pending`, `accepted`, `interested`, `declined` 
     EI.string("response", 128)
       .defaultTo("pending")
     });

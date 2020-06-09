@@ -225,9 +225,12 @@ function validateInviteById(req, res, next) {
 }
 
 function validateResponse(req, res, next) {
+  const responses = ['accepted', 'interested', 'declined']
   if(!req.body.response) {
     res.status(400).json({message: "Missing required response field"})
-  }else {
+  }else if(!responses.includes(req.body.response.toLowerCase())) {
+    res.status(400).json({message: "Response must be one of the following: accepted, interested, declined"})
+  } else {
     next()
   }
 }
