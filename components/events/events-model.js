@@ -70,9 +70,10 @@ function updateInvite(info, id) {
 }
 
 function findInvitedEvents(filter) {
-  return query.findBy('eventinvites as EI', filter, ['e.*', "EI.response", "EI.id as event_invite_id", "l.business_name"])
+  return query.findBy('eventinvites as EI', filter, ['e.*', "EI.response", "EI.id as event_invite_id", "l.business_name", 'u.username'])
     .join('events as e', "EI.event_id", "e.id")
     .join('locations as l', "l.id", "e.location_id")
+    .join('users as u', 'u.id', 'EI.inviter_user_id')
 }
 
 function getInvitesByEvent(filter) {
