@@ -6,7 +6,7 @@ const Promotions = require('../../components/promotions/promotions-model')
 // Promotions Dummy Data 
 const good_promotion_details = {location_id: 1, title: "COVID-19 Pizza Party", text: "Social Diastance with a pizza pie", start_date: "4/16/2020", end_date: "5/18/2020"}
 const bad_promotion_details = {location_id: 6, title: null, text: null, start_date: "4/20/2020"}
-const updated_promotion_details = {title: "NFL Draft Party", text: "25% of pizza when your team is drafting"}
+const updated_promotion_details = {title: "NFL Draft Party", text: "25% off pizza when your team is drafting"}
 const match_promotion_details = {location_id: 1, title: "COVID-19 Pizza Party", text: "Social Diastance with a pizza pie"}
 
 
@@ -14,13 +14,9 @@ const match_promotion_details = {location_id: 1, title: "COVID-19 Pizza Party", 
 const location_creds = {business_name: "testlocation", email: "testlocation@location.com", password: "test", latitude: 29.201598971549644, longitude: -98.66165965560205, address: "123 Test Drive"}
 
 describe("Promotions Tests", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await knexCleaner.clean(db)
         await db('locations').insert(location_creds)
-    })
-
-    beforeEach(async () => {
-        await db("promotions").truncate()
     })
 
     it("Finding promotion tests", async () => {
@@ -106,7 +102,7 @@ describe("Promotions Tests", () => {
             expect(returned).toBeFalsy()
         })
 
-        it("should return error when passed wrong id", async () => {
+        it("should remove the item", async () => {
             const id = 1
             const returned = await Promotions.remove(id)
 
