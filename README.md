@@ -30,28 +30,6 @@ Geocoding/GeoIP
 
 ## 2️⃣ Endpoints OVERVIEW
 
-#### Location Routes
-
-| Method | Endpoint                         | Access Control | Description                                                               |
-| ------ | -----------------------          | -------------- | --------------------------------------------                              |
-| GET    | '/locations/map'                 | all            | Returns an array of close pizza places, and their latitude and longitude  |
-| GET    | '/locations/list'                | all            | Returns an array of close pizza places, and their thumbnail, if available |
-| GET    | '/locations/live/:foursquare_id' | all            | Gets the information from a foursquare id and maps it to the database     |
-| GET    | '/locations/:id'                 | all            | Gets the information for a location from the database                     |
-| GET    | '/locations/dashboard'           | location       | Gets the locations information for display                                |
-| PUT    | '/locations'                     | location       | Edits the information for the logged in location                          |
-| DELETE | '/locations'                     | location       | Deletes the location.                                                     |
-
-
-#### User Routes
-
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/dashboard`      | user                | Returns info for the logged in user.               |
-| GET    | `/users/:id`            | user                | Returns any users information                      |
-| PUT    | `/users`                | user                | Returns info for a single user.                    |
-| DELETE | `/users`                | user                | Deletes the user's account                         |
-
 
 #### Auth Routes
 
@@ -60,6 +38,76 @@ Geocoding/GeoIP
 | POST   | `/auth/register`        | none                | Registers a user & logs them in.                   |
 | POST   | `/auth/login`           | none                | Logs the user in and returns a token.              |
 
+
+#### User Routes
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET    | `/users/dashboard`      | user                | Returns info for the logged in user.               |
+| GET    | `/users/   `            | user                | Returns an array of all users                      |
+| GET    | `/users/:id`            | user                | Returns any users information                      |
+| PUT    | `/users`                | user                | Returns info for a single user.                    |
+| PUT    | `/users/images`         | user                | Adds profile image and returns info for the user   |
+| DELETE | `/users`                | user                | Deletes the user's account                         |
+
+
+#### Location Routes
+
+| Method | Endpoint                         | Access Control | Description                                                               |
+| ------ | -------------------------------- | -------------- | ------------------------------------------------------------------------- |
+| GET    | `/locations/map`                 | all            | Returns an array of close pizza places, and their latitude and longitude  |
+| GET    | `/locations/list`                | all            | Returns an array of close pizza places, and their thumbnail, if available |
+| GET    | `/locations/live/:foursquare_id` | all            | Gets the information from a foursquare id and maps it to the database     |
+| GET    | `/locations/:id`                 | all            | Gets the information for a location from the database                     |
+| GET    | `/locations/dashboard`           | location       | Gets the locations information for display                                |
+| PUT    | `/locations`                     | location       | Edits the information for the logged in location                          |
+| PUT    | `/locations/images`              | location       | Adds an image for the logged in location                                  |
+| DELETE | `/locations`                     | location       | Deletes the location.                                                     |
+
+
+#### Events Routes
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/events`                       | all                 | Returns an array of all created events                                          |
+| GET    | `/events/:id`                   | all                 | Returns all info for a single event                                             |
+| GET    | `/events/users/:id`             | all                 | Returns an object with two arrays of events , created events and invited events |
+| GET    | `/events/locations/:id`         | all                 | Returns an array of all events at a single location                             | 
+| GET    | `/events/:id/invites`           | all                 | Returns an array of all invites for an event                                    |
+| POST   | `/events`                       | all                 | Creates an event and returns the info                                           |
+| POST   | `/events/:id/invite`            | all                 | Creates an event invitation and returns invite info                             |
+| PUT    | `/events/:id/invite/:invite_id` | all                 | Updates event invite and returns an object with all invite info                 |
+| PUT    | `/events/:id`                   | all                 | Updates event info and returns all info for single event                        |
+| DELETE | `/events/:id`                   | all                 | Deletes a specific event                                                       |
+
+
+#### Friends Routes
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/friends`                      | all                 | Returns an array of all friendships                                             |
+| GET    | `/friends/:id`                  | all                 | Returns info for a single friendship                                            |
+| POST   | `/friends`                      | all                 | Creates a friendship instance and returns friendship info                       |
+| PUT    | `/friends/:id`                  | all                 | Updates info for a specific friendship instance                                 |
+| DELETE | `/friends/:id`                  | all                 | Deletes friendship instance from databse                                        |
+
+
+#### Promotions Routes
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/promotions`                   | all                 | Returns an array of all promotions                                              |
+| GET    | `/promotions/:id`               | all                 | Returns all info for a single event                                             |
+| POST   | `/promotions`                   | all                 | Creates a new promotion                                                         |
+| PUT    | `/promotions/:id`               | all                 | Updates a single promotions details and returns all info for that promotion     |
+| DELETE | `/promotions/:id`               | all                 | Deletes the promotion                                                           |
+
+
+#### Reviews Routes
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/reviews`                      | all                 | Returns an array of all reviews in the database                                 |
 
 
 ## 2️⃣ Endpoints OVERVIEW
@@ -71,7 +119,7 @@ Geocoding/GeoIP
  --------------------------------
 Automatically finds a users location based on IP.
 Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
-
+```javascript
 [
     {
         "name": "Dominoes Pizza",
@@ -88,7 +136,7 @@ Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
         "foursquare_id": "47e100b9f964a520414e1fe3"
     },
 ]
-
+```
 ---------------------------------
  GET '/locations/list'
  --------------------------------  
@@ -164,24 +212,6 @@ Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
 | GET    | '/locations/dashboard'           | location       | Gets the locations information for display                                |
 | PUT    | '/locations'                     | location       | Edits the information for the logged in location                          |
 | DELETE | '/locations'                     | location       | Deletes the location.                                                     |
-
-
-#### User Routes
-
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/dashboard`      | user                | Returns info for the logged in user.               |
-| GET    | `/users/:id`            | user                | Returns any users information                      |
-| PUT    | `/users`                | user                | Returns info for a single user.                    |
-| DELETE | `/users`                | user                | Deletes the user's account                         |
-
-
-#### Auth Routes
-
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| POST   | `/auth/register`        | none                | Registers a user & logs them in.                   |
-| POST   | `/auth/login`           | none                | Logs the user in and returns a token.              |
 
 
 
