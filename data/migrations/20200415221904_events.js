@@ -16,9 +16,9 @@ exports.up = function (knex, Promise) {
     //description
     events.string("description").notNullable();
     //start_time
-    events.datetime("start_time").notNullable();
+    events.datetime("start_time", options={ useTz: false }).notNullable();
     //end_time
-    events.datetime("end_time ").notNullable();
+    events.datetime('end_time ', options={ useTz: false }).notNullable();
   });
 };
 exports.down = function (knex, Promise) {
