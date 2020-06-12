@@ -31,7 +31,7 @@ Geocoding/GeoIP
 ## 2️⃣ Endpoints OVERVIEW
 
 
-#### Auth Routes
+### [Auth Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#auth-routes-1)
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
@@ -39,7 +39,7 @@ Geocoding/GeoIP
 | POST   | `/auth/login`           | none                | Logs the user in and returns a token.              |
 
 
-#### User Routes
+### [User Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#user-routes-1)
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
@@ -51,7 +51,7 @@ Geocoding/GeoIP
 | DELETE | `/users`                | user                | Deletes the user's account                         |
 
 
-#### Location Routes
+### [Location Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#location-routes-1)
 
 | Method | Endpoint                         | Access Control | Description                                                               |
 | ------ | -------------------------------- | -------------- | ------------------------------------------------------------------------- |
@@ -65,7 +65,7 @@ Geocoding/GeoIP
 | DELETE | `/locations`                     | location       | Deletes the location.                                                     |
 
 
-#### Events Routes
+### [Events Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#events-routes-1)
 
 | Method | Endpoint                        | Access Control      | Description                                                                     |
 | ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
@@ -81,7 +81,7 @@ Geocoding/GeoIP
 | DELETE | `/events/:id`                   | all                 | Deletes a specific event                                                       |
 
 
-#### Friends Routes
+### [Friends Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#friends-routes-1)
 
 | Method | Endpoint                        | Access Control      | Description                                                                     |
 | ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
@@ -92,7 +92,7 @@ Geocoding/GeoIP
 | DELETE | `/friends/:id`                  | all                 | Deletes friendship instance from databse                                        |
 
 
-#### Promotions Routes
+### [Promotions Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#promotions-routes-1)
 
 | Method | Endpoint                        | Access Control      | Description                                                                     |
 | ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
@@ -103,14 +103,180 @@ Geocoding/GeoIP
 | DELETE | `/promotions/:id`               | all                 | Deletes the promotion                                                           |
 
 
-#### Reviews Routes
+### [Reviews Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#reviews-routes-1)
 
 | Method | Endpoint                        | Access Control      | Description                                                                     |
 | ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
 | GET    | `/reviews`                      | all                 | Returns an array of all reviews in the database                                 |
+| GET    | `/reviews/:id`                  | all                 | Returns all information for a single review                                     |
+| GET    | `/reviews/users/:id`            | all                 | Returns an array of all reviews for a single user                               |
+| POST   | `/reviews/`                     | all                 | Creates a review instance in db and returns review information                  |
+| PUT    | `/reviews/:id`                   | all                 | Updates information for the provided review                                     |
+| DELETE | `/reviews/:id`                   | all                 | Deletes the review                                                              |
 
 
-## 2️⃣ Endpoints OVERVIEW
+### [Saved Promos Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#saved-promo-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/savedPromos/users/:id`        | all                 | Returns all saved promotions for given user                                     |
+| POST   | `/savedPromos/`                 | all                 | Creates a saved promotion instance                                              |
+| DELETE | `/savedPromos/:id`              | all                 | Deletes the saved promotion                                                     |
+
+## Data Model
+
+#### Users
+-------------------
+```javascript
+{
+    id: INT,
+    username: STRING,
+    email: STRING,
+    profile_image: STRING,
+    display_name: STRING,
+    dietary_preference: ARRAY,
+    favorite_pizza_toppings: STRING,
+    display_location: STRING,
+    favorite_pizza_shop: STRING,
+    bio: STRING
+}
+```
+
+#### Locations
+-------------------
+```javascript
+{
+    id: INT,
+    last_name: STRING
+    username: STRING,
+    email: STRING,
+    password: STRING,
+    first_name: STRING,
+    update_foursquare: BOOLEAN,
+    phone_number: STRING,
+    foursquare_id: STRING
+    business_name: STRING,
+    latitude: DOUBLE,
+    longitude: DOUBLE,
+    address: STRING,
+    website_url: STRING,
+    official_description: STRING,
+    thumbnail_image: STRING,
+    inside_image: STRING,
+    street_view_image: STRING,
+    menu_image: STRING,
+    order_service: STRING,
+    store_bio: STRING,
+    dietary_offerings: ARRAY
+}
+```
+
+#### Event
+-------------------
+```javascript
+{
+    id: INT,
+    user_id: INT,
+    location_id: INT,
+    title: STRING,
+    description: STRING,
+    start_time: DATETIME,
+    end_time: DATETIME
+}
+```
+
+#### Friend
+------------------- 
+```javascript
+{
+    id: INT,
+    user_id: INT,
+    friens_id: INT,
+    status: STRING
+}
+```
+
+#### Promotion
+-------------------
+```javascript
+{
+    id: INT,
+    location_id: INT,
+    title: STRING,
+    text: STRING,
+    start_date: DATETIME,
+    end_date: DATETIME
+}
+```
+
+#### Review 
+-------------------
+```javascript
+{
+    id: INT,
+    user_id: INT,
+    location_id: INT,
+    rating: INT,
+    review_title: STRING,
+    review_text: STRING
+}
+```
+
+#### Saved Promo
+-------------------
+```javascript
+{
+    id: INT,
+    user_id: INT,
+    promo_id: INT
+}
+```
+
+### Auth Routes
+
+---------------------------------
+#### POST '/auth/register'
+ --------------------------------
+ 
+```javascript
+{
+    token: "XXXXXXXXXX",
+    user: {
+        id: 11,
+        username: "pizzalover",
+        email: "iluvpizza@test.com",
+        profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+        display_name: null,
+        dietary_preference: null,
+        favorite_pizza_toppings: null,
+        display_location: null,
+        favorite_pizza_shop: null,
+        bio: null
+    }
+}
+```
+
+----------------------------------
+#### POST 'auth/user/login'
+ ---------------------------------
+```javascript
+{
+    message: "Welome pizzalover",
+    token: "XXXXXXXXX",
+    user: {
+        id: 11,
+        username: "pizzalover",
+        email: "iluvpizza@test.com",
+        profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+        display_name: null,
+        dietary_preference: null,
+        favorite_pizza_toppings: null,
+        display_location: null,
+        favorite_pizza_shop: null,
+        bio: null
+    }
+}
+```
 
 #### Location Routes
 
@@ -118,22 +284,22 @@ Geocoding/GeoIP
  GET '/locations/map'
  --------------------------------
 Automatically finds a users location based on IP.
-Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
+Also takes a search parameter to adjust. (City, City,State, Zip)
 ```javascript
 [
     {
-        "name": "Dominoes Pizza",
-        "latitude": 40.7050150708864,
-        "longitude": -73.9336165250072,
-        "address": "13 pizza rd",
-        "location_id": 25
+        name: Dominoes Pizza,
+        latitude: 40.7050150708864,
+        longitude: -73.9336165250072,
+        address: 13 pizza rd,
+        location_id: 25
     },
     {
-        "name": "Roberta's Pizza",
-        "latitude": 40.70501507088636,
-        "longitude": -73.93361652500724,
-        "address": "261 Moore St",
-        "foursquare_id": "47e100b9f964a520414e1fe3"
+        name: Roberta's Pizza,
+        latitude: 40.70501507088636,
+        longitude: -73.93361652500724,
+        address: 261 Moore St,
+        foursquare_id: 47e100b9f964a520414e1fe3
     },
 ]
 ```
@@ -141,20 +307,20 @@ Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
  GET '/locations/list'
  --------------------------------  
  Automatically finds a users location based on IP.
- Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
+ Also takes a search parameter to adjust. (City, City,State, Zip)
 
  Returns:
  [
     {
-        "name": "Dominoes Pizza",
-        "address": "13 pizza rd",
-        "thumbnail_url": "dominoes.com/1.jpg",
-        "location_id": 25
+        name: Dominoes Pizza,
+        address: 13 pizza rd,
+        thumbnail_url: dominoes.com/1.jpg,
+        location_id: 25
     },
     {
-        "name": "Roberta's Pizza",
-        "address": "261 Moore St",
-        "foursquare_id": "47e100b9f964a520414e1fe3"
+        name: Roberta's Pizza,
+        address: 261 Moore St,
+        foursquare_id: 47e100b9f964a520414e1fe3
     },
     ...
  ]
@@ -167,46 +333,46 @@ Also takes a "search" parameter to adjust. ("City", "City,State", "Zip")
 
  Returns:
  {
-    "foursquare_id": "4a593de0f964a52015b91fe3",
-    "business_name": "Saraghina",
-    "latitude": 40.68359,
-    "longitude": -73.93534,
-    "address": [
-        "435 Halsey St (at Lewis Ave)",
-        "Brooklyn, NY 11233",
-        "United States"
+    foursquare_id: 4a593de0f964a52015b91fe3,
+    business_name: Saraghina,
+    latitude: 40.68359,
+    longitude: -73.93534,
+    address: [
+        435 Halsey St (at Lewis Ave),
+        Brooklyn, NY 11233,
+        United States
     ],
-    "website_url": "http://www.saraghina.com"
+    website_url: http://www.saraghina.com
 }
 
 ---------------------------------
  GET '/locations/:id'
  --------------------------------  
  Returns the location item from the database.
- If "update_foursquare" is true, then it is updated before returned.
+ If update_foursquare is true, then it is updated before returned.
 
 {
-    "id": 25,
-    "username": "dominoes",
-    "email": "betty@dominoes.com",
-    "password": "pizza1", **password is removed before returning location object
-    "first_name": "Noes",
-    "foursquare_id": "13",
-    "update_foursquare": null,
-    "business_name": "Dominoes Pizza",
-    "address": "13 pizza rd",
-    "website_url": "www.dominoes.com",
-    "official_description": "The Old Boardgame of Pizza",
-    "thumbnail_url": "dominoes.com/1.jpg",
-    "street_view_image": "google.com/2.jpg",
-    "order_service": "We Deliver!",
-    "store_bio": "Theres pizza here and you can eat some",
-    "dietary_offerings": [
-        "Even the cheese is meat"
+    id: 25,
+    username: dominoes,
+    email: betty@dominoes.com,
+    password: pizza1, **password is removed before returning location object
+    first_name: Noes,
+    foursquare_id: 13,
+    update_foursquare: null,
+    business_name: Dominoes Pizza,
+    address: 13 pizza rd,
+    website_url: www.dominoes.com,
+    official_description: The Old Boardgame of Pizza,
+    thumbnail_url: dominoes.com/1.jpg,
+    street_view_image: google.com/2.jpg,
+    order_service: We Deliver!,
+    store_bio: Theres pizza here and you can eat some,
+    dietary_offerings: [
+        Even the cheese is meat
     ],
-    "latitude": 40.7050150708864,
-    "longitude": -73.9336165250072,
-    "last_name": "Dom"
+    latitude: 40.7050150708864,
+    longitude: -73.9336165250072,
+    last_name: Dom
 }
 
 | GET    | '/locations/dashboard'           | location       | Gets the locations information for display                                |
