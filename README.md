@@ -125,7 +125,7 @@ Geocoding/GeoIP
 
 ## Data Model
 
-#### Users
+### Users
 -------------------
 ```javascript
 {
@@ -142,7 +142,7 @@ Geocoding/GeoIP
 }
 ```
 
-#### Locations
+### Locations
 -------------------
 ```javascript
 {
@@ -171,7 +171,7 @@ Geocoding/GeoIP
 }
 ```
 
-#### Event
+### Event
 -------------------
 ```javascript
 {
@@ -185,7 +185,7 @@ Geocoding/GeoIP
 }
 ```
 
-#### Friend
+### Friend
 ------------------- 
 ```javascript
 {
@@ -196,7 +196,7 @@ Geocoding/GeoIP
 }
 ```
 
-#### Promotion
+### Promotion
 -------------------
 ```javascript
 {
@@ -209,7 +209,7 @@ Geocoding/GeoIP
 }
 ```
 
-#### Review 
+### Review 
 -------------------
 ```javascript
 {
@@ -222,7 +222,7 @@ Geocoding/GeoIP
 }
 ```
 
-#### Saved Promo
+### Saved Promo
 -------------------
 ```javascript
 {
@@ -232,11 +232,31 @@ Geocoding/GeoIP
 }
 ```
 
+## 2️⃣ Actions
+
+### Model Helpers
+
+`find(table, selectConfig='*')` -> Returns all instances from table
+
+`findBy(table, filter, selectConfig='*")` -> Returns all instances by filter
+
+`findById(table, id, selectConfig='*', whereConfig='id')` -> Returns row by ID
+
+`add(table, info)` -> Returns the created instance
+
+`update(table, changes, id)` -> Update an instance by ID
+
+`remove(table, id)` -> Deletes an instance by ID
+
+### Users
+
+
+
+
 ### Auth Routes
 
----------------------------------
 #### POST '/auth/register'
- --------------------------------
+---------------------------------
  
 ```javascript
 {
@@ -256,9 +276,8 @@ Geocoding/GeoIP
 }
 ```
 
-----------------------------------
 #### POST 'auth/user/login'
- ---------------------------------
+---------------------------------
 ```javascript
 {
     message: "Welome pizzalover",
@@ -288,18 +307,18 @@ Also takes a search parameter to adjust. (City, City,State, Zip)
 ```javascript
 [
     {
-        name: Dominoes Pizza,
+        name: "Dominoes Pizza",
         latitude: 40.7050150708864,
         longitude: -73.9336165250072,
-        address: 13 pizza rd,
+        address: "13 pizza rd",
         location_id: 25
     },
     {
-        name: Roberta's Pizza,
+        name: "Robertas Pizza",
         latitude: 40.70501507088636,
         longitude: -73.93361652500724,
-        address: 261 Moore St,
-        foursquare_id: 47e100b9f964a520414e1fe3
+        address: "261 Moore St",
+        foursquare_id: "47e100b9f964a520414e1fe3"
     },
 ]
 ```
@@ -375,35 +394,6 @@ Also takes a search parameter to adjust. (City, City,State, Zip)
     last_name: Dom
 }
 
-| GET    | '/locations/dashboard'           | location       | Gets the locations information for display                                |
-| PUT    | '/locations'                     | location       | Edits the information for the logged in location                          |
-| DELETE | '/locations'                     | location       | Deletes the location.                                                     |
-
-
-
-## 2️⃣ Actions
-
-`getOrgs()` -> Returns all organizations
-
-`getOrg(orgId)` -> Returns a single organization by ID
-
-`addOrg(org)` -> Returns the created org
-
-`updateOrg(orgId)` -> Update an organization by ID
-
-`deleteOrg(orgId)` -> Delete an organization by ID
-<br>
-<br>
-<br>
-`getUsers(orgId)` -> if no param all users
-
-`getUser(userId)` -> Returns a single user by user ID
-
-`addUser(user object)` --> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
-
-`updateUser(userId, changes object)` -> Updates a single user by ID.
-
-`deleteUser(userId)` -> deletes everything dependent on the user
 
 ## 3️⃣ Environment Variables
 
