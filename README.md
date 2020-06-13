@@ -146,7 +146,7 @@ Geocoding/GeoIP
 -------------------
 ```javascript
 {
-    id: INT,
+    id: INT
     last_name: STRING
     username: STRING
     email: STRING
