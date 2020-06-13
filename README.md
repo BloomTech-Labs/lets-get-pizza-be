@@ -397,9 +397,9 @@ Geocoding/GeoIP
 -----------------------------------------
 
 #### Headers
-| Name          | Required | Description                            |
-| ------------- | -------- | -------------------------------------- |
-| Authorization | Y        | Token provided upon login/registration |
+| Name          | Required | Description                                                  |
+| ------------- | -------- | ------------------------------------------------------------ |
+| Authorization | Y        | Token provided upon login/registration (can be empty string) |
 
 #### Query Params
 
@@ -554,12 +554,17 @@ Geocoding/GeoIP
 }
 ```
 
-### Location Routes
+## Location Routes
 
-#### GET '/locations/map'
+### GET '/locations/map'
 ---------------------------------
-Automatically finds a users location based on IP.
-Also takes a search parameter to adjust. (City, City,State, Zip)
+
+#### Query Params
+| Name   | Required | Description           |
+| ------ | -------- | --------------------- |
+| search | N        | City, City,State, Zip |
+
+#### Response
 ```javascript
 [
     {
