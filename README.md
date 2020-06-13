@@ -129,15 +129,15 @@ Geocoding/GeoIP
 -------------------
 ```javascript
 {
-    id: INT,
-    username: STRING,
-    email: STRING,
-    profile_image: STRING,
-    display_name: STRING,
-    dietary_preference: ARRAY,
-    favorite_pizza_toppings: STRING,
-    display_location: STRING,
-    favorite_pizza_shop: STRING,
+    id: INT
+    username: STRING
+    email: STRING
+    profile_image: STRING
+    display_name: STRING
+    dietary_preference: ARRAY
+    favorite_pizza_toppings: STRING
+    display_location: STRING
+    favorite_pizza_shop: STRING
     bio: STRING
 }
 ```
@@ -148,25 +148,25 @@ Geocoding/GeoIP
 {
     id: INT,
     last_name: STRING
-    username: STRING,
-    email: STRING,
-    password: STRING,
-    first_name: STRING,
-    update_foursquare: BOOLEAN,
-    phone_number: STRING,
+    username: STRING
+    email: STRING
+    password: STRING
+    first_name: STRING
+    update_foursquare: BOOLEAN
+    phone_number: STRING
     foursquare_id: STRING
-    business_name: STRING,
-    latitude: DOUBLE,
-    longitude: DOUBLE,
-    address: STRING,
-    website_url: STRING,
-    official_description: STRING,
-    thumbnail_image: STRING,
-    inside_image: STRING,
-    street_view_image: STRING,
-    menu_image: STRING,
-    order_service: STRING,
-    store_bio: STRING,
+    business_name: STRING
+    latitude: DOUBLE
+    longitude: DOUBLE
+    address: STRING
+    website_url: STRING
+    official_description: STRING
+    thumbnail_image: STRING
+    inside_image: STRING
+    street_view_image: STRING
+    menu_image: STRING
+    order_service: STRING
+    store_bio: STRING
     dietary_offerings: ARRAY
 }
 ```
@@ -175,12 +175,12 @@ Geocoding/GeoIP
 -------------------
 ```javascript
 {
-    id: INT,
-    user_id: INT,
-    location_id: INT,
-    title: STRING,
-    description: STRING,
-    start_time: DATETIME,
+    id: INT
+    user_id: INT
+    location_id: INT
+    title: STRING
+    description: STRING
+    start_time: DATETIME
     end_time: DATETIME
 }
 ```
@@ -189,9 +189,9 @@ Geocoding/GeoIP
 ------------------- 
 ```javascript
 {
-    id: INT,
-    user_id: INT,
-    friens_id: INT,
+    id: INT
+    user_id: INT
+    friens_id: INT
     status: STRING
 }
 ```
@@ -200,11 +200,11 @@ Geocoding/GeoIP
 -------------------
 ```javascript
 {
-    id: INT,
-    location_id: INT,
-    title: STRING,
-    text: STRING,
-    start_date: DATETIME,
+    id: INT
+    location_id: INT
+    title: STRING
+    text: STRING
+    start_date: DATETIME
     end_date: DATETIME
 }
 ```
@@ -213,11 +213,11 @@ Geocoding/GeoIP
 -------------------
 ```javascript
 {
-    id: INT,
-    user_id: INT,
-    location_id: INT,
-    rating: INT,
-    review_title: STRING,
+    id: INT
+    user_id: INT
+    location_id: INT
+    rating: INT
+    review_title: STRING
     review_text: STRING
 }
 ```
@@ -226,8 +226,8 @@ Geocoding/GeoIP
 -------------------
 ```javascript
 {
-    id: INT,
-    user_id: INT,
+    id: INT
+    user_id: INT
     promo_id: INT
 }
 ```
