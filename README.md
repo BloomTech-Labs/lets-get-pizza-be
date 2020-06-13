@@ -236,6 +236,9 @@ Geocoding/GeoIP
 
 ### Model Helpers
 
+**All components, with the exception of friends, have access to the following model helpers.
+    Any other models listed below are specfic to it's respective component**
+
 `find(table, selectConfig='*')` -> Returns all instances from table
 
 `findBy(table, filter, selectConfig='*")` -> Returns all instances by filter
@@ -248,9 +251,49 @@ Geocoding/GeoIP
 
 `remove(table, id)` -> Deletes an instance by ID
 
-### Users
+### Events
+
+`getInvitesByEvent(event_id)` -> Returns invites by Event ID
+
+`getInviteById(id)` -> Returns invite info by ID
+
+`findByLocId(id)` -> Return all events for a single location
+
+`findInvitedEvents(user_id)` -> Returns all invites by User ID
+
+`inviteFriend(info)` -> Returns created invtie info
+
+`updateInvite(info, id)` -> Update an event invite by ID
 
 
+### Friends
+
+`getFriends()` -> Returns all friend instances 
+
+`getById(id)` -> Returns friendship info by ID
+
+`getByUserId(id)` -> Returns all friends by User ID
+
+`insertFriends(friendsData)` -> Returns created friendship info
+
+`updateFriend(id,updates)` -> Update friendship by ID
+
+`removeFriend(id)` -> Deletes friendship by ID
+
+
+### Locations
+
+`findClosestMapLocations(longitude, latitude)` -> Returns all locations within a 0.5 of both latitude and longitude
+
+`findByFourSquareId(id)` -> Returns location info by FourSquare ID
+
+`getReviews(id)` -> Returns all reviews by Location ID
+
+`getAvgRating(id)` -> Returns avg rating of reviews by Location ID
+
+`getPromotions(id)` -> Returns all promotions by Location ID
+
+`getEvents(id)` -> Returns all events by Location ID
 
 
 ### Auth Routes
