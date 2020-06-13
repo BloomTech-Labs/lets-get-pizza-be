@@ -296,11 +296,27 @@ Geocoding/GeoIP
 `getEvents(id)` -> Returns all events by Location ID
 
 
-### Auth Routes
+## Endpoints DETAILS
 
-#### POST '/auth/register'
+## Auth Routes
+
+### POST '/auth/register'
 ---------------------------------
  
+ #### Body
+
+| Name                    | Type          | Required | Description                               | Unique |
+| ------------------------| ------------- | -------- | ------------------------------------------| ------ |
+| username                | string        | Y        | User's desired username                   | Y      |
+| password                | string        | Y        | User's password                           | Y      |
+| email                   | string        | Y        | User's email address                      | Y      |
+| dietary_preference      | array[string] | N        | Array of user's dietary preferences       | N      |
+| display_name            | string        | N        | User's desired display name               | N      |
+| favorite_pizza_toppings | string        | N        | User's favorite toppings                  | N      |
+| bio                     | string        | N        | Short blurb of the user                   | N      |
+| favorite_pizza_shop     | integer       | N        | Location ID of user's favorite pizza shop | N      |
+ 
+ #### Response 
 ```javascript
 {
     token: "XXXXXXXXXX",
@@ -319,8 +335,17 @@ Geocoding/GeoIP
 }
 ```
 
-#### POST 'auth/user/login'
+### POST 'auth/user/login'
 ---------------------------------
+
+#### Body
+
+| Name                    | Type          | Required | Description                               | Unique |
+| ------------------------| ------------- | -------- | ------------------------------------------| ------ |
+| username                | string        | Y        | User's username                           | Y      |
+| password                | string        | Y        | User's password                           | N      |
+
+#### Response
 ```javascript
 {
     message: "Welome pizzalover",
@@ -340,11 +365,199 @@ Geocoding/GeoIP
 }
 ```
 
-#### Location Routes
+## User Routes 
 
+### GET '/users/dashboard'
+-----------------------------
+
+#### Headers
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token provided upon login/registration |
+
+#### Response 
+```javascript
+{
+    id: 6,
+    username: "Buddy",
+    email: "buddy@pizzaluv.com",
+    profile_image: "https://res.cloudinary.com/plza/image/upload/v1591238224/w5mrwhnercdpdugqlcdu.png",
+    display_name: "justsomebuddy",
+    dietary_preference: [
+        "gluten"
+    ],
+    favorite_pizza_toppings: "Pepperoni",
+    display_location: "Salt Lake City",
+    favorite_pizza_shop: 2,
+    bio: "Pineapple was made for pizza"
+}
+```
+
+### GET '/users?username=searchTerm'
+-----------------------------------------
+
+#### Headers
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token provided upon login/registration |
+
+#### Query Params
+
+| Name     | Required | Description               |
+| -------- | -------- | ------------------------- |
+| username | Y        | Query string of usernames |
+
+```javascript
+{
+    users: [
+        {
+            id: 1,
+            username: "Billy",
+            email: "billy@pizzaluv.com",
+            password: "$2a$10$xz0c9mw.93dILe4riz9YXeDz7wLOot57zovPBbf01CEqfCiWXQprS",
+            profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+            display_name: "PizzaBruh420",
+            dietary_preference: [
+                "gluten"
+            ],
+            favorite_pizza_toppings: "Mushrooms",
+            display_location: "Miami, Florida",
+            favorite_pizza_shop: 2,
+            bio: "Pizza! Pizza! Pizza! Ain't nothing like it"
+        },
+        {
+            id: 3,
+            username: "Betty",
+            email: "betty@pizzaluv.com",
+            password: "$2a$10$xz0c9mw.93dILe4riz9YXeDz7wLOot57zovPBbf01CEqfCiWXQprS",
+            profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+            display_name: "PizzaGurl",
+            dietary_preference: [
+                "gluten"
+            ],
+            favorite_pizza_toppings: "Pepperoni",
+            display_location: "Billings",
+            favorite_pizza_shop: 3,
+            bio: "Can't spell pizza without Betty!"
+        },
+        ...
+    ]
+}
+```
+
+### GET 'users/:id'
+----------------------------
+
+#### Headers
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token provided upon login/registration |
+
+#### Response
+```javascript
+{
+    id: 3,
+    username: "Betty",
+    email: "betty@pizzaluv.com",
+    password: "$2a$10$xz0c9mw.93dILe4riz9YXeDz7wLOot57zovPBbf01CEqfCiWXQprS",
+    profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+    display_name: "PizzaGurl",
+    dietary_preference: [
+        "gluten"
+    ],
+    favorite_pizza_toppings: "Pepperoni",
+    display_location: "Billings",
+    favorite_pizza_shop: 3,
+    bio: "Can't spell pizza without Betty!"
+}
+```
+
+### PUT '/users/'
+-----------------------
+
+#### Headers
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token provided upon login/registration |
+
+#### Body
+
+| Name                    | Type          | Required | Description                               | Unique |
+| ------------------------| ------------- | -------- | ------------------------------------------| ------ |
+| username                | string        | N        | User's desired username                   | Y      |
+| password                | string        | N        | User's password                           | N      |
+| email                   | string        | N        | User's email address                      | Y      |
+| dietary_preference      | array[string] | N        | Array of user's dietary preferences       | N      |
+| display_name            | string        | N        | User's desired display name               | N      |
+| favorite_pizza_toppings | string        | N        | User's favorite toppings                  | N      |
+| bio                     | string        | N        | Short blurb of the user                   | N      |
+| favorite_pizza_shop     | integer       | N        | Location ID of user's favorite pizza shop | N      |
+
+#### Response
+```javascript
+{
+    id: 11,
+    username: "pizzalover",
+    email: "iluvpizza@test.com",
+    profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+    display_name: "PizzaLover",
+    dietary_preference: null,
+    favorite_pizza_toppings: "Pineapple",
+    display_location: "Denver, CO",
+    favorite_pizza_shop: 2,
+    bio: "I could eat pizza for every meal"
+}
+```
+
+### PUT '/users/images'
+---------------------------
+
+#### Headers
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token provided upon login/registration |
+
+#### Form-data
+
+| Name      | Required | Description                      | 
+| --------- | -------- | -------------------------------- |
+| image-raw | Y        | Data URI of user's desired image |
+
+#### Response
+```javascript
+{
+    id: 11,
+    username: "pizzalover",
+    email: "iluvpizza@test.com",
+    profile_image: "https://res.cloudinary.com/plza/image/upload/v1592089926/bcdtzp5eoh9twubtrfmq.png",
+    display_name: "PizzaLover",
+    dietary_preference: null,
+    favorite_pizza_toppings: "Pineapple",
+    display_location: "Denver, CO",
+    favorite_pizza_shop: 2,
+    bio: "I could eat pizza for every meal"
+}
+```
+
+### DELETE '/users'
+------------------------
+
+#### Headers
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token provided upon login/registration |
+
+#### Response
+```javascript
+{
+    message: "pizzalover successfully deleted"
+}
+```
+
+### Location Routes
+
+#### GET '/locations/map'
 ---------------------------------
- GET '/locations/map'
- --------------------------------
 Automatically finds a users location based on IP.
 Also takes a search parameter to adjust. (City, City,State, Zip)
 ```javascript
@@ -365,13 +578,12 @@ Also takes a search parameter to adjust. (City, City,State, Zip)
     },
 ]
 ```
----------------------------------
- GET '/locations/list'
- --------------------------------  
+
+#### GET '/locations/list'
+---------------------------------  
  Automatically finds a users location based on IP.
  Also takes a search parameter to adjust. (City, City,State, Zip)
-
- Returns:
+ ```javascript
  [
     {
         name: Dominoes Pizza,
@@ -386,14 +598,13 @@ Also takes a search parameter to adjust. (City, City,State, Zip)
     },
     ...
  ]
+ ```
 
----------------------------------
- GET '/locations/live/:foursquare_id'
- --------------------------------  
+#### GET '/locations/live/:foursquare_id'
+--------------------------------------------  
  Finds a foursquare resource based on the provided id.
  Automatically parsed & copied into our database and returns the resulting object.
-
- Returns:
+```javascript
  {
     foursquare_id: 4a593de0f964a52015b91fe3,
     business_name: Saraghina,
@@ -406,13 +617,14 @@ Also takes a search parameter to adjust. (City, City,State, Zip)
     ],
     website_url: http://www.saraghina.com
 }
+```
 
----------------------------------
- GET '/locations/:id'
- --------------------------------  
+
+#### GET '/locations/:id'
+----------------------------------  
  Returns the location item from the database.
  If update_foursquare is true, then it is updated before returned.
-
+```javascript
 {
     id: 25,
     username: dominoes,
@@ -436,7 +648,7 @@ Also takes a search parameter to adjust. (City, City,State, Zip)
     longitude: -73.9336165250072,
     last_name: Dom
 }
-
+```
 
 ## 3️⃣ Environment Variables
 
