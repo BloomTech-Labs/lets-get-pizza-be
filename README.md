@@ -6,11 +6,42 @@
 
 To get the server running locally:
 
+**With Docker**
 - Clone this repo
+- Create a `.env` file with needed [environment variables](https://github.com/Lambda-School-Labs/lets-get-pizza-be#environment-varables)
+- run **docker-compose -d up** to install all required dependencies, create pg database, and start local server
+- run **docker exec -d plza-server sh -c  "npm run seed"** to seed the database (only need to do this on initial setup)
+- run **docker-compose down** to stop server
+
+**Without Docker**
+- Clone this repo
+- Create a .env file with needed environment variables
 - **npm install** to install all required dependencies
 - Set up local pg database & connect in knexfile
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
+
+## Environment Variables
+
+In order for the app to function correctly, the user must set up their own environment variables.
+
+create a .env file that includes the following:
+
+    * POSTGRES_USER Set this as the user for your postgres database **recommended to set as postgres**
+    * POSTGRES_DB Name of your postgres database
+    * POSTGRES_PASSWORD Set this as your postgres local and test database passwords
+    * POSTGRES_HOST Needed to establish postgres connection. Set as plza-postgres
+    * JWT_SECRET  Needed for auth router and password generation
+    * FSCLIENTID FourSquare API Client ID
+    * FSCLIENTSECRET FourSquare API Client Secret
+    * MAPQUEST_API_KEY Mapquest API Key
+    * CLOUDINARY_CLOUD_NAME Cloudinary username
+    * CLOUDINARY_API_KEY Cloudinary API Key
+    * CLOUDINARY_API_SECRET Cloudinary API Client Secret
+
+    *  User Survey link: https://s.surveyplanet.com/_BYyEjkf
+       Username: teampizzaplza@gmail.com
+       Password: 1234P!za
 
 ## Code Climate
 
@@ -792,22 +823,6 @@ Geocoding/GeoIP
     ]
 }
 ```
-
-## 3️⃣ Environment Variables
-
-In order for the app to function correctly, the user must set up their own environment variables.
-
-create a .env file that includes the following:
-
-    * JWT_SECRET  Needed for auth router and password generation
-    * PORT Not needed but you can set your own local port for testing on the local machine in case port 4000 is already in use
-    * PGPASSWORD Set this as your PostgreSQL local and test databse passwords
-    * FSCLIENTID FourSquare API Client ID
-    * FSCLIENTSECRET FourSquare API Client Secret
-
-    *  User Survey link: https://s.surveyplanet.com/_BYyEjkf
-       Username: teampizzaplza@gmail.com
-       Password: 1234P!za
     
 ## Contributing
 
