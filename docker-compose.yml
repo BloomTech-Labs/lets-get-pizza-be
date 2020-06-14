@@ -1,0 +1,44 @@
+version: "3"
+
+# Define services
+services:
+    # Create postgres service
+    # service will create database
+    postgres:
+        # Pull from `postgres:12-alpine` image
+        image: "postgres:12-alpine"
+        container_name: "plza-postgres"
+        # Map to port 5432
+        ports:
+            - "5432:5432"
+        # Connect to volumes for data persistance
+        volumes:
+            - "plza:/var/lib/postgresql/data"
+        # Create environment variables
+        environment: 
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+    # Create test postgres db if successful here
+    ## NEED TO DO STILL ##
+    # Create server service
+    server:
+        # Pull from `node:12-alpine` image
+        image: "node:12-alpine"
+        container_name: "plza-server"
+        # Install dependencies, migrate db, and run server
+        command: sh -c "npm install && npm run migrate && npm run server"
+        # Map to port 8000
+        ports:
+            - 8000:8000
+        working_dir: "/lets-get-pizza-be"
+        # Connect to volume for data persistance
+        volumes:
+            - "./:/lets-get-pizza-be"
+        # Create environment variables
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+volumes:
+    plza:

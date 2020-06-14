@@ -10,7 +10,10 @@
     "coverage": "cross-env NODE_ENV=testing jest --runInBand --coverage --detectOpenHandles --forceExit|| true",
     "migrate": "knex migrate:latest",
     "unmigrate": "knex migrate:rollback",
-    "seed": "knex seed:run"
+    "seed": "knex seed:run",
+    "docker-start": "docker-compose up -d",
+    "docker-stop": "docker-compose down",
+    "docker-seed": "docker exec -d plza-server sh -c 'npm run seed'"
   },
   "repository": {
     "type": "git",
