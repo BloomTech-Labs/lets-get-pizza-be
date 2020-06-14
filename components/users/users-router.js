@@ -126,10 +126,10 @@ router.put('/images', multerUploads.single("image-raw"), cloudinaryConfig,  (req
 //PUT /Users/
 //Deletes it for good.
 router.delete('/', (req, res) => {
-    const { id } = req.decodedToken.user.user_id;
+    const id = req.decodedToken.user_id;
     Users.remove(id)
         .then(deleted => {
-            res.send("Success.")
+            res.send({message: `${req.decodedToken.username} successfully deleted`})
         })
         .catch(err => {
             res.status(500).json({ message: 'Failed to delete user' })
