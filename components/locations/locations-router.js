@@ -20,6 +20,23 @@ const cloudinary = require('../../config/cloudinaryConfig')
 const uploader = cloudinary.uploader
 const cloudinaryConfig = cloudinary.cloudinaryConfig
 
+//Location Dashboard- for when they first log in.
+//GET /Locations/:id
+//Returns the Location object who has logged in, and any dashboard information.
+router.get('/dashboard', authenticate, async (req, res) => {
+  const id = req.decodedToken.location_id;
+  let location = await Locations.findById(id);
+
+  if(location.update_foursquare) {
+    //update the record based on a call
+    location = await Locations.update(await foursquareIdSearch(location.foursquare_id, id), id)
+  }
+  if (location.password) {
+    delete location.password;
+  }
+  res.json(location)
+})
+
 
 //All Locations- Coordinates & ratings for the map
 //GET /Locations
@@ -209,23 +226,6 @@ router.delete('/', authenticate, (req, res) => {
         });
 });
 
-//Location Dashboard- for when they first log in.
-//GET /Locations/:id
-//Returns the Location object who has logged in, and any dashboard information.
-router.get('/dashboard', authenticate, async (req, res) => {
-    const id = req.decodedToken.location_id;
-    let location = await Locations.findById(id);
-
-    if(location.update_foursquare) {
-      //update the record based on a call
-      location = await Locations.update(await foursquareIdSearch(location.foursquare_id), id)
-    }
-    if (location.password) {
-      delete location.password;
-    }
-    res.json(location)
-})
-
 module.exports = router;
 
 
@@ -302,25 +302,29 @@ const foursquareApiSearch = async (latitude, longitude) => {
   return await axios.get(endPoint + new URLSearchParams(parameters))
 }
 
-const foursquareIdSearch = async (foursquareId) => {
-  const endPoint = `https://api.foursquare.com/v2/venues/${foursquareId}?`;
-  const parameters = {
-    client_id: process.env.FSCLIENTID,
-    client_secret: process.env.FSCLIENTSECRET,
-    v: "20190425"
-  };
-
-  const result = await axios.get(endPoint + new URLSearchParams(parameters))
-
-  const v = result.data.response.venue
-  return {
-    foursquare_id: v.id,
-    business_name: v.name,
-    latitude: v.location.lat,
-    longitude: v.location.lng,
-    address: v.location.formattedAddress.join(", "),
-    website_url: v.url,
-    official_description: v.official_description
+const foursquareIdSearch = async (foursquareId, id) => {
+  if(!foursquareId){
+    return await Locations.findById(id)
+  } else {
+      const endPoint = `https://api.foursquare.com/v2/venues/${foursquareId}?`;
+      const parameters = {
+        client_id: process.env.FSCLIENTID,
+        client_secret: process.env.FSCLIENTSECRET,
+        v: "20190425"
+      };
+    
+      const result = await axios.get(endPoint + new URLSearchParams(parameters))
+    
+      const v = result.data.response.venue
+      return {
+        foursquare_id: v.id,
+        business_name: v.name,
+        latitude: v.location.lat,
+        longitude: v.location.lng,
+        address: v.location.formattedAddress.join(", "),
+        website_url: v.url,
+        official_description: v.official_description
+      }
   }
 
 }
