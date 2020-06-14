@@ -823,6 +823,19 @@ Geocoding/GeoIP
     ]
 }
 ```
+
+### DELETE '/locations'
+--------------------------
+
+#### Headers 
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token returned upon login/registration |
+
+#### Response
+```javascript
+"Success"
+```
     
 ## Contributing
 
