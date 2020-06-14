@@ -584,10 +584,15 @@ Geocoding/GeoIP
 ]
 ```
 
-#### GET '/locations/list'
+### GET '/locations/list'
 ---------------------------------  
- Automatically finds a users location based on IP.
- Also takes a search parameter to adjust. (City, City,State, Zip)
+
+#### Query Params
+| Name   | Required | Description           |
+| ------ | -------- | --------------------- |
+| search | N        | City, City,State, Zip |
+
+#### Response
  ```javascript
  [
     {
@@ -605,10 +610,10 @@ Geocoding/GeoIP
  ]
  ```
 
-#### GET '/locations/live/:foursquare_id'
+### GET '/locations/live/:foursquare_id'
 --------------------------------------------  
- Finds a foursquare resource based on the provided id.
- Automatically parsed & copied into our database and returns the resulting object.
+
+#### Response
 ```javascript
  {
     foursquare_id: 4a593de0f964a52015b91fe3,
@@ -625,10 +630,10 @@ Geocoding/GeoIP
 ```
 
 
-#### GET '/locations/:id'
+### GET '/locations/:id'
 ----------------------------------  
- Returns the location item from the database.
- If update_foursquare is true, then it is updated before returned.
+
+#### Response
 ```javascript
 {
     id: 25,
@@ -652,6 +657,139 @@ Geocoding/GeoIP
     latitude: 40.7050150708864,
     longitude: -73.9336165250072,
     last_name: Dom
+}
+```
+
+### GET '/locations/dashboard'
+---------------------------------
+
+#### Headers 
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token returned upon login/registration |
+
+#### Response
+```javascript
+{
+    id: 1,
+    last_name: "Tuh",
+    username: "pizzahut",
+    email: "billy@pizzahut.com",
+    first_name: "Azzip",
+    update_foursquare: true,
+    phone_number: null,
+    foursquare_id: null,
+    business_name: "Pizza Hut",
+    latitude: 29.201598971549643,
+    longitude: -98.66165965560205,
+    address: "123 pizza lane",
+    website_url: "https://www.pizzahut.com",
+    official_description: "The Hutt of Pizza",
+    thumbnail_image: "https://res.cloudinary.com/plza/image/upload/v1589334585/pizzaIcon_vt9vq9.png",
+    inside_image: null,
+    street_view_image: "google.com/1.jpg",
+    menu_image: null,
+    order_service: "Doordash",
+    store_bio: "We made this place and that place makes pizza",
+    dietary_offerings: [
+        "vegan"
+    ]
+}
+```
+
+### PUT '/locations/'
+---------------------------
+
+#### Headers 
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token returned upon login/registration |
+
+#### Body
+| Name                 | Type          | Required | Description                                           | Unique |
+| -------------------- | ------------- | -------- | ----------------------------------------------------- | ------ |
+| last_name            | string        | N        | Business owner's last name                            | N      |
+| username             | string        | N        | Desired username                                      | Y      |
+| email                | string        | N        | Business owner's email address                        | Y      |
+| first_name           | string        | N        | Business owner's first name                           | N      |
+| phone_number         | string        | N        | Business's phone number                               | N      |
+| business_name        | string        | N        | Name of the business                                  | N      |
+| address              | string        | N        | Business' physical address                            | N      |
+| website_url          | string        | N        | Url to the business' website                          | N      |
+| official_description | string        | N        | Short description of the business                     | N      |
+| order_service        | string        | N        | Service the business uses for online orders           | N      |
+| store_bio            | string        | N        | Short bio/blurb for the business                      | N      |
+| dietary_offerings    | array[string] | N        | List of special dietary offerings the business offers | N      |
+
+#### Response
+```javascript
+{
+    id: 1,
+    last_name: "Tuh",
+    username: "pizzahut",
+    email: "billy@pizzahut.com",
+    first_name: "Azzip",
+    update_foursquare: true,
+    phone_number: null,
+    foursquare_id: null,
+    business_name: "Pizza Hut",
+    latitude: 29.201598971549643,
+    longitude: -98.66165965560205,
+    address: "123 pizza lane",
+    website_url: "https://www.pizzahut.com",
+    official_description: "The Hutt of Pizza",
+    thumbnail_image: "https://res.cloudinary.com/plza/image/upload/v1589334585/pizzaIcon_vt9vq9.png",
+    inside_image: null,
+    street_view_image: "google.com/1.jpg",
+    menu_image: null,
+    order_service: "Doordash",
+    store_bio: "We made this place and that place makes pizza",
+    dietary_offerings: [
+        "vegan"
+    ]
+}
+```
+
+### PUT '/locations/images'
+-----------------------------
+
+#### Headers 
+| Name          | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| Authorization | Y        | Token returned upon login/registration |
+
+#### Form-data
+
+| Name      | Required | Description                      | 
+| --------- | -------- | -------------------------------- |
+| image-raw | Y        | Data URI of user's desired image |
+
+#### Response
+```javascript
+{
+    id: 1,
+    last_name: "Tuh",
+    username: "pizzahut",
+    email: "billy@pizzahut.com",
+    first_name: "Azzip",
+    update_foursquare: true,
+    phone_number: null,
+    foursquare_id: null,
+    business_name: "Pizza Hut",
+    latitude: 29.201598971549643,
+    longitude: -98.66165965560205,
+    address: "123 pizza lane",
+    website_url: "https://www.pizzahut.com",
+    official_description: "The Hutt of Pizza",
+    thumbnail_image: "https://res.cloudinary.com/plza/image/upload/v1589334585/pizzaIcon_vt9vq9.png",
+    inside_image: null,
+    street_view_image: "google.com/1.jpg",
+    menu_image: null,
+    order_service: "Doordash",
+    store_bio: "We made this place and that place makes pizza",
+    dietary_offerings: [
+        "vegan"
+    ]
 }
 ```
 
