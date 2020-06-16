@@ -1206,6 +1206,116 @@ Geocoding/GeoIP
 }
 ```
 
+
+## Promotions Routes
+
+## GET '/promotions'
+----------------------------
+
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        location_id: 1,
+        title: "Cheese Sale!",
+        text: "Half Price extra cheese!",
+        start_date: "2020-01-02T00:00:00.000Z",
+        end_date: "2020-01-03T00:00:00.000Z"
+    },
+    {
+        id: 2,
+        location_id: 2,
+        title: "Double Double Time!",
+        text: "Buy one pizza and pay double for the second!",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    },
+    {
+        id: 3,
+        location_id: 3,
+        title: "Jailhouse Rock!",
+        text: "Sing a song for 10 bucks off your order!",
+        start_date: "2020-02-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    },
+    ...
+]
+```
+
+### GET '/promotions/:id'
+----------------------------------
+
+#### Response
+```javascript
+    {
+        id: 2,
+        location_id: 2,
+        title: "Double Double Time!",
+        text: "Buy one pizza and pay double for the second!",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    }
+```
+
+### POST '/promotions'
+------------------------------
+
+#### Body
+| Name           | Type     | Required | Description                                       |
+| -------------- | ---------| -------- | ------------------------------------------------- |
+| location_id    | integer  | Y        | ID of the location creating the promotion         |
+| title          | string   | Y        | Title of the promotion                            |
+| text           | string   | Y        | Description and extra details about the promotion |
+| start_date     | datetime | Y        | Time when the promotion starts                    |
+| end_date       | datetime | Y        | Time when the promotion ends                      |
+
+#### Response
+```javascript
+    {
+        id: 4,
+        location_id: 1,
+        title: "We Survived COVID Promo",
+        text: "19% off any purchases over $19",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    }
+```
+
+### PUT '/promotions/:id'
+------------------------------
+
+#### Body
+| Name        | Type     | Required | Description                                       |
+| ----------- | ---------| -------- | ------------------------------------------------- |
+| title       | string   | N        | Title of the promotion                            |
+| text        | string   | N        | Description and extra details about the promotion |
+| start_date  | datetime | N        | Time when the promotion starts                    |
+| end_date    | datetime | N        | Time when the promotion ends                      |
+
+#### Response
+```javascript
+    {
+        id: 4,
+        location_id: 1,
+        title: "We Survived COVID Party Promo",
+        text: "19% off any purchases over $19",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    }
+```
+
+### DELETE '/promotions/:id'
+
+#### Response
+```javascript
+"Success."
+```
+
+
+
+
+
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
