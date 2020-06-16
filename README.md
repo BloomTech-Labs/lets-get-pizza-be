@@ -836,7 +836,278 @@ Geocoding/GeoIP
 ```javascript
 "Success"
 ```
-    
+
+## Events Routes
+
+### GET '/events'
+--------------------------
+
+### Response
+```javascript
+[
+    {
+        location_id: 1,
+        user_id: 1,
+        id: 1,
+        title: "Lets Get Pizza!",
+        description: "Its dat time boys, pizza!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z",
+        business_name: "Pizza Hut",
+        address: "123 pizza lane"
+    },
+    {
+        location_id: 1,
+        user_id: 1,
+        id: 2,
+        title: "Nacho Pizza Hunt!",
+        description: "Are Nacho pizzas a thing? Lets find out!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z",
+        business_name: "Pizza Hut",
+        address: "123 pizza lane"
+    },
+    ...
+```
+
+### GET 'events/:id'
+-----------------------
+
+#### Response
+```javascript
+{
+    event: {
+        location_id: 1,
+        user_id: 1,
+        id: 1,
+        title: "Lets Get Pizza!",
+        description: "Its dat time boys, pizza!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z",
+        business_name: "Pizza Hut",
+        address: "123 pizza lane"
+    }
+}
+```
+### GET 'events/users/:id'
+-----------------------------
+
+#### Response
+```javascript
+{
+    createdEvents: [
+        {
+            location_id: 1,
+            user_id: 1,
+            id: 1,
+            title: "Lets Get Pizza!",
+            description: "Its dat time boys, pizza!",
+            start_time: "2020-01-20T00:00:00.000Z",
+            end_time: "2020-01-22T00:00:00.000Z",
+            business_name: "Pizza Hut",
+            address: "123 pizza lane"
+        },
+        {
+            location_id: 1,
+            user_id: 1,
+            id: 2,
+            title: "Nacho Pizza Hunt!",
+            description: "Are Nacho pizzas a thing? Lets find out!",
+            start_time: "2020-01-20T00:00:00.000Z",
+            end_time: "2020-01-22T00:00:00.000Z",
+            business_name: "Pizza Hut",
+            address: "123 pizza lane"
+        },
+        {
+            location_id: 2,
+            user_id: 1,
+            id: 3,
+            title: "The End of Days",
+            description: "About that time, lets have a slice to celebrate the end of the world.",
+            start_time: "2020-01-20T00:00:00.000Z",
+            end_time: "2020-01-22T00:00:00.000Z",
+            business_name: "Dominoes Pizza",
+            address: "13 pizza rd"
+        }
+        ...
+    ],
+    invitedEvents: [
+        {
+            location_id: 2,
+            user_id: 4,
+            id: 4,
+            title: "BYOP Party - Bring Your Own Pizza",
+            description: "Bring your own pizza party, plates will be provided",
+            start_time: "2020-06-20T00:00:00.000Z",
+            end_time: "2020-06-22T00:00:00.000Z",
+            business_name: "Dominoes Pizza",
+            address: "13 pizza rd"
+        }
+        ...
+    ]
+}
+```
+
+### GET '/events/locations/:id'
+----------------------------------
+
+#### Response 
+```javascript
+[
+    {
+        id: 1,
+        user_id: 1,
+        location_id: 1,
+        title: "Lets Get Pizza!",
+        description: "Its dat time boys, pizza!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z"
+    },
+    {
+        id: 2,
+        user_id: 1,
+        location_id: 1,
+        title: "Nacho Pizza Hunt!",
+        description: "Are Nacho pizzas a thing? Lets find out!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z"
+    }
+]
+```
+
+### GET '/events/:id/invites
+-------------------------------
+
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 7,
+        response: "pending"
+    },
+    {
+        id: 2,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 3,
+        response: "pending"
+    },
+    {
+        id: 3,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 2,
+        response: "pending"
+    }
+]
+```
+
+### POST '/events'
+---------------------
+
+#### Body
+| Name        | Type      | Required | Description                                      |
+| ----------- | --------- | -------- | ------------------------------------------------ |
+| user_id     | integer   | N        | ID of the user who created the event             |
+| location_id | integer   | Y        | ID of the location where the event is being held |
+| title       | string    | Y        | Title of the event                               |
+| description | string    | Y        | Description of the event                         |
+| start_time  | datetime  | Y        | Start time of the event                          |
+| end_time    | datetime  | Y        | End time of the event                            |
+
+
+#### Response
+```javascript
+{
+    id: 5,
+    user_id: 6,
+    location_id: 3,
+    title: "Stonefire party",
+    description: "Stonefire pizza all 1% off all orders over $100",
+    start_time: "2020-01-20T00:00:00.000Z",
+    end_time: "2020-01-22T00:00:00.000Z"
+}
+```
+
+### POST '/events/:id/invite'
+--------------------------------
+
+#### Body
+| Name            | Type          | Required | Description                                      |
+| --------------- | ------------- | -------- | ------------------------------------------------ |
+| inviter_user_id | integer       | Y        | ID of the user who created the event             |
+| invitee_user_id | integer       | Y        | ID of the user being invited to the event        |
+
+
+#### Response
+```javascript
+{
+    id: 1,
+    event_id: 5,
+    inviter_user_id: 6,
+    invitee_user_id: 7,
+    response: "pending"
+}
+```
+
+### PUT '/events/:id/invite/:invite_id
+-----------------------------------------
+
+#### Body
+| Name     | Type   | Reuired | Description                                                                 |
+| -------- | ------ | ------- | --------------------------------------------------------------------------- |
+| response | string | Y       | Invite status. Must be one of the following: accepted, interested, declined |
+
+#### Response
+```javascript
+{
+    invited: {
+        id: 2,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 3,
+        response: "accepted"
+    }
+}
+```
+
+### PUT '/events/:id'
+-------------------------
+
+#### Body
+| Name        | Type      | Required | Description                                      |
+| ----------- | --------- | -------- | ------------------------------------------------ |
+| user_id     | integer   | N        | ID of the user who created the event             |
+| location_id | integer   | N        | ID of the location where the event is being held |
+| title       | string    | N        | Title of the event                               |
+| description | string    | N        | Description of the event                         |
+| start_time  | datetime  | N        | Start time of the event                          |
+| end_time    | datetime  | N        | End time of the event                            |
+
+#### Response
+```javascript
+{
+    id: 5,
+    user_id: 6,
+    location_id: 3,
+    title: "Stonefire party",
+    description: "Stonefire pizza all 1% off all orders over $100",
+    start_time: "2020-01-20T00:00:00.000Z",
+    end_time: "2020-01-22T00:00:00.000Z"
+}
+```
+
+### DELETE '/events/:id'
+----------------------------
+
+#### Response
+```javascript
+"Success."
+```
+
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
