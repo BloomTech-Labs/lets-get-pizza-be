@@ -971,7 +971,8 @@ Geocoding/GeoIP
         description: "Are Nacho pizzas a thing? Lets find out!",
         start_time: "2020-01-20T00:00:00.000Z",
         end_time: "2020-01-22T00:00:00.000Z"
-    }
+    },
+    ...
 ]
 ```
 
@@ -1001,7 +1002,8 @@ Geocoding/GeoIP
         inviter_user_id: 6,
         invitee_user_id: 2,
         response: "pending"
-    }
+    },
+    ...
 ]
 ```
 
@@ -1106,6 +1108,102 @@ Geocoding/GeoIP
 #### Response
 ```javascript
 "Success."
+```
+
+## Friends Routes
+
+### GET '/friends'
+---------------------------
+
+#### Response
+```javascript
+[
+    {
+        user_id: 1,
+        friends_id: 1,
+        status: "accepted",
+        id: 1
+    },
+    {
+        user_id: 2,
+        friends_id: 2,
+        status: "accepted",
+        id: 2
+    },
+    {
+        user_id: 3,
+        friends_id: 3,
+        status: "accepted",
+        id: 3
+    }
+    ...
+]
+```
+
+### GET 'friends/:id'
+
+### Response
+```javascript
+[
+    {
+        id: 2,
+        username: "Roger",
+        display_name: "PizzaDude",
+        friends_id: 2,
+        friend_username: "Roger",
+        friend_display_name: "PizzaDude",
+        friend_location: "Santa Monica",
+        friend_profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+        friend_bio: "Life is like a box of pizza, you never know what you're going to get! - Forest Gump",
+        friend_favorite_pizza_shop: 1
+    }
+]
+```
+
+### POST '/friends'
+-----------------------
+#### Body
+| Name        | Type      | Required | Description                                      |
+| ----------- | --------- | -------- | ------------------------------------------------ |
+| user_id     | integer   | Y        | ID of the user sending/creating the request      |
+| friends_id  | integer   | Y        | ID of the user becoming the friend               |
+
+
+#### Response
+```javascript
+{
+    user_id: 6,
+    friends_id: 7,
+    status: "requested",
+    id: 18
+}
+```
+
+### PUT '/friends/:id'
+---------------------------------
+
+#### Body
+| Name      | Type     | Required | Description                                                                            |
+| --------- | -------- | -------- | -------------------------------------------------------------------------------------- |
+| response  | string   | Y        | status of the friendship. Must be one of the following: requested, accepted, blocked   |
+
+#### Response
+```javascript
+{
+    success: true,
+    message: "friend with id 18 was updated."
+}
+```
+
+### DELETE '/friends/:id'
+------------------------------
+
+#### Response
+```javascript
+{
+    success: true,
+    message: "friend with id 18 was deleted"
+}
 ```
 
 ## Contributing
