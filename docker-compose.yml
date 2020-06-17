@@ -19,8 +19,18 @@ services:
             - POSTGRES_USER=${POSTGRES_USER}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             - POSTGRES_DB=${POSTGRES_DB}
-    # Create test postgres db if successful here
-    ## NEED TO DO STILL ##
+    # Create test postgres db
+    postgres-test:
+        # Pull from `postgres:12-alpine` image
+        image: "postgres:12-alpine"
+        container_name: "plza-test-db"
+        # Map to port 5432
+        ports:
+            - "5433:5433"
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_TEST_DB}
     # Create server service
     server:
         # Pull from `node:12-alpine` image

@@ -22,9 +22,10 @@ module.exports = {
   testing: {
     client: "pg",
     connection: {
-      host: "127.0.0.1",
-      user: "postgres",
-      password: process.env.PGPASSWORD,
+      host: process.env.POSTGRES_TEST_HOST,
+      user: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_TEST_DB,
       database: "plzatest",
       charset: "utf8",
     },
