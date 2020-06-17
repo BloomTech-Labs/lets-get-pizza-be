@@ -141,7 +141,7 @@ Geocoding/GeoIP
 | GET    | `/reviews`                      | all                 | Returns an array of all reviews in the database                                 |
 | GET    | `/reviews/:id`                  | all                 | Returns all information for a single review                                     |
 | GET    | `/reviews/users/:id`            | all                 | Returns an array of all reviews for a single user                               |
-| POST   | `/reviews/`                     | all                 | Creates a review instance in db and returns review information                  |
+| POST   | `/reviews`                     | all                 | Creates a review instance in db and returns review information                  |
 | PUT    | `/reviews/:id`                   | all                 | Updates information for the provided review                                     |
 | DELETE | `/reviews/:id`                   | all                 | Deletes the review                                                              |
 
@@ -1306,15 +1306,163 @@ Geocoding/GeoIP
 ```
 
 ### DELETE '/promotions/:id'
+------------------------------------
 
 #### Response
 ```javascript
 "Success."
 ```
 
+## Reviews 
 
+### GET '/reviews'
+-------------------------
 
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        user_id: 1,
+        location_id: 1,
+        rating: 5,
+        review_title: "cheese pizza day",
+        review_text: "cheese was good, but I wanted pepperoni"
+    },
+    {
+        id: 2,
+        user_id: 2,
+        location_id: 1,
+        rating: 3,
+        review_title: "memorial pizza time",
+        review_text: "not bad, but too pricy"
+    },
+    {
+        id: 3,
+        user_id: 3,
+        location_id: 1,
+        rating: 1,
+        review_title: "ran out?!",
+        review_text: "they ran out of cheese, smh"
+    },
+    ...
+]
+```
 
+### GET '/reviews/:id'
+-------------------------
+
+#### Response
+```javascript
+{
+    id: 2,
+    user_id: 2,
+    location_id: 1,
+    rating: 3,
+    review_title: "memorial pizza time",
+    review_text: "not bad, but too pricy"
+}
+```
+
+### GET '/reviews/users/:id'
+-------------------------
+
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        user_id: 6,
+        location_id: 3,
+        rating: 5,
+        review_title: "cheese pizza day",
+        review_text: "cheese was good, but I wanted pepperoni",
+        business_name: "Pizzaria Pizza",
+        address: "1254 Pizza Dr"
+    },
+    {
+        id: 9,
+        user_id: 6,
+        location_id: 11,
+        rating: 3,
+        review_title: "memorial pizza time",
+        review_text: "not bad, but too pricy",
+        business_name: "Pizza Pizzaria",
+        address: "1254 Pizza Cir"
+    },
+    {
+        id: 19,
+        user_id: 6,
+        location_id: 17,
+        rating: 3,
+        review_title: "ran out?!",
+        review_text: "they ran out of cheese, smh",
+        business_name: "Pizzaria Pizzaria",
+        address: "1254 Pizza Rd"
+    },
+    ...
+]
+```
+
+### POST '/reviews'
+--------------------------
+
+#### Body
+| Name         | Type    | Required | Description                          |
+| ------------ | ------- | -------- | -------------------------------------|
+| user_id      | integer | Y        | ID of the user writing the review    |
+| location_id  | integer | Y        | ID of the location the review is for |
+| rating       | integer | Y        | Rating score for the review (1-5)    |
+| review_title | string  | N        | Title of the review                  |
+| review_text  | string  | N        | Additional text for the review       |
+
+#### Response
+```javascript
+    {
+        id: 9,
+        user_id: 6,
+        location_id: 11,
+        rating: 3,
+        review_title: "memorial pizza time",
+        review_text: "not bad, but too pricy",
+        business_name: "Pizza Pizzaria",
+        address: "1254 Pizza Cir"
+    }
+```
+
+### PUT '/reviews/:id'
+--------------------------
+
+#### Body
+| Name         | Type    | Required | Description                          |
+| ------------ | ------- | -------- | -------------------------------------|
+| user_id      | integer | N        | ID of the user writing the review    |
+| location_id  | integer | N        | ID of the location the review is for |
+| rating       | integer | N        | Rating score for the review (1-5)    |
+| review_title | string  | N        | Title of the review                  |
+| review_text  | string  | N        | Additional text for the review       |
+
+#### Response
+```javascript
+    {
+        id: 9,
+        user_id: 6,
+        location_id: 11,
+        rating: 3,
+        review_title: "Pi Day Celebration",
+        review_text: "not bad, but too pricy",
+        business_name: "Pizza Pizzaria",
+        address: "1254 Pizza Cir"
+    }
+```
+
+### DELETE '/reviews/:id'
+-----------------------------
+
+#### Response
+```javascript
+"Success."
+```
 
 ## Contributing
 
