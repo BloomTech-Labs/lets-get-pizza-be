@@ -1,6 +1,7 @@
 # API Documentation
+![GitHub repo size](https://img.shields.io/github/repo-size/Lambda-School-Labs/lets-get-pizza-be) [![Maintainability](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/test_coverage) 
 
-#### 1️⃣ Backend delpoyed at [lets-get-pizza-be](https://plza.herokuapp.com/) <br>
+## Backend delpoyed at [lets-get-pizza-be](https://plza.herokuapp.com/) <br>
 
 ## 1️⃣ Getting started
 
@@ -14,8 +15,7 @@ To get the server running locally:
 - run **docker-compose down** to stop server
 
 **Without Docker**
-- Clone this repo
-- Create a .env file with needed environment variables
+- Create a `.env` file with needed [environment variables](https://github.com/Lambda-School-Labs/lets-get-pizza-be#environment-varables)
 - **npm install** to install all required dependencies
 - Set up local pg database & connect in knexfile
 - **npm run server** to start the local server
