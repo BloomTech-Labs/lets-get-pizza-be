@@ -6,7 +6,7 @@
   "scripts": {
     "server": "nodemon index.js",
     "start": "node index.js",
-    "test": "cross-env NODE_ENV=testing jest --runInBand --config ./jest.config.js --watch --verbose",
+    "test": "cross-env NODE_ENV=testing jest --runInBand --config ./jest.config.js --watchAll --verbose",
     "coverage": "cross-env NODE_ENV=testing jest --runInBand --coverage --detectOpenHandles --forceExit|| true",
     "migrate": "knex migrate:latest",
     "unmigrate": "knex migrate:rollback",
