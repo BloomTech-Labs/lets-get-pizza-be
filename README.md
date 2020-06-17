@@ -53,108 +53,7 @@ create a .env file that includes the following:
        Username: teampizzaplza@gmail.com
        Password: 1234P!za
 
-## Code Climate
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/maintainability)
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/test_coverage)
-
-## 2️⃣ Endpoints OVERVIEW
-
-
-### [Auth Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#auth-routes-1)
-
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| POST   | `/auth/register`        | none                | Registers a user & logs them in.                   |
-| POST   | `/auth/login`           | none                | Logs the user in and returns a token.              |
-
-
-### [User Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#user-routes-1)
-
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/dashboard`      | user                | Returns info for the logged in user.               |
-| GET    | `/users/   `            | user                | Returns an array of all users                      |
-| GET    | `/users/:id`            | user                | Returns any users information                      |
-| PUT    | `/users`                | user                | Returns info for a single user.                    |
-| PUT    | `/users/images`         | user                | Adds profile image and returns info for the user   |
-| DELETE | `/users`                | user                | Deletes the user's account                         |
-
-
-### [Location Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#location-routes-1)
-
-| Method | Endpoint                         | Access Control | Description                                                               |
-| ------ | -------------------------------- | -------------- | ------------------------------------------------------------------------- |
-| GET    | `/locations/map`                 | all            | Returns an array of close pizza places, and their latitude and longitude  |
-| GET    | `/locations/list`                | all            | Returns an array of close pizza places, and their thumbnail, if available |
-| GET    | `/locations/live/:foursquare_id` | all            | Gets the information from a foursquare id and maps it to the database     |
-| GET    | `/locations/:id`                 | all            | Gets the information for a location from the database                     |
-| GET    | `/locations/dashboard`           | location       | Gets the locations information for display                                |
-| PUT    | `/locations`                     | location       | Edits the information for the logged in location                          |
-| PUT    | `/locations/images`              | location       | Adds an image for the logged in location                                  |
-| DELETE | `/locations`                     | location       | Deletes the location.                                                     |
-
-
-### [Events Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#events-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/events`                       | all                 | Returns an array of all created events                                          |
-| GET    | `/events/:id`                   | all                 | Returns all info for a single event                                             |
-| GET    | `/events/users/:id`             | all                 | Returns an object with two arrays of events , created events and invited events |
-| GET    | `/events/locations/:id`         | all                 | Returns an array of all events at a single location                             | 
-| GET    | `/events/:id/invites`           | all                 | Returns an array of all invites for an event                                    |
-| POST   | `/events`                       | all                 | Creates an event and returns the info                                           |
-| POST   | `/events/:id/invite`            | all                 | Creates an event invitation and returns invite info                             |
-| PUT    | `/events/:id/invite/:invite_id` | all                 | Updates event invite and returns an object with all invite info                 |
-| PUT    | `/events/:id`                   | all                 | Updates event info and returns all info for single event                        |
-| DELETE | `/events/:id`                   | all                 | Deletes a specific event                                                       |
-
-
-### [Friends Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#friends-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/friends`                      | all                 | Returns an array of all friendships                                             |
-| GET    | `/friends/:id`                  | all                 | Returns info for a single friendship                                            |
-| POST   | `/friends`                      | all                 | Creates a friendship instance and returns friendship info                       |
-| PUT    | `/friends/:id`                  | all                 | Updates info for a specific friendship instance                                 |
-| DELETE | `/friends/:id`                  | all                 | Deletes friendship instance from databse                                        |
-
-
-### [Promotions Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#promotions-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/promotions`                   | all                 | Returns an array of all promotions                                              |
-| GET    | `/promotions/:id`               | all                 | Returns all info for a single event                                             |
-| POST   | `/promotions`                   | all                 | Creates a new promotion                                                         |
-| PUT    | `/promotions/:id`               | all                 | Updates a single promotions details and returns all info for that promotion     |
-| DELETE | `/promotions/:id`               | all                 | Deletes the promotion                                                           |
-
-
-### [Reviews Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#reviews-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/reviews`                      | all                 | Returns an array of all reviews in the database                                 |
-| GET    | `/reviews/:id`                  | all                 | Returns all information for a single review                                     |
-| GET    | `/reviews/users/:id`            | all                 | Returns an array of all reviews for a single user                               |
-| POST   | `/reviews`                     | all                 | Creates a review instance in db and returns review information                  |
-| PUT    | `/reviews/:id`                   | all                 | Updates information for the provided review                                     |
-| DELETE | `/reviews/:id`                   | all                 | Deletes the review                                                              |
-
-
-### [Saved Promos Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#saved-promo-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/savedPromos/users/:id`        | all                 | Returns all saved promotions for given user                                     |
-| POST   | `/savedPromos/`                 | all                 | Creates a saved promotion instance                                              |
-| DELETE | `/savedPromos/:id`              | all                 | Deletes the saved promotion                                                     |
-
-## Data Model
+## 2️⃣ Data Model
 
 ### Users
 -------------------
@@ -263,7 +162,103 @@ create a .env file that includes the following:
 }
 ```
 
-## 2️⃣ Actions
+## 3️⃣ Endpoints OVERVIEW
+
+
+### [Auth Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#auth-routes-1)
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/auth/register`        | none                | Registers a user & logs them in.                   |
+| POST   | `/auth/login`           | none                | Logs the user in and returns a token.              |
+
+
+### [User Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#user-routes-1)
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET    | `/users/dashboard`      | user                | Returns info for the logged in user.               |
+| GET    | `/users/   `            | user                | Returns an array of all users                      |
+| GET    | `/users/:id`            | user                | Returns any users information                      |
+| PUT    | `/users`                | user                | Returns info for a single user.                    |
+| PUT    | `/users/images`         | user                | Adds profile image and returns info for the user   |
+| DELETE | `/users`                | user                | Deletes the user's account                         |
+
+
+### [Location Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#location-routes-1)
+
+| Method | Endpoint                         | Access Control | Description                                                               |
+| ------ | -------------------------------- | -------------- | ------------------------------------------------------------------------- |
+| GET    | `/locations/map`                 | all            | Returns an array of close pizza places, and their latitude and longitude  |
+| GET    | `/locations/list`                | all            | Returns an array of close pizza places, and their thumbnail, if available |
+| GET    | `/locations/live/:foursquare_id` | all            | Gets the information from a foursquare id and maps it to the database     |
+| GET    | `/locations/:id`                 | all            | Gets the information for a location from the database                     |
+| GET    | `/locations/dashboard`           | location       | Gets the locations information for display                                |
+| PUT    | `/locations`                     | location       | Edits the information for the logged in location                          |
+| PUT    | `/locations/images`              | location       | Adds an image for the logged in location                                  |
+| DELETE | `/locations`                     | location       | Deletes the location.                                                     |
+
+
+### [Events Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#events-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/events`                       | all                 | Returns an array of all created events                                          |
+| GET    | `/events/:id`                   | all                 | Returns all info for a single event                                             |
+| GET    | `/events/users/:id`             | all                 | Returns an object with two arrays of events , created events and invited events |
+| GET    | `/events/locations/:id`         | all                 | Returns an array of all events at a single location                             | 
+| GET    | `/events/:id/invites`           | all                 | Returns an array of all invites for an event                                    |
+| POST   | `/events`                       | all                 | Creates an event and returns the info                                           |
+| POST   | `/events/:id/invite`            | all                 | Creates an event invitation and returns invite info                             |
+| PUT    | `/events/:id/invite/:invite_id` | all                 | Updates event invite and returns an object with all invite info                 |
+| PUT    | `/events/:id`                   | all                 | Updates event info and returns all info for single event                        |
+| DELETE | `/events/:id`                   | all                 | Deletes a specific event                                                       |
+
+
+### [Friends Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#friends-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/friends`                      | all                 | Returns an array of all friendships                                             |
+| GET    | `/friends/:id`                  | all                 | Returns info for a single friendship                                            |
+| POST   | `/friends`                      | all                 | Creates a friendship instance and returns friendship info                       |
+| PUT    | `/friends/:id`                  | all                 | Updates info for a specific friendship instance                                 |
+| DELETE | `/friends/:id`                  | all                 | Deletes friendship instance from databse                                        |
+
+
+### [Promotions Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#promotions-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/promotions`                   | all                 | Returns an array of all promotions                                              |
+| GET    | `/promotions/:id`               | all                 | Returns all info for a single event                                             |
+| POST   | `/promotions`                   | all                 | Creates a new promotion                                                         |
+| PUT    | `/promotions/:id`               | all                 | Updates a single promotions details and returns all info for that promotion     |
+| DELETE | `/promotions/:id`               | all                 | Deletes the promotion                                                           |
+
+
+### [Reviews Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#reviews-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/reviews`                      | all                 | Returns an array of all reviews in the database                                 |
+| GET    | `/reviews/:id`                  | all                 | Returns all information for a single review                                     |
+| GET    | `/reviews/users/:id`            | all                 | Returns an array of all reviews for a single user                               |
+| POST   | `/reviews`                     | all                 | Creates a review instance in db and returns review information                  |
+| PUT    | `/reviews/:id`                   | all                 | Updates information for the provided review                                     |
+| DELETE | `/reviews/:id`                   | all                 | Deletes the review                                                              |
+
+
+### [Saved Promos Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#saved-promo-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/savedPromos/users/:id`        | all                 | Returns all saved promotions for given user                                     |
+| POST   | `/savedPromos/`                 | all                 | Creates a saved promotion instance                                              |
+| DELETE | `/savedPromos/:id`              | all                 | Deletes the saved promotion                                                     |
+
+
+## 4️⃣ Actions
 
 ### Model Helpers
 
@@ -327,7 +322,7 @@ create a .env file that includes the following:
 `getEvents(id)` -> Returns all events by Location ID
 
 
-## Endpoints DETAILS
+## 5️⃣ Endpoints DETAILS
 
 ## Auth Routes
 
