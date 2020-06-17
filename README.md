@@ -1,6 +1,17 @@
 # API Documentation
+![GitHub repo size](https://img.shields.io/github/repo-size/Lambda-School-Labs/lets-get-pizza-be) [![Maintainability](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/test_coverage) 
 
-#### 1️⃣ Backend delpoyed at [lets-get-pizza-be](https://plza.herokuapp.com/) <br>
+### Backend delpoyed at [lets-get-pizza-be](https://plza.herokuapp.com/) <br>
+
+### Backend Framework Used
+
+Node / Express.js
+
+Postgresql
+
+Foursquare
+
+Geocoding/GeoIP
 
 ## 1️⃣ Getting started
 
@@ -14,8 +25,7 @@ To get the server running locally:
 - run **docker-compose down** to stop server
 
 **Without Docker**
-- Clone this repo
-- Create a .env file with needed environment variables
+- Create a `.env` file with needed [environment variables](https://github.com/Lambda-School-Labs/lets-get-pizza-be#environment-varables)
 - **npm install** to install all required dependencies
 - Set up local pg database & connect in knexfile
 - **npm run server** to start the local server
@@ -43,118 +53,7 @@ create a .env file that includes the following:
        Username: teampizzaplza@gmail.com
        Password: 1234P!za
 
-## Code Climate
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/maintainability)
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/test_coverage)
-
-### Backend framework goes here
-
-Node / Express.js
-
-Postgresql
-
-Foursquare
-
-Geocoding/GeoIP
-
-## 2️⃣ Endpoints OVERVIEW
-
-
-### [Auth Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#auth-routes-1)
-
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| POST   | `/auth/register`        | none                | Registers a user & logs them in.                   |
-| POST   | `/auth/login`           | none                | Logs the user in and returns a token.              |
-
-
-### [User Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#user-routes-1)
-
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/dashboard`      | user                | Returns info for the logged in user.               |
-| GET    | `/users/   `            | user                | Returns an array of all users                      |
-| GET    | `/users/:id`            | user                | Returns any users information                      |
-| PUT    | `/users`                | user                | Returns info for a single user.                    |
-| PUT    | `/users/images`         | user                | Adds profile image and returns info for the user   |
-| DELETE | `/users`                | user                | Deletes the user's account                         |
-
-
-### [Location Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#location-routes-1)
-
-| Method | Endpoint                         | Access Control | Description                                                               |
-| ------ | -------------------------------- | -------------- | ------------------------------------------------------------------------- |
-| GET    | `/locations/map`                 | all            | Returns an array of close pizza places, and their latitude and longitude  |
-| GET    | `/locations/list`                | all            | Returns an array of close pizza places, and their thumbnail, if available |
-| GET    | `/locations/live/:foursquare_id` | all            | Gets the information from a foursquare id and maps it to the database     |
-| GET    | `/locations/:id`                 | all            | Gets the information for a location from the database                     |
-| GET    | `/locations/dashboard`           | location       | Gets the locations information for display                                |
-| PUT    | `/locations`                     | location       | Edits the information for the logged in location                          |
-| PUT    | `/locations/images`              | location       | Adds an image for the logged in location                                  |
-| DELETE | `/locations`                     | location       | Deletes the location.                                                     |
-
-
-### [Events Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#events-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/events`                       | all                 | Returns an array of all created events                                          |
-| GET    | `/events/:id`                   | all                 | Returns all info for a single event                                             |
-| GET    | `/events/users/:id`             | all                 | Returns an object with two arrays of events , created events and invited events |
-| GET    | `/events/locations/:id`         | all                 | Returns an array of all events at a single location                             | 
-| GET    | `/events/:id/invites`           | all                 | Returns an array of all invites for an event                                    |
-| POST   | `/events`                       | all                 | Creates an event and returns the info                                           |
-| POST   | `/events/:id/invite`            | all                 | Creates an event invitation and returns invite info                             |
-| PUT    | `/events/:id/invite/:invite_id` | all                 | Updates event invite and returns an object with all invite info                 |
-| PUT    | `/events/:id`                   | all                 | Updates event info and returns all info for single event                        |
-| DELETE | `/events/:id`                   | all                 | Deletes a specific event                                                       |
-
-
-### [Friends Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#friends-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/friends`                      | all                 | Returns an array of all friendships                                             |
-| GET    | `/friends/:id`                  | all                 | Returns info for a single friendship                                            |
-| POST   | `/friends`                      | all                 | Creates a friendship instance and returns friendship info                       |
-| PUT    | `/friends/:id`                  | all                 | Updates info for a specific friendship instance                                 |
-| DELETE | `/friends/:id`                  | all                 | Deletes friendship instance from databse                                        |
-
-
-### [Promotions Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#promotions-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/promotions`                   | all                 | Returns an array of all promotions                                              |
-| GET    | `/promotions/:id`               | all                 | Returns all info for a single event                                             |
-| POST   | `/promotions`                   | all                 | Creates a new promotion                                                         |
-| PUT    | `/promotions/:id`               | all                 | Updates a single promotions details and returns all info for that promotion     |
-| DELETE | `/promotions/:id`               | all                 | Deletes the promotion                                                           |
-
-
-### [Reviews Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#reviews-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/reviews`                      | all                 | Returns an array of all reviews in the database                                 |
-| GET    | `/reviews/:id`                  | all                 | Returns all information for a single review                                     |
-| GET    | `/reviews/users/:id`            | all                 | Returns an array of all reviews for a single user                               |
-| POST   | `/reviews/`                     | all                 | Creates a review instance in db and returns review information                  |
-| PUT    | `/reviews/:id`                   | all                 | Updates information for the provided review                                     |
-| DELETE | `/reviews/:id`                   | all                 | Deletes the review                                                              |
-
-
-### [Saved Promos Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#saved-promo-routes-1)
-
-| Method | Endpoint                        | Access Control      | Description                                                                     |
-| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
-| GET    | `/savedPromos/users/:id`        | all                 | Returns all saved promotions for given user                                     |
-| POST   | `/savedPromos/`                 | all                 | Creates a saved promotion instance                                              |
-| DELETE | `/savedPromos/:id`              | all                 | Deletes the saved promotion                                                     |
-
-## Data Model
+## 2️⃣ Data Model
 
 ### Users
 -------------------
@@ -263,7 +162,103 @@ Geocoding/GeoIP
 }
 ```
 
-## 2️⃣ Actions
+## 3️⃣ Endpoints OVERVIEW
+
+
+### [Auth Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#auth-routes-1)
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| POST   | `/auth/register`        | none                | Registers a user & logs them in.                   |
+| POST   | `/auth/login`           | none                | Logs the user in and returns a token.              |
+
+
+### [User Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#user-routes-1)
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET    | `/users/dashboard`      | user                | Returns info for the logged in user.               |
+| GET    | `/users/   `            | user                | Returns an array of all users                      |
+| GET    | `/users/:id`            | user                | Returns any users information                      |
+| PUT    | `/users`                | user                | Returns info for a single user.                    |
+| PUT    | `/users/images`         | user                | Adds profile image and returns info for the user   |
+| DELETE | `/users`                | user                | Deletes the user's account                         |
+
+
+### [Location Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#location-routes-1)
+
+| Method | Endpoint                         | Access Control | Description                                                               |
+| ------ | -------------------------------- | -------------- | ------------------------------------------------------------------------- |
+| GET    | `/locations/map`                 | all            | Returns an array of close pizza places, and their latitude and longitude  |
+| GET    | `/locations/list`                | all            | Returns an array of close pizza places, and their thumbnail, if available |
+| GET    | `/locations/live/:foursquare_id` | all            | Gets the information from a foursquare id and maps it to the database     |
+| GET    | `/locations/:id`                 | all            | Gets the information for a location from the database                     |
+| GET    | `/locations/dashboard`           | location       | Gets the locations information for display                                |
+| PUT    | `/locations`                     | location       | Edits the information for the logged in location                          |
+| PUT    | `/locations/images`              | location       | Adds an image for the logged in location                                  |
+| DELETE | `/locations`                     | location       | Deletes the location.                                                     |
+
+
+### [Events Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#events-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/events`                       | all                 | Returns an array of all created events                                          |
+| GET    | `/events/:id`                   | all                 | Returns all info for a single event                                             |
+| GET    | `/events/users/:id`             | all                 | Returns an object with two arrays of events , created events and invited events |
+| GET    | `/events/locations/:id`         | all                 | Returns an array of all events at a single location                             | 
+| GET    | `/events/:id/invites`           | all                 | Returns an array of all invites for an event                                    |
+| POST   | `/events`                       | all                 | Creates an event and returns the info                                           |
+| POST   | `/events/:id/invite`            | all                 | Creates an event invitation and returns invite info                             |
+| PUT    | `/events/:id/invite/:invite_id` | all                 | Updates event invite and returns an object with all invite info                 |
+| PUT    | `/events/:id`                   | all                 | Updates event info and returns all info for single event                        |
+| DELETE | `/events/:id`                   | all                 | Deletes a specific event                                                       |
+
+
+### [Friends Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#friends-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/friends`                      | all                 | Returns an array of all friendships                                             |
+| GET    | `/friends/:id`                  | all                 | Returns info for a single friendship                                            |
+| POST   | `/friends`                      | all                 | Creates a friendship instance and returns friendship info                       |
+| PUT    | `/friends/:id`                  | all                 | Updates info for a specific friendship instance                                 |
+| DELETE | `/friends/:id`                  | all                 | Deletes friendship instance from databse                                        |
+
+
+### [Promotions Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#promotions-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/promotions`                   | all                 | Returns an array of all promotions                                              |
+| GET    | `/promotions/:id`               | all                 | Returns all info for a single event                                             |
+| POST   | `/promotions`                   | all                 | Creates a new promotion                                                         |
+| PUT    | `/promotions/:id`               | all                 | Updates a single promotions details and returns all info for that promotion     |
+| DELETE | `/promotions/:id`               | all                 | Deletes the promotion                                                           |
+
+
+### [Reviews Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#reviews-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/reviews`                      | all                 | Returns an array of all reviews in the database                                 |
+| GET    | `/reviews/:id`                  | all                 | Returns all information for a single review                                     |
+| GET    | `/reviews/users/:id`            | all                 | Returns an array of all reviews for a single user                               |
+| POST   | `/reviews`                     | all                 | Creates a review instance in db and returns review information                  |
+| PUT    | `/reviews/:id`                   | all                 | Updates information for the provided review                                     |
+| DELETE | `/reviews/:id`                   | all                 | Deletes the review                                                              |
+
+
+### [Saved Promos Routes](https://github.com/Lambda-School-Labs/lets-get-pizza-be#saved-promo-routes-1)
+
+| Method | Endpoint                        | Access Control      | Description                                                                     |
+| ------ | ------------------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| GET    | `/savedPromos/users/:id`        | all                 | Returns all saved promotions for given user                                     |
+| POST   | `/savedPromos/`                 | all                 | Creates a saved promotion instance                                              |
+| DELETE | `/savedPromos/:id`              | all                 | Deletes the saved promotion                                                     |
+
+
+## 4️⃣ Actions
 
 ### Model Helpers
 
@@ -327,7 +322,7 @@ Geocoding/GeoIP
 `getEvents(id)` -> Returns all events by Location ID
 
 
-## Endpoints DETAILS
+## 5️⃣ Endpoints DETAILS
 
 ## Auth Routes
 
@@ -836,7 +831,694 @@ Geocoding/GeoIP
 ```javascript
 "Success"
 ```
-    
+
+## Events Routes
+
+### GET '/events'
+--------------------------
+
+### Response
+```javascript
+[
+    {
+        location_id: 1,
+        user_id: 1,
+        id: 1,
+        title: "Lets Get Pizza!",
+        description: "Its dat time boys, pizza!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z",
+        business_name: "Pizza Hut",
+        address: "123 pizza lane"
+    },
+    {
+        location_id: 1,
+        user_id: 1,
+        id: 2,
+        title: "Nacho Pizza Hunt!",
+        description: "Are Nacho pizzas a thing? Lets find out!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z",
+        business_name: "Pizza Hut",
+        address: "123 pizza lane"
+    },
+    ...
+```
+
+### GET 'events/:id'
+-----------------------
+
+#### Response
+```javascript
+{
+    event: {
+        location_id: 1,
+        user_id: 1,
+        id: 1,
+        title: "Lets Get Pizza!",
+        description: "Its dat time boys, pizza!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z",
+        business_name: "Pizza Hut",
+        address: "123 pizza lane"
+    }
+}
+```
+### GET 'events/users/:id'
+-----------------------------
+
+#### Response
+```javascript
+{
+    createdEvents: [
+        {
+            location_id: 1,
+            user_id: 1,
+            id: 1,
+            title: "Lets Get Pizza!",
+            description: "Its dat time boys, pizza!",
+            start_time: "2020-01-20T00:00:00.000Z",
+            end_time: "2020-01-22T00:00:00.000Z",
+            business_name: "Pizza Hut",
+            address: "123 pizza lane"
+        },
+        {
+            location_id: 1,
+            user_id: 1,
+            id: 2,
+            title: "Nacho Pizza Hunt!",
+            description: "Are Nacho pizzas a thing? Lets find out!",
+            start_time: "2020-01-20T00:00:00.000Z",
+            end_time: "2020-01-22T00:00:00.000Z",
+            business_name: "Pizza Hut",
+            address: "123 pizza lane"
+        },
+        {
+            location_id: 2,
+            user_id: 1,
+            id: 3,
+            title: "The End of Days",
+            description: "About that time, lets have a slice to celebrate the end of the world.",
+            start_time: "2020-01-20T00:00:00.000Z",
+            end_time: "2020-01-22T00:00:00.000Z",
+            business_name: "Dominoes Pizza",
+            address: "13 pizza rd"
+        }
+        ...
+    ],
+    invitedEvents: [
+        {
+            location_id: 2,
+            user_id: 4,
+            id: 4,
+            title: "BYOP Party - Bring Your Own Pizza",
+            description: "Bring your own pizza party, plates will be provided",
+            start_time: "2020-06-20T00:00:00.000Z",
+            end_time: "2020-06-22T00:00:00.000Z",
+            business_name: "Dominoes Pizza",
+            address: "13 pizza rd"
+        }
+        ...
+    ]
+}
+```
+
+### GET '/events/locations/:id'
+----------------------------------
+
+#### Response 
+```javascript
+[
+    {
+        id: 1,
+        user_id: 1,
+        location_id: 1,
+        title: "Lets Get Pizza!",
+        description: "Its dat time boys, pizza!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z"
+    },
+    {
+        id: 2,
+        user_id: 1,
+        location_id: 1,
+        title: "Nacho Pizza Hunt!",
+        description: "Are Nacho pizzas a thing? Lets find out!",
+        start_time: "2020-01-20T00:00:00.000Z",
+        end_time: "2020-01-22T00:00:00.000Z"
+    },
+    ...
+]
+```
+
+### GET '/events/:id/invites
+-------------------------------
+
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 7,
+        response: "pending"
+    },
+    {
+        id: 2,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 3,
+        response: "pending"
+    },
+    {
+        id: 3,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 2,
+        response: "pending"
+    },
+    ...
+]
+```
+
+### POST '/events'
+---------------------
+
+#### Body
+| Name        | Type      | Required | Description                                      |
+| ----------- | --------- | -------- | ------------------------------------------------ |
+| user_id     | integer   | N        | ID of the user who created the event             |
+| location_id | integer   | Y        | ID of the location where the event is being held |
+| title       | string    | Y        | Title of the event                               |
+| description | string    | Y        | Description of the event                         |
+| start_time  | datetime  | Y        | Start time of the event                          |
+| end_time    | datetime  | Y        | End time of the event                            |
+
+
+#### Response
+```javascript
+{
+    id: 5,
+    user_id: 6,
+    location_id: 3,
+    title: "Stonefire party",
+    description: "Stonefire pizza all 1% off all orders over $100",
+    start_time: "2020-01-20T00:00:00.000Z",
+    end_time: "2020-01-22T00:00:00.000Z"
+}
+```
+
+### POST '/events/:id/invite'
+--------------------------------
+
+#### Body
+| Name            | Type          | Required | Description                                      |
+| --------------- | ------------- | -------- | ------------------------------------------------ |
+| inviter_user_id | integer       | Y        | ID of the user who created the event             |
+| invitee_user_id | integer       | Y        | ID of the user being invited to the event        |
+
+
+#### Response
+```javascript
+{
+    id: 1,
+    event_id: 5,
+    inviter_user_id: 6,
+    invitee_user_id: 7,
+    response: "pending"
+}
+```
+
+### PUT '/events/:id/invite/:invite_id
+-----------------------------------------
+
+#### Body
+| Name     | Type   | Reuired | Description                                                                 |
+| -------- | ------ | ------- | --------------------------------------------------------------------------- |
+| response | string | Y       | Invite status. Must be one of the following: accepted, interested, declined |
+
+#### Response
+```javascript
+{
+    invited: {
+        id: 2,
+        event_id: 5,
+        inviter_user_id: 6,
+        invitee_user_id: 3,
+        response: "accepted"
+    }
+}
+```
+
+### PUT '/events/:id'
+-------------------------
+
+#### Body
+| Name        | Type      | Required | Description                                      |
+| ----------- | --------- | -------- | ------------------------------------------------ |
+| user_id     | integer   | N        | ID of the user who created the event             |
+| location_id | integer   | N        | ID of the location where the event is being held |
+| title       | string    | N        | Title of the event                               |
+| description | string    | N        | Description of the event                         |
+| start_time  | datetime  | N        | Start time of the event                          |
+| end_time    | datetime  | N        | End time of the event                            |
+
+#### Response
+```javascript
+{
+    id: 5,
+    user_id: 6,
+    location_id: 3,
+    title: "Stonefire party",
+    description: "Stonefire pizza all 1% off all orders over $100",
+    start_time: "2020-01-20T00:00:00.000Z",
+    end_time: "2020-01-22T00:00:00.000Z"
+}
+```
+
+### DELETE '/events/:id'
+----------------------------
+
+#### Response
+```javascript
+"Success."
+```
+
+## Friends Routes
+
+### GET '/friends'
+---------------------------
+
+#### Response
+```javascript
+[
+    {
+        user_id: 1,
+        friends_id: 1,
+        status: "accepted",
+        id: 1
+    },
+    {
+        user_id: 2,
+        friends_id: 2,
+        status: "accepted",
+        id: 2
+    },
+    {
+        user_id: 3,
+        friends_id: 3,
+        status: "accepted",
+        id: 3
+    }
+    ...
+]
+```
+
+### GET 'friends/:id'
+
+### Response
+```javascript
+[
+    {
+        id: 2,
+        username: "Roger",
+        display_name: "PizzaDude",
+        friends_id: 2,
+        friend_username: "Roger",
+        friend_display_name: "PizzaDude",
+        friend_location: "Santa Monica",
+        friend_profile_image: "https://res.cloudinary.com/plza/image/upload/v1588043869/qxhdqbj4sthf57bdgltz.jpg",
+        friend_bio: "Life is like a box of pizza, you never know what you're going to get! - Forest Gump",
+        friend_favorite_pizza_shop: 1
+    }
+]
+```
+
+### POST '/friends'
+-----------------------
+#### Body
+| Name        | Type      | Required | Description                                      |
+| ----------- | --------- | -------- | ------------------------------------------------ |
+| user_id     | integer   | Y        | ID of the user sending/creating the request      |
+| friends_id  | integer   | Y        | ID of the user becoming the friend               |
+
+
+#### Response
+```javascript
+{
+    user_id: 6,
+    friends_id: 7,
+    status: "requested",
+    id: 18
+}
+```
+
+### PUT '/friends/:id'
+---------------------------------
+
+#### Body
+| Name      | Type     | Required | Description                                                                            |
+| --------- | -------- | -------- | -------------------------------------------------------------------------------------- |
+| response  | string   | Y        | status of the friendship. Must be one of the following: requested, accepted, blocked   |
+
+#### Response
+```javascript
+{
+    success: true,
+    message: "friend with id 18 was updated."
+}
+```
+
+### DELETE '/friends/:id'
+------------------------------
+
+#### Response
+```javascript
+{
+    success: true,
+    message: "friend with id 18 was deleted"
+}
+```
+
+
+## Promotions Routes
+
+## GET '/promotions'
+----------------------------
+
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        location_id: 1,
+        title: "Cheese Sale!",
+        text: "Half Price extra cheese!",
+        start_date: "2020-01-02T00:00:00.000Z",
+        end_date: "2020-01-03T00:00:00.000Z"
+    },
+    {
+        id: 2,
+        location_id: 2,
+        title: "Double Double Time!",
+        text: "Buy one pizza and pay double for the second!",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    },
+    {
+        id: 3,
+        location_id: 3,
+        title: "Jailhouse Rock!",
+        text: "Sing a song for 10 bucks off your order!",
+        start_date: "2020-02-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    },
+    ...
+]
+```
+
+### GET '/promotions/:id'
+----------------------------------
+
+#### Response
+```javascript
+    {
+        id: 2,
+        location_id: 2,
+        title: "Double Double Time!",
+        text: "Buy one pizza and pay double for the second!",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    }
+```
+
+### POST '/promotions'
+------------------------------
+
+#### Body
+| Name           | Type     | Required | Description                                       |
+| -------------- | ---------| -------- | ------------------------------------------------- |
+| location_id    | integer  | Y        | ID of the location creating the promotion         |
+| title          | string   | Y        | Title of the promotion                            |
+| text           | string   | Y        | Description and extra details about the promotion |
+| start_date     | datetime | Y        | Time when the promotion starts                    |
+| end_date       | datetime | Y        | Time when the promotion ends                      |
+
+#### Response
+```javascript
+    {
+        id: 4,
+        location_id: 1,
+        title: "We Survived COVID Promo",
+        text: "19% off any purchases over $19",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    }
+```
+
+### PUT '/promotions/:id'
+------------------------------
+
+#### Body
+| Name        | Type     | Required | Description                                       |
+| ----------- | ---------| -------- | ------------------------------------------------- |
+| title       | string   | N        | Title of the promotion                            |
+| text        | string   | N        | Description and extra details about the promotion |
+| start_date  | datetime | N        | Time when the promotion starts                    |
+| end_date    | datetime | N        | Time when the promotion ends                      |
+
+#### Response
+```javascript
+    {
+        id: 4,
+        location_id: 1,
+        title: "We Survived COVID Party Promo",
+        text: "19% off any purchases over $19",
+        start_date: "2020-01-03T00:00:00.000Z",
+        end_date: "2020-02-03T00:00:00.000Z"
+    }
+```
+
+### DELETE '/promotions/:id'
+------------------------------------
+
+#### Response
+```javascript
+"Success."
+```
+
+## Reviews 
+
+### GET '/reviews'
+-------------------------
+
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        user_id: 1,
+        location_id: 1,
+        rating: 5,
+        review_title: "cheese pizza day",
+        review_text: "cheese was good, but I wanted pepperoni"
+    },
+    {
+        id: 2,
+        user_id: 2,
+        location_id: 1,
+        rating: 3,
+        review_title: "memorial pizza time",
+        review_text: "not bad, but too pricy"
+    },
+    {
+        id: 3,
+        user_id: 3,
+        location_id: 1,
+        rating: 1,
+        review_title: "ran out?!",
+        review_text: "they ran out of cheese, smh"
+    },
+    ...
+]
+```
+
+### GET '/reviews/:id'
+-------------------------
+
+#### Response
+```javascript
+{
+    id: 2,
+    user_id: 2,
+    location_id: 1,
+    rating: 3,
+    review_title: "memorial pizza time",
+    review_text: "not bad, but too pricy"
+}
+```
+
+### GET '/reviews/users/:id'
+-------------------------
+
+#### Response
+```javascript
+[
+    {
+        id: 1,
+        user_id: 6,
+        location_id: 3,
+        rating: 5,
+        review_title: "cheese pizza day",
+        review_text: "cheese was good, but I wanted pepperoni",
+        business_name: "Pizzaria Pizza",
+        address: "1254 Pizza Dr"
+    },
+    {
+        id: 9,
+        user_id: 6,
+        location_id: 11,
+        rating: 3,
+        review_title: "memorial pizza time",
+        review_text: "not bad, but too pricy",
+        business_name: "Pizza Pizzaria",
+        address: "1254 Pizza Cir"
+    },
+    {
+        id: 19,
+        user_id: 6,
+        location_id: 17,
+        rating: 3,
+        review_title: "ran out?!",
+        review_text: "they ran out of cheese, smh",
+        business_name: "Pizzaria Pizzaria",
+        address: "1254 Pizza Rd"
+    },
+    ...
+]
+```
+
+### POST '/reviews'
+--------------------------
+
+#### Body
+| Name         | Type    | Required | Description                          |
+| ------------ | ------- | -------- | ------------------------------------ |
+| user_id      | integer | Y        | ID of the user writing the review    |
+| location_id  | integer | Y        | ID of the location the review is for |
+| rating       | integer | Y        | Rating score for the review (1-5)    |
+| review_title | string  | N        | Title of the review                  |
+| review_text  | string  | N        | Additional text for the review       |
+
+#### Response
+```javascript
+    {
+        id: 9,
+        user_id: 6,
+        location_id: 11,
+        rating: 3,
+        review_title: "memorial pizza time",
+        review_text: "not bad, but too pricy",
+        business_name: "Pizza Pizzaria",
+        address: "1254 Pizza Cir"
+    }
+```
+
+### PUT '/reviews/:id'
+--------------------------
+
+#### Body
+| Name         | Type    | Required | Description                          |
+| ------------ | ------- | -------- | ------------------------------------ |
+| user_id      | integer | N        | ID of the user writing the review    |
+| location_id  | integer | N        | ID of the location the review is for |
+| rating       | integer | N        | Rating score for the review (1-5)    |
+| review_title | string  | N        | Title of the review                  |
+| review_text  | string  | N        | Additional text for the review       |
+
+#### Response
+```javascript
+    {
+        id: 9,
+        user_id: 6,
+        location_id: 11,
+        rating: 3,
+        review_title: "Pi Day Celebration",
+        review_text: "not bad, but too pricy",
+        business_name: "Pizza Pizzaria",
+        address: "1254 Pizza Cir"
+    }
+```
+
+### DELETE '/reviews/:id'
+-----------------------------
+
+#### Response
+```javascript
+"Success."
+```
+
+
+## Saved Promos Routes
+
+### GET '/savedPromos/users/:id'
+----------------------------------
+
+#### Response
+```javascript
+[
+    {
+        location_id: 2,
+        title: "Double Double Time!",
+        text: "Buy one pizza and pay double for the second!",
+        promo_id: 2,
+        user_id: 1,
+        id: 1,
+        business_name: "Dominoes Pizza",
+        address: "13 pizza rd"
+    },
+    {
+        location_id: 3,
+        title: "Jailhouse Rock!",
+        text: "Sing a song for 10 bucks off your order!",
+        promo_id: 3,
+        user_id: 1,
+        id: 2,
+        business_name: "Papa Johns",
+        address: "30 pizza st"
+    }
+]
+```
+
+### POST '/savedPromos'
+-----------------------------
+
+#### Body
+| Name     | Type    | Required | Description                     |
+| ---------| ------- | -------- | --------------------------------|
+| user_id  | integer | Y        | ID of the user saving the promo |
+| promo_id | integer | Y        | ID of the promotion being saved |
+
+#### Response
+```javascript
+{
+    user_id: 6,
+    promo_id: 2,
+    id: 8
+}
+```
+
+
+### DELETE '/savedPromos/:id'
+-------------------------------
+
+#### Response
+```javascript
+"Success."
+```
+
+
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
