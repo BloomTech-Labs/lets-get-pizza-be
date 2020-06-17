@@ -1409,7 +1409,7 @@ Geocoding/GeoIP
 
 #### Body
 | Name         | Type    | Required | Description                          |
-| ------------ | ------- | -------- | -------------------------------------|
+| ------------ | ------- | -------- | ------------------------------------ |
 | user_id      | integer | Y        | ID of the user writing the review    |
 | location_id  | integer | Y        | ID of the location the review is for |
 | rating       | integer | Y        | Rating score for the review (1-5)    |
@@ -1435,7 +1435,7 @@ Geocoding/GeoIP
 
 #### Body
 | Name         | Type    | Required | Description                          |
-| ------------ | ------- | -------- | -------------------------------------|
+| ------------ | ------- | -------- | ------------------------------------ |
 | user_id      | integer | N        | ID of the user writing the review    |
 | location_id  | integer | N        | ID of the location the review is for |
 | rating       | integer | N        | Rating score for the review (1-5)    |
@@ -1463,6 +1463,66 @@ Geocoding/GeoIP
 ```javascript
 "Success."
 ```
+
+
+## Saved Promos Routes
+
+### GET '/savedPromos/users/:id'
+----------------------------------
+
+#### Response
+```javascript
+[
+    {
+        location_id: 2,
+        title: "Double Double Time!",
+        text: "Buy one pizza and pay double for the second!",
+        promo_id: 2,
+        user_id: 1,
+        id: 1,
+        business_name: "Dominoes Pizza",
+        address: "13 pizza rd"
+    },
+    {
+        location_id: 3,
+        title: "Jailhouse Rock!",
+        text: "Sing a song for 10 bucks off your order!",
+        promo_id: 3,
+        user_id: 1,
+        id: 2,
+        business_name: "Papa Johns",
+        address: "30 pizza st"
+    }
+]
+```
+
+### POST '/savedPromos'
+-----------------------------
+
+#### Body
+| Name     | Type    | Required | Description                     |
+| ---------| ------- | -------- | --------------------------------|
+| user_id  | integer | Y        | ID of the user saving the promo |
+| promo_id | integer | Y        | ID of the promotion being saved |
+
+#### Response
+```javascript
+{
+    user_id: 6,
+    promo_id: 2,
+    id: 8
+}
+```
+
+
+### DELETE '/savedPromos/:id'
+-------------------------------
+
+#### Response
+```javascript
+"Success."
+```
+
 
 ## Contributing
 
