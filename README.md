@@ -1,7 +1,17 @@
 # API Documentation
 ![GitHub repo size](https://img.shields.io/github/repo-size/Lambda-School-Labs/lets-get-pizza-be) [![Maintainability](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/test_coverage) 
 
-## Backend delpoyed at [lets-get-pizza-be](https://plza.herokuapp.com/) <br>
+### Backend delpoyed at [lets-get-pizza-be](https://plza.herokuapp.com/) <br>
+
+### Backend Framework Used
+
+Node / Express.js
+
+Postgresql
+
+Foursquare
+
+Geocoding/GeoIP
 
 ## 1️⃣ Getting started
 
@@ -48,16 +58,6 @@ create a .env file that includes the following:
 [![Maintainability](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/05f3ff0daa4ae455b4fd/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/lets-get-pizza-be/test_coverage)
-
-### Backend framework goes here
-
-Node / Express.js
-
-Postgresql
-
-Foursquare
-
-Geocoding/GeoIP
 
 ## 2️⃣ Endpoints OVERVIEW
 
