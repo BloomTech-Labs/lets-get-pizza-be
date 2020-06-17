@@ -23,6 +23,8 @@ To get the server running locally:
 - run **docker-compose -d up** to install all required dependencies, create pg database, and start local server
 - run **docker exec -d plza-server sh -c  "npm run seed"** to seed the database (only need to do this on initial setup)
 - run **docker-compose down** to stop server
+- run **docker exec plza-server sh -c "npm run test"** to run tests locally
+- run **docker exec plza-server sh -c "npm run coverage"** to gather test coverage locally
 
 **Without Docker**
 - Create a `.env` file with needed [environment variables](https://github.com/Lambda-School-Labs/lets-get-pizza-be#environment-varables)
@@ -30,6 +32,7 @@ To get the server running locally:
 - Set up local pg database & connect in knexfile
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
+- **npm run coverage** to gather test coverage
 
 ## Environment Variables
 
@@ -39,8 +42,10 @@ create a .env file that includes the following:
 
     * POSTGRES_USER Set this as the user for your postgres database **recommended to set as postgres**
     * POSTGRES_DB Name of your postgres database
+    * POSTGRES_TEST_DB Name of your postgres database
     * POSTGRES_PASSWORD Set this as your postgres local and test database passwords
     * POSTGRES_HOST Needed to establish postgres connection. Set as plza-postgres
+    * POSTGRES_TEST_HOST Needed to establish postgres connection. Set as plza-test-db
     * JWT_SECRET  Needed for auth router and password generation
     * FSCLIENTID FourSquare API Client ID
     * FSCLIENTSECRET FourSquare API Client Secret
