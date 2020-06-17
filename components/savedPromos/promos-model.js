@@ -1,5 +1,4 @@
 const query = require("../model.js");
-const db = require("../../data/db-config");
 
 module.exports = {
   find,
@@ -10,14 +9,27 @@ module.exports = {
   findBy,
 };
 
+const select = [
+  "p.location_id",
+  "p.title",
+  "p.text",
+  "savedPromos.promo_id",
+  "savedPromos.user_id",
+  "savedPromos.id",
+  "l.business_name",
+  "l.address"
+]
+
 function find() {
-  return query
-    .find("savedPromos")
-    .join("promotions as p", "p.id", "savedPromos.promo_id");
+  return query.find("savedPromos as sp", select)
+    .join("promotions as p", "p.id", "savedPromos.promo_id")
+    .join("locations as l", "l.id", "p.location_id")
 }
 
 function findById(id) {
-  return query.findById("savedPromos", id);
+  return query.findById("savedPromos", id)
+    .join("promotions as p", "p.id", "savedPromos.promo_id")
+    .join("locations as l", "l.id", "p.location_id")
 }
 
 function add(promotion) {
@@ -34,17 +46,7 @@ function remove(id) {
 
 function findBy(filter) {
   return query
-    .findBy("savedPromos", filter)
+    .findBy("savedPromos", filter, select)
     .join("promotions as p", "p.id", "savedPromos.promo_id")
     .join("locations as l", "l.id", "p.location_id")
-    .select(
-      "p.location_id",
-      "p.title",
-      "p.text",
-      "savedPromos.promo_id",
-      "savedPromos.user_id",
-      "savedPromos.id",
-      "l.business_name",
-      "l.address"
-    );
 }
