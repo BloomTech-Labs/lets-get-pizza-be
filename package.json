@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Lambda-School-Labs/let-s-get-pizza-be#readme",
   "dependencies": {
     "axios": "^0.19.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.17.0",
     "codeclimate-test-reporter": "^0.5.1",
